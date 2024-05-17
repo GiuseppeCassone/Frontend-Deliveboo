@@ -17,6 +17,10 @@ export default{
             
             restaurants: [],
 
+            typologies: [],
+
+            checkBoxValue: [],
+
             apiPageNumber: 1,
 
 
@@ -46,10 +50,23 @@ export default{
 
                 this.restaurants = res.data.results
 
-                console.log(this.restaurants)
+                // console.log(this.restaurants)
             })
 
+            axios.get(this.apiBaseUrl + '/typologies').then(res => {
+                // console.log(res.data.results);
 
+                this.typologies = res.data.results;
+
+                // console.log(this.typologies);
+            });
+
+        },
+
+        check() {
+            console.log('checked');
+
+            return this.checkBoxValue ? true : false;
         }
     }
 
@@ -64,6 +81,14 @@ export default{
 <template>
     <div class="container">
         
+        <div class="restaurant-typologies d-flex gap-3 flex-wrap">
+
+            <div v-for="typology in typologies" class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" :id="typology.type" :name="typology.type"> <!-- v-model="checkBoxValue" -->
+                <label class="form-check-label" :for="typology.type">{{typology.type}}</label>
+            </div>
+
+        </div>
         
         <div class="d-flex justify-content-between flex-wrap gap-2">
 
