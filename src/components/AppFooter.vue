@@ -1,16 +1,15 @@
 <script>
 
 export default {
-    name: 'AppHeader',
+    name: 'AppFooter',
 }
 
 </script>
 
 <template>
 
-  <h1 class="display-1 text-center fw-bold py-3">HEADER</h1>
+  <h1 class="display-1 text-center fw-bold py-3">footer</h1>
 
-  
 
 </template>
 
