@@ -64,7 +64,7 @@ export default{
             <li class="list-unstyled " v-for="restaurant in restaurants">
 
                 <div class="card" style="width: 18rem;">
-                    <img :src="restaurant.img ? this.apiImageUrl + restaurant.img : restaurant.img " class="card-img-top" alt="...">
+                    <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ restaurant.name }}</h5>
                         <p class="card-text">{{ restaurant.description }}</p>
