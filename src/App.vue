@@ -1,9 +1,30 @@
-<script setup>
+<script>
+
+import AppHeader from './components/AppHeader.vue'
+
+export default {
+  data() {
+    return {
+
+    }
+  },
+
+  components: {
+    AppHeader
+  }
+
+}
 
 </script>
 
 <template>
-  <h1 class="fs-1">CIAO</h1>
+  <AppHeader></AppHeader>
+
+  <div class="container py-5">
+    
+    <router-view></router-view>
+
+  </div>
    
 </template>
 
