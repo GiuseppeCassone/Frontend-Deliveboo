@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default {
 
-    name: 'SingleRestaurant',
+    name: 'InfoRestaurant',
 
     data(){
 
