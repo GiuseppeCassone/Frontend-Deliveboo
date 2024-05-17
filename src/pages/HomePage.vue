@@ -2,9 +2,15 @@
 
 import axios from 'axios';
 
+import AppRestaurant from '../components/AppRestaurant.vue';
+
 export default{
 
     name: 'HomePage',
+
+    components: {
+        AppRestaurant,
+    },
 
     data() {
         return {
@@ -59,24 +65,12 @@ export default{
     <div class="container">
         
         
-        <ul class="d-flex justify-content-between flex-wrap gap-2">
+        <div class="d-flex justify-content-between flex-wrap gap-2">
 
-            <li class="list-unstyled " v-for="restaurant in restaurants">
+           <AppRestaurant v-for="restaurant in restaurants" :restaurant="restaurant"
+           ></AppRestaurant>
 
-                <div class="card" style="width: 18rem;">
-                    <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ restaurant.name }}</h5>
-                        <p class="card-text">{{ restaurant.description }}</p>
-                        <p v-for="typology in restaurant.typologies" class="card-text">{{ typology.type }}</p>
-                        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-                    </div>
-                </div>
-
-            </li>
-
-
-        </ul>
+        </div>
 
 
     </div>
