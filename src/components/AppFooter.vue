@@ -8,7 +8,12 @@ export default {
 
 <template>
 
-  <h1 class="display-1 text-center fw-bold py-3">footer</h1>
+  <footer class="footer mt-auto py-3 bg-dark">
+    <hr>
+    <div class="container text-center">
+      <span class="text-muted">Il tuo copyright qui © 2024</span>
+    </div>
+  </footer>
 
 
 </template>
