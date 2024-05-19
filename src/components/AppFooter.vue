@@ -8,7 +8,7 @@ export default {
 
 <template>
 
-  <footer class="footer mt-auto py-3 bg-dark">
+  <footer class="footer py-3 bg-dark">
     <hr>
     <div class="container text-center">
       <span class="text-muted">Il tuo copyright qui © 2024</span>

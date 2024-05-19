@@ -13,6 +13,8 @@ export default {
         return{
 
             apiImageUrl: 'http://127.0.0.1:8000/storage/',
+
+            apiBaseUrl: 'http://127.0.0.1:8000/api',
         }
     }
 }
@@ -30,7 +32,7 @@ export default {
             <h5 class="card-title">{{ restaurant.name }}</h5>
             <p class="card-text">{{ restaurant.description }}</p>
             <p v-for="typology in restaurant.typologies" class="card-text">{{ typology.type }}</p>
-            <router-link :to="{name: 'InfoRestaurant'}" class="btn btn-info">Vai al ristorante</router-link>
+            <router-link :to="{name: 'InfoRestaurant', params: { id: restaurant.id }}" class="btn btn-info">Vai al ristorante</router-link>
         </div>
     </div>
 

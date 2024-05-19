@@ -6,9 +6,7 @@ export default {
 
     name: 'InfoRestaurant',
 
-     props: {
-        restaurant : Object,
-    },
+    
 
     data(){
 
@@ -22,13 +20,18 @@ export default {
         }
     },
 
+    
     mounted() {
-        axios.get(this.apibaseUrl + '/restaurant').then(res => {
-            
-        })
+    axios.get(this.apiBaseUrl + '/restaurant/' + this.$route.params.id).then(res => {
+        this.restaurant = res.data.results
+        console.log(res.data.results)
+    })
     }
 
 }
+
+
+
 
 
 </script>
@@ -44,9 +47,9 @@ export default {
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                <h5 class="card-title">{{restaurant.name}}</h5>
+                <p class="card-text">{{ restaurant.address }}</p>
+                <p v-for="typology in restaurant.typologies" class="card-text">{{ typology.type }}</p>
               </div>
             </div>
           </div>
