@@ -33,8 +33,17 @@ export default{
     },
 
     mounted(){
-
+        // richiamo api che mostra tutti i ristoranti
         this.apiCall();
+
+        // richiamo api che mostra tutte le tipologie
+        axios.get(this.apiBaseUrl + '/typologies').then(res => {
+                // console.log(res.data.results);
+
+                this.typologies = res.data.results;
+
+                // console.log(this.typologies);
+            });
 
     },
 
@@ -53,28 +62,35 @@ export default{
                 // console.log(this.restaurants)
             })
 
-            axios.get(this.apiBaseUrl + '/typologies').then(res => {
-                // console.log(res.data.results);
+            // axios.get(this.apiBaseUrl + '/typologies').then(res => {
+            //     // console.log(res.data.results);
 
-                this.typologies = res.data.results;
+            //     this.typologies = res.data.results;
 
-                // console.log(this.typologies);
-            });
+            //     // console.log(this.typologies);
+            // });
 
         },
 
+
+        // funzione che filtra i ristoranti in base alle tipologie scelte nella checkbox
         apiFilterByTypes(){
-            axios.get(this.apiBaseUrl + '/restaurant?type=' + this.checkBoxValue, {
-                params: {
-                    page: this.apiPageNumber
-                }
-            }).then(res => {
-                // console.log(res.data.results)
+            if(this.checkBoxValue.length > 0) {
+                axios.get(this.apiBaseUrl + '/restaurant?typologies=' + this.checkBoxValue, {
+                    params: {
+                        page: this.apiPageNumber
+                    }
+                }).then(res => {
+                    // console.log(res.data.results)
+    
+                    this.restaurants = res.data.results
+    
+                    console.log(this.checkBoxValue)
+                })
 
-                this.restaurants = res.data.results
-
-                console.log(this.checkBoxValue)
-            })
+            } else {
+                this.apiCall();
+            }
         },
 
         // check() {
