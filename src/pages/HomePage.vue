@@ -63,6 +63,8 @@ export default{
 
         },
 
+        
+
         check() {
             console.log('checked');
 
