@@ -63,14 +63,26 @@ export default{
 
         },
 
-        
+        apiFilterByTypes(){
+            axios.get(this.apiBaseUrl + '/restaurant?type=' + this.checkBoxValue, {
+                params: {
+                    page: this.apiPageNumber
+                }
+            }).then(res => {
+                // console.log(res.data.results)
 
-        check() {
-            console.log('checked');
+                this.restaurants = res.data.results
 
-            return this.checkBoxValue ? true : false;
-        }
-    }
+                console.log(this.checkBoxValue)
+            })
+        },
+
+        // check() {
+        //     console.log('checked');
+
+        //     return this.checkBoxValue ? true : false;
+        // }
+    },
 
 
 
@@ -86,7 +98,7 @@ export default{
         <div class="restaurant-typologies d-flex gap-3 flex-wrap">
 
             <div v-for="typology in typologies" class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" :id="typology.type" :name="typology.type"> <!-- v-model="checkBoxValue" -->
+                <input class="form-check-input" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()"> <!-- v-model="checkBoxValue" -->
                 <label class="form-check-label" :for="typology.type">{{typology.type}}</label>
             </div>
 
