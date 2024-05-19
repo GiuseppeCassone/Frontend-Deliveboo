@@ -1,35 +1,52 @@
 <script>
-
 export default {
-    name: 'AppHeader',
-}
-
+  name: 'AppHeader',
+};
 </script>
 
 <template>
   <div class="container-fluid px-0">
-    
-    <div class="container bg-dark">
-      <nav class="navbar hstack gap-3 d-flex">
-        <img class="img-fluid w-50" src="/public/images/deliveboo_logo.png" alt="logo">
-        <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="d-flex d-md-none navbar-toggler-icon fs-2"></span>
-        </button>
-        <a href="#" class="nav-link d-none d-md-block p-2 ms-auto text-uppercase btn btn-info fw-bold">accedi</a>
-        <a href="#" class="nav-link d-none d-md-block p-2 text-uppercase btn btn-info fw-bold mt-4">registrati <br>
-          <span class="text-lowercase"><small>(come ristoratore)</small></span>
+    <nav class="navbar navbar-expand-md">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img class="img-fluid w-50" src="/public/images/deliveboo_logo.png" alt="logo">
         </a>
-      </nav>
-    </div>
-
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="#" class="nav-link text-uppercase btn btn-outline-warning fw-bold">Accedi</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link text-uppercase btn btn-outline-warning fw-bold mt-md-0 mt-3">
+                Registrati 
+                <span class="text-lowercase"><small>(come ristoratore)</small></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   </div>
-
-
-
-  
-
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
 
+.navbar {
+  padding: 1rem 0;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.nav-link {
+  margin-right: 1rem;
+}
 </style>

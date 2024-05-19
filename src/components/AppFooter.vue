@@ -1,23 +1,20 @@
 <script>
-
 export default {
-    name: 'AppFooter',
-}
-
+  name: 'AppFooter',
+};
 </script>
 
 <template>
-
-  <footer class="footer mt-auto py-3 bg-dark">
-    <hr>
+  <footer class="footer mt-auto py-3" style="background-color: #ff9800;">
     <div class="container text-center">
-      <span class="text-muted">Il tuo copyright qui © 2024</span>
+      <hr class="my-4" style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
+      <span class="text-light">&copy; 2024 Il tuo copyright qui</span>
     </div>
   </footer>
-
-
 </template>
 
-<style lang="scss" scoped>
-
+<style scoped lang="scss">
+.footer {
+  color: #ffffff;
+}
 </style>
