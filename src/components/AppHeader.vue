@@ -9,7 +9,7 @@ export default {
     <nav class="navbar navbar-expand-md">
       <div class="container">
         <a class="navbar-brand" href="#">
-          <img class="img-fluid w-50" src="/public/images/deliveboo_logo.png" alt="logo">
+          <img class="img-fluid w-50" src="/images/deliveboo_logo.png" alt="logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
