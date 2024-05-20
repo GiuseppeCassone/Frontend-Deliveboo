@@ -7,7 +7,7 @@ export default {
 <template>
   <footer class="footer mt-auto py-3">
     <div class="container text-center">
-      <hr class="my-4">
+      <hr class="border-white border-top">
       <span class="text-light">&copy; 2024 Il tuo copyright qui</span>
     </div>
   </footer>
@@ -16,10 +16,8 @@ export default {
 <style scoped lang="scss">
 .footer {
   background-color: #ff9800;
-}
-
-.my-4 {
-  border-top: 1px solid white;
+  // test
+  height: 180px;
 }
 
 </style>
