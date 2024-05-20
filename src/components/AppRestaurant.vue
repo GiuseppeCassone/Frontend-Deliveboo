@@ -39,11 +39,11 @@ export default {
             {{ typology.type }}
           </span>
         </div>
-        <router-link 
+        <!-- <router-link
           :to="{ name: 'InfoRestaurant', params: { id: restaurant.id } }" 
           class="btn btn-success mt-3">
           Vai al ristorante
-        </router-link>
+        </router-link> -->
       </div>
     </div>
   </template>
