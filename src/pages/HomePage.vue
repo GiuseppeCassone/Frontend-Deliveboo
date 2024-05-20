@@ -23,7 +23,8 @@ export default{
 
             apiPageNumber: 1,
 
-
+            // link ai vari endpoint dell'api per vedere le varie pagine dei post
+            apiLinks: [],
 
             apiBaseUrl: 'http://127.0.0.1:8000/api',
 
@@ -32,7 +33,7 @@ export default{
         }
     },
 
-    mounted(){
+    mounted() {
         // richiamo api che mostra tutti i ristoranti
         this.apiCall();
 
@@ -47,6 +48,19 @@ export default{
 
     },
 
+    created() {
+        axios.get(this.apiBaseUrl + '/restaurant', {
+                params: {
+                    page: this.apiPageNumber
+                }
+            }).then(res => {
+
+                this.apiLinks = res.data.results.links;
+                // console.log(this.apiLinks)
+
+            })
+    },
+
     methods: {
         apiCall(){
 
@@ -55,11 +69,10 @@ export default{
                     page: this.apiPageNumber
                 }
             }).then(res => {
-                // console.log(res.data.results)
+                // console.log(res.data.results.links)
 
-                this.restaurants = res.data.results
+                this.restaurants = res.data.results.data
 
-                // console.log(this.restaurants)
             })
 
             // axios.get(this.apiBaseUrl + '/typologies').then(res => {
@@ -83,14 +96,33 @@ export default{
                 }).then(res => {
                     // console.log(res.data.results)
     
-                    this.restaurants = res.data.results
+                    this.restaurants = res.data.results.data
     
-                    console.log(this.checkBoxValue)
+                    // console.log(this.checkBoxValue)
                 })
 
             } else {
                 this.apiCall();
             }
+        },
+
+        changeApiPage(pageNumber) {
+            // console.log(pageNumber);
+            if(pageNumber == '&laquo; Previous') {
+
+                this.apiPageNumber = Number(this.apiPageNumber) - 1;
+
+            } else if(pageNumber == 'Next &raquo;'){
+
+                this.apiPageNumber = Number(this.apiPageNumber) + 1;
+
+            } else {
+                
+                this.apiPageNumber = pageNumber;
+
+            }
+
+            this.apiCall();
         },
 
         // check() {
@@ -120,12 +152,30 @@ export default{
 
         </div>
         
-        <div class="d-flex flex-column justify-content-between gap-5">
+        <div class="restaurants-list d-flex flex-column justify-content-between">
 
            <AppRestaurant v-for="restaurant in restaurants" :restaurant="restaurant"
            ></AppRestaurant>
 
         </div>
+
+        <div class="pages">
+                <div class="previous" 
+                    :class="apiPageNumber == 1 ? 'none' : ''"
+                    @click="changeApiPage(apiLinks[0].label)"
+                    >
+                    <i class="fa-solid fa-arrow-left"
+                    :class="apiPageNumber == 1 ? 'none' : ''"></i>
+                </div>
+ 
+                <div class="next" 
+                    :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"
+                    @click="changeApiPage(apiLinks[apiLinks.length - 1].label)"
+                    >
+                    <i class="fa-solid fa-arrow-right"
+                    :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"></i>
+                </div>
+            </div>
 
 
     </div>
@@ -135,9 +185,47 @@ export default{
 
 
 <style scoped lang="scss">
+@use '../styles/variables' as *;
+
+.restaurants-list{
+    gap: 60px;
+
+    margin-bottom: 50px;
+}
+
+.pages {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    color: white;
+
+    .previous, .next {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 30px;
+        height: 30px;
+        background-color: #40A578;
+
+        padding: 8px;
+
+        transition: all .3s ease;
+
+        cursor: pointer;
+
+        &:hover, &.active{
+            background-color: #9DDE8B;
+        }
+
+        &.none {
+            display: none;
+        }
+    }
+}
 
 .restaurant-typologies{
     overflow-x: auto;
 }
-
 </style>

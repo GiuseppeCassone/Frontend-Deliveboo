@@ -91,7 +91,7 @@ export default {
         background-color: white;
         /* test */
 
-        padding: 5px;
+        padding: 10px;
 
         position: absolute;
         top: 90%;
@@ -100,7 +100,7 @@ export default {
 
         border-radius: 10px;
 
-        box-shadow: 5px 5px 5px;
+        box-shadow: rgba(0, 0, 0, .5) 5px 5px 5px;
 
         .info-top{
             display: flex;
