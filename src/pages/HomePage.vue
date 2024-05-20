@@ -62,14 +62,6 @@ export default{
                 // console.log(this.restaurants)
             })
 
-            // axios.get(this.apiBaseUrl + '/typologies').then(res => {
-            //     // console.log(res.data.results);
-
-            //     this.typologies = res.data.results;
-
-            //     // console.log(this.typologies);
-            // });
-
         },
 
 
@@ -93,11 +85,6 @@ export default{
             }
         },
 
-        // check() {
-        //     console.log('checked');
-
-        //     return this.checkBoxValue ? true : false;
-        // }
     },
 
 
