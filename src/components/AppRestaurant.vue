@@ -133,6 +133,14 @@ export default {
 
                 border-radius: 50%;
 
+                cursor: pointer;
+
+                transition: all .3s ease;
+
+                &:hover{
+                    transform: scale(1.3);
+                }
+
                 .fa-utensils{
                     color: white;
                 }

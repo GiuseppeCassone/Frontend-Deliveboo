@@ -15,19 +15,28 @@ export default{
     data() {
         return {
             
+            // array contenente la lista di tutti iristoranti 
+            // risultante dalla chiamata API
             restaurants: [],
 
+            // array contenente la lista di tutte le tipologie dei  
+            // ristoranti risultante dalla chiamata API
             typologies: [],
 
+            // array che contiene le tipologie di ristorante
+            // scelte dall'utente
             checkBoxValue: [],
 
+            // variabile che tiene traccia della paginazione
             apiPageNumber: 1,
 
             // link ai vari endpoint dell'api per vedere le varie pagine dei post
             apiLinks: [],
 
+            // link base per la chiamata api
             apiBaseUrl: 'http://127.0.0.1:8000/api',
 
+            // link base per la chiamata api per le immagini
             apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
         }
@@ -49,6 +58,7 @@ export default{
     },
 
     created() {
+        // chiamata axios per i link della paginazione
         axios.get(this.apiBaseUrl + '/restaurant', {
                 params: {
                     page: this.apiPageNumber
@@ -106,6 +116,7 @@ export default{
             }
         },
 
+        // metodo che gestisce la paginazione
         changeApiPage(pageNumber) {
             // console.log(pageNumber);
             if(pageNumber == '&laquo; Previous') {
@@ -143,6 +154,7 @@ export default{
 <template>
     <div class="container mb-5">
         
+        <!-- sezione lista delle tipologie -->
         <div class="restaurant-typologies d-flex gap-3 mb-3">
 
             <div v-for="typology in typologies" class="form-check form-switch">
@@ -152,13 +164,17 @@ export default{
 
         </div>
         
+        <!-- sezione lista dei ristoranti -->
         <div class="restaurants-list d-flex flex-column justify-content-between">
 
-           <AppRestaurant v-for="restaurant in restaurants" :restaurant="restaurant"
-           ></AppRestaurant>
+            <AppRestaurant 
+                v-for="restaurant in restaurants" :restaurant="restaurant"
+            >
+            </AppRestaurant>
 
         </div>
 
+        <!-- sezione per la paginazione -->
         <div class="pages">
                 <div class="previous" 
                     :class="apiPageNumber == 1 ? 'none' : ''"
@@ -207,7 +223,7 @@ export default{
 
         width: 30px;
         height: 30px;
-        background-color: #40A578;
+        background-color: #006769;
 
         padding: 8px;
 
