@@ -12,7 +12,7 @@ export default {
 
         return {
 
-            // restaurant: null,
+            restaurant: null,
 
             apiBaseUrl: 'http://127.0.0.1:8000/api',
 
@@ -21,13 +21,12 @@ export default {
     },
 
     
-    mounted() {
-    axios.get(this.apiBaseUrl + '/restaurant/' + this.$route.params.id).then(res => {
-        this.restaurant = res.data.results
-        console.log(res.data.results)
-    })
+    created() {
+      axios.get(this.apiBaseUrl + '/restaurant/' + this.$route.params.id).then(res => {
+          this.restaurant = res.data.results
+          console.log(res.data.results)
+      })
     }
-
 }
 
 
@@ -43,7 +42,7 @@ export default {
         <div class="card mb-3" style="max-width: 540px;">
           <div class="row g-0">
             <div class="col-md-4">
-                <!-- <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img" class="img-fluid rounded-start card-img-top" alt="..."> -->
+                <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img" class="img-fluid rounded-start card-img-top" alt="...">
             </div>
             <div class="col-md-8">
               <div class="card-body">

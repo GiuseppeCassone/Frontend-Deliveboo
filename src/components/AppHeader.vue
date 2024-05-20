@@ -11,7 +11,7 @@ export default {
     
     <div class="container bg-dark">
       <nav class="navbar hstack gap-3 d-flex">
-        <img class="img-fluid w-50" src="/public/images/deliveboo_logo.png" alt="logo">
+        <img class="img-fluid w-50" src="/images/deliveboo_logo.png" alt="logo">
         <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="d-flex d-md-none navbar-toggler-icon fs-2"></span>
         </button>
