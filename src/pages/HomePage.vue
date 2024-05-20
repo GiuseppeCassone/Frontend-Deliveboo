@@ -109,9 +109,9 @@ export default{
 
 
 <template>
-    <div class="container">
+    <div class="container mb-5">
         
-        <div class="restaurant-typologies d-flex gap-3 flex-wrap">
+        <div class="restaurant-typologies d-flex gap-3 mb-3">
 
             <div v-for="typology in typologies" class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()"> <!-- v-model="checkBoxValue" -->
@@ -120,7 +120,7 @@ export default{
 
         </div>
         
-        <div class="d-flex justify-content-between flex-wrap gap-2">
+        <div class="d-flex flex-column justify-content-between gap-5">
 
            <AppRestaurant v-for="restaurant in restaurants" :restaurant="restaurant"
            ></AppRestaurant>
@@ -134,6 +134,10 @@ export default{
 
 
 
-<style scoped>
+<style scoped lang="scss">
+
+.restaurant-typologies{
+    overflow-x: auto;
+}
 
 </style>

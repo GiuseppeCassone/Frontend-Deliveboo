@@ -8,8 +8,8 @@ export default {
   <div class="container-fluid px-0">
     <nav class="navbar navbar-expand-md">
       <div class="container">
-        <a class="navbar-brand" href="#">
-          <img class="img-fluid w-50" src="/public/images/deliveboo_logo.png" alt="logo">
+        <a class="navbar-brand w-25" href="#">
+          <img class="img-fluid w-100" src="/public/images/wowdelive.svg" alt="logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
