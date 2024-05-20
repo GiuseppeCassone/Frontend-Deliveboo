@@ -33,10 +33,6 @@ export default {
 </template>
 
 <style scoped lang="scss">
-.container-fluid {
-  padding-left: 0;
-  padding-right: 0;
-}
 
 .navbar {
   padding: 1rem 0;

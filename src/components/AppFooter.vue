@@ -5,9 +5,9 @@ export default {
 </script>
 
 <template>
-  <footer class="footer mt-auto py-3" style="background-color: #ff9800;">
+  <footer class="footer mt-auto py-3">
     <div class="container text-center">
-      <hr class="my-4" style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
+      <hr class="my-4">
       <span class="text-light">&copy; 2024 Il tuo copyright qui</span>
     </div>
   </footer>
@@ -15,6 +15,11 @@ export default {
 
 <style scoped lang="scss">
 .footer {
-  color: #ffffff;
+  background-color: #ff9800;
 }
+
+.my-4 {
+  border-top: 1px solid white;
+}
+
 </style>

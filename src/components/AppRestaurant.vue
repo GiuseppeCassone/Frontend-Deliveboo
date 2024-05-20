@@ -23,12 +23,12 @@ export default {
 </script>
 
 <template>
-    <div class="col card px-0 d-flex flex-column justify-content-between" style="width: 18rem;">
+    <div class="col card d-flex flex-column justify-content-between">
       <img 
         :src="getImageUrl(restaurant.img)" 
         class="card-img-top" 
         :alt="restaurant.name" />
-      <div class="card-body" style="background-color: #f8f9fa;">
+      <div class="card-body">
         <h5 class="card-title text-success">{{ restaurant.name }}</h5>
         <p class="card-text text-dark">{{ restaurant.description }}</p>
         <div v-if="restaurant.typologies.length">
@@ -53,6 +53,7 @@ export default {
   <style scoped lang="scss">
   .card {
     margin-bottom: 1.5rem;
+    width: 18rem;
   }
   
   .card-img-top {
@@ -62,6 +63,7 @@ export default {
   
   .card-body {
     padding: 1rem;
+    background-color: #f8f9fa;
   }
   
   .card-title {
@@ -70,7 +72,6 @@ export default {
   }
   
   .card-text {
-    font-size: 1rem;
     margin-bottom: 0.5rem;
   }
   
