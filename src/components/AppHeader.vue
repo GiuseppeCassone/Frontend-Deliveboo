@@ -33,9 +33,12 @@ export default {
 </template>
 
 <style scoped lang="scss">
+@use '../styles/variables' as *;
 
 .navbar {
   padding: 1rem 0;
+
+  background-color: $primaryColor;
 }
 
 .navbar-toggler {

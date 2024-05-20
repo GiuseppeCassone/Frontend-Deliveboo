@@ -23,29 +23,6 @@ export default {
 </script>
 
 <template>
-    <!-- <div class="col card d-flex flex-column justify-content-between">
-      <img 
-        :src="getImageUrl(restaurant.img)" 
-        class="card-img-top" 
-        :alt="restaurant.name" />
-      <div class="card-body">
-        <h5 class="card-title text-success">{{ restaurant.name }}</h5>
-        <p class="card-text text-dark">{{ restaurant.description }}</p>
-        <div v-if="restaurant.typologies.length">
-          <span 
-            v-for="(typology, index) in restaurant.typologies" 
-            :key="index" 
-            class="badge bg-warning text-dark me-1">
-            {{ typology.type }}
-          </span>
-        </div>
-        <router-link 
-          :to="{ name: 'InfoRestaurant', params: { id: restaurant.id } }" 
-          class="btn btn-success mt-3">
-          Vai al ristorante
-        </router-link>
-      </div>
-    </div> -->
 
     <div class="restaurant">
         <img :src="getImageUrl(restaurant.img)" alt="">
@@ -68,7 +45,7 @@ export default {
                         <span 
                             v-for="(typology, index) in restaurant.typologies" 
                             :key="index" 
-                            class="badge bg-warning text-dark">
+                            class="badge">
                             {{ typology.type }}
                         </span>
                     </div>
@@ -93,6 +70,8 @@ export default {
 
   
 <style scoped lang="scss">
+@use '../styles/variables' as *;
+
 .restaurant{
     position: relative;
 
@@ -108,7 +87,7 @@ export default {
 
     .restauran-info{
         width: 80%;
-        height: 100px;
+        /* height: 100px; */
         background-color: white;
         /* test */
 
@@ -133,9 +112,13 @@ export default {
             }
 
             .restaurant-address, .restaurant-phone{
-                font-size: .8em;
+                font-size: .7em;
 
                 color: rgba(0, 0, 0, .5);
+            }
+
+            .badge{
+                background-color: $secondColor;
             }
 
             .restaurant-link{
@@ -145,7 +128,8 @@ export default {
 
                 width: 30px;
                 height: 30px;
-                background-color: #E4706F;
+                /* background-color: #E4706F; */
+                background-color: $thirdColor;
 
                 border-radius: 50%;
 
