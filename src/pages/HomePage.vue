@@ -211,6 +211,8 @@ export default{
 
         padding: 8px;
 
+        border-radius: 10px;
+
         transition: all .3s ease;
 
         cursor: pointer;
