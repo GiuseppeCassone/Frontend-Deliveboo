@@ -2,14 +2,27 @@
 
 import axios from 'axios';
 import { router } from '../router';
+import CartItem from '../components/CartItem.vue';
+import { store } from '../store';
 
 export default {
 
+    store,
+
     name: 'InfoRestaurant',
+
+    components:{
+
+      CartItem,
+
+    },
 
     data(){
 
+
         return {
+
+          store,
 
           restaurant: null,
 
@@ -47,6 +60,42 @@ export default {
             
         })
     },
+    methods: {
+        // addToCart(product) {
+        //     // Controllare se il prodotto è già nel carrello
+        //     const existingItem = cart.items.find(item => item.id === product.id);
+
+        //     if (existingItem) {
+        //         // Incrementare la quantità del prodotto esistente
+        //         existingItem.quantity++;
+        //     } else {
+        //         // Aggiungere un nuovo oggetto al carrello
+        //         cart.items.push({
+        //             id: product.id,
+        //             title: product.title,
+        //             price: product.price,
+        //             quantity: 1,
+        //         });
+        //     }
+
+        //     console.log(existingItem)
+        //     // Aggiornare la quantità e il prezzo totali
+        //     cart.totalQuantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+        //     cart.totalPrice = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        //     // Salvare il carrello in localStorage
+        //     localStorage.setItem('cart', JSON.stringify(cart));
+        // },
+
+        addToCart(item){
+          console.log(item)
+          //  this.store.currentDish = item;
+
+           this.store.cartItems.push(item);
+           
+        },
+
+    },
 
 }
 
@@ -68,9 +117,10 @@ export default {
                 <p class="card-text">{{restaurant.description}}</p>
                 <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
                 <ul>
-                  <li v-for="dish in restaurant.dishes">
+                  <li class=" list-unstyled" v-for="dish in restaurant.dishes">
                     <span>{{ dish.name }}</span>
                     <span class="w-25"><img class="w-100" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt=""></span>
+                    <button class="btn btn-primary" @click="addToCart(dish)">Add to Cart</button>
                   </li>
                 </ul>
 
@@ -79,12 +129,14 @@ export default {
           </div>
         </div>
 
-        <router-link :to="{ name: 'home' }" class="btn btn-primary">
-          Torna ai ristoranti
-        </router-link>
+        
+      </div>
 
-    </div>
-
+      <CartItem></CartItem>
+      
+      <router-link :to="{ name: 'home' }" class="btn btn-primary">
+        Torna ai ristoranti
+      </router-link>
 
 </template>
 
