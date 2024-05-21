@@ -1,32 +1,52 @@
 <script>
 
 import axios from 'axios';
+import { router } from '../router';
 
 export default {
 
     name: 'InfoRestaurant',
 
-     props: {
-        restaurant : Object,
-    },
-
     data(){
 
         return {
 
-            // restaurant: null,
+          restaurant: null,
 
-            apiBaseUrl: 'http://127.0.0.1:8000/api',
+          restaurantId: null,
 
-            apiImageUrl: 'http://127.0.0.1:8000/storage/',
+          apiBaseUrl: 'http://127.0.0.1:8000/api',
+
+          apiImageUrl: 'http://127.0.0.1:8000/storage/',
+
         }
     },
 
-    mounted() {
-        axios.get(this.apibaseUrl + '/restaurant').then(res => {
+    created() {
+
+      // recuperiamo il parametro dell'id del project dall'url
+      // console.log(this.$route.params.id);
+      
+      // lo assegnamo alla variabile projectId
+      this.restaurantId = this.$route.params.id;
+      
+        axios.get(this.apiBaseUrl + '/restaurant/' + this.restaurantId).then(res => {
+          
+          // console.log(res.data);
+
+          if(res.data.success){
+
+          // se troviamo il project lo salviamo
+          this.restaurant = res.data.result;
+
+          } else {
+
+          // torniamo indietro alla home
+          this.$router.push({name: 'home'});
+          }
             
         })
-    }
+    },
 
 }
 
@@ -40,17 +60,28 @@ export default {
         <div class="card mb-3" style="max-width: 540px;">
           <div class="row g-0">
             <div class="col-md-4">
-                <!-- <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img" class="img-fluid rounded-start card-img-top" alt="..."> -->
+                <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img" class="img-fluid rounded-start card-img-top" alt="...">
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                <h5 class="card-title">{{restaurant.name}}</h5>
+                <p class="card-text">{{restaurant.description}}</p>
+                <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
+                <ul>
+                  <li v-for="dish in restaurant.dishes">
+                    <span>{{ dish.name }}</span>
+                    <span class="w-25"><img class="w-100" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt=""></span>
+                  </li>
+                </ul>
+
               </div>
             </div>
           </div>
         </div>
+
+        <router-link :to="{ name: 'home' }" class="btn btn-primary">
+          Torna ai ristoranti
+        </router-link>
 
     </div>
 

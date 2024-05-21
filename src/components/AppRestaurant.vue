@@ -53,7 +53,7 @@ export default {
                 <div class="right">
                     <div class="restaurant-link">
                         <router-link 
-                            :to="{ name: 'InfoRestaurant', params: { id: restaurant.id } }">
+                            :to="{ name: 'info-restaurant', params: { id: restaurant.id } }">
                             <i class="fa-solid fa-utensils"></i>
                         </router-link>
                     </div>
