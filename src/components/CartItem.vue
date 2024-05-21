@@ -1,6 +1,6 @@
 <script>
 import { ref, watch } from 'vue';
-import { store } from '../store';
+// import { store } from '../store';
 
 export default {
 
@@ -9,7 +9,7 @@ export default {
     data() {
         return {
 
-         store,
+        //  store,
 
 
         }
@@ -54,10 +54,10 @@ export default {
     <div class="cart">
         <h2>Carrello</h2>
         <ul>
-            <li v-for="item in this.store.cartItems" :key="item.id">
+            <!-- <li v-for="item in this.store.cartItems" :key="item.id">
                 {{ item.name }} 
                 {{ item.price }} 
-            </li>
+            </li> -->
         </ul>
         <div class="cart-totals">
             <!-- <p>Totale quantità: {{ cart.totalQuantity }}</p>
