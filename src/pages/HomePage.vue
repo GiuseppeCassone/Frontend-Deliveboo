@@ -223,7 +223,7 @@ export default{
 
         width: 30px;
         height: 30px;
-        background-color: #006769;
+        background-color: $primaryColor;
 
         padding: 8px;
 
