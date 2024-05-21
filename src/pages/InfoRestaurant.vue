@@ -191,8 +191,8 @@ export default {
             <ul>
               <li v-for="(item, index) in CartItems" :key="index">
                 {{ item.name }}
-                <button @click="removeItem(index)">
-                  Rimuovi
+                <button class="btn btn-danger" @click="removeItem(index)">
+                  <i class="fa-solid fa-trash-can"></i>
                 </button>
               </li>
             </ul>
