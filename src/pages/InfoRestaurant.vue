@@ -104,7 +104,25 @@ export default {
 
 
 <template>
+  <div class="container">
+    <div class="row">
+      <div class="col-8">
+        <h1 class="display-2 fw-bolder m-0">{{ restaurant.name }}</h1>
+        <h3>{{ restaurant.description }}</h3>
+  
+      </div>
+      <div class="col-4">
+        <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img" class="img-fluid rounded-start card-img-top" alt="...">
+  
+      </div>
+    </div>
+
+  </div>
     <div class="row d-flex justify-content-center py-5">
+
+      <div class="col-8">
+
+      </div>
 
         <div class="card mb-3" style="max-width: 540px;">
           <div class="row g-0">
