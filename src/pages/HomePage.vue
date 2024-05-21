@@ -81,7 +81,8 @@ export default{
             }).then(res => {
                 // console.log(res.data.results.links)
 
-                this.restaurants = res.data.results.data
+                this.restaurants = res.data.results.data;
+                this.apiLinks = res.data.results.links;
 
             })
 
@@ -98,6 +99,7 @@ export default{
 
         // funzione che filtra i ristoranti in base alle tipologie scelte nella checkbox
         apiFilterByTypes(){
+            this.apiPageNumber = 1;
             if(this.checkBoxValue.length > 0) {
                 axios.get(this.apiBaseUrl + '/restaurant?typologies=' + this.checkBoxValue, {
                     params: {
@@ -106,7 +108,8 @@ export default{
                 }).then(res => {
                     // console.log(res.data.results)
     
-                    this.restaurants = res.data.results.data
+                    this.restaurants = res.data.results.data;
+                    this.apiLinks = res.data.results.links;
     
                     // console.log(this.checkBoxValue)
                 })
