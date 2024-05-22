@@ -151,6 +151,24 @@ export default {
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
     },
 
+    addActualDish(index) {
+      this.store.CartItems[index].itemQuantity++;
+      this.store.CartItems[index].ItemTotalPrice += this.store.CartItems[index].itemPrice;
+      this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
+      this.addToTotalCart(this.store.CartItems[index]);
+    },
+
+    removeActualDish(index) {
+      if(this.store.CartItems[index].itemQuantity > 1) {
+        this.store.CartItems[index].itemQuantity--;
+        this.store.CartItems[index].ItemTotalPrice -= this.store.CartItems[index].itemPrice;
+        this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
+        this.totalCartPrice -= Number(this.store.CartItems[index].itemPrice);
+      } else {
+        this.removeItem(index);
+      }
+    },
+
   },
   computed: {
     totalItems() {
@@ -205,9 +223,9 @@ export default {
               </div>
               <div class="dish-options">
                 <div class="add-remove">
-                  <span class="remove">-</span>
+                  <span class="remove" @click="removeActualDish(index)">-</span>
                   {{ item.itemQuantity }}
-                  <span class="add">+</span>
+                  <span class="add" @click="addActualDish(index)">+</span>
                 </div>
                 <button class="btn btn-danger float-end" @click="removeItem(index)">
                   <i class="fa-solid fa-trash-can"></i>
