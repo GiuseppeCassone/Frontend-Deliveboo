@@ -131,71 +131,43 @@ export default {
 <template>
   <div class="container">
     <div class="row my-3">
-      <div class="col-8">
+      <div class="col-12">
         <h1 class="display-2 fw-bolder m-0">{{ restaurant.name }}</h1>
         <h4>{{ restaurant.description }}</h4>
-
-      </div>
-      <div class="col-4">
         <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
           class="img-fluid rounded-start card-img-top" alt="...">
-
       </div>
     </div>
 
-  </div>
-  <div class="row d-flex justify-content-center py-5">
-
-    <div class="col-8">
-
-    </div>
-
-    <div class="card mb-3" style="max-width: 540px;">
-      <div class="row g-0">
-        <!-- <div class="col-md-4">
-          <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
-            class="img-fluid rounded-start card-img-top" alt="...">
-        </div> -->
-        <div class="col-md-8">
-          <div class="card ">
-            <ul class="list-group list-group-flush " v-for="dish in restaurant.dishes">
-
-              <li class="list-group-item d-flex ">
-                <span><img class="w-50" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img"
-                    alt=""></span>{{ dish.name }}
-                <button @click="addItem(dish)" class="btn btn-primary ms-auto">
-                  Add to Cart
-                </button>
-              </li>
-
-            </ul>
-          </div>
-          <!-- <div class="card-body"> -->
-          <!-- <h5 class="card-title">{{restaurant.name}}</h5>
-                <p class="card-text">{{restaurant.description}}</p>
-                <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
-          <!-- <ul> -->
-          <!-- <li class=" list-unstyled" >
-              <span>{{ dish.name }}</span>
-              <span class="w-25"><img class="w-100"
-                  :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt=""></span>
-              <button class="btn btn-primary">Add to Cart</button>
+    <div class="row d-flex justify-content-center py-5">
+      <div class="col-md-7">
+        <div class="card">
+          <ul class="list-group list-group-flush" v-for="dish in restaurant.dishes">
+            <li id="dish-menu" class="list-group-item d-flex gap-3">
+              <img class="img-fluid h-100" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img"
+                  alt=""> <span class="align-self-center">{{ dish.name }}</span>
+              <button @click="addItem(dish)" class="btn btn-primary h-50 align-self-center  ms-auto">
+                Add to Cart
+              </button>
             </li>
-            </ul> -->
-
-          <!-- </div> -->
+          </ul>
         </div>
-        <div class="col-4-md">
-          <div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-header">
             <h2>Carrello</h2>
-            <ul>
-              <li v-for="(item, index) in CartItems" :key="index">
-                {{ item.name }}
-                <button class="btn btn-danger" @click="removeItem(index)">
-                  <i class="fa-solid fa-trash-can"></i>
-                </button>
-              </li>
-            </ul>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li v-for="(item, index) in CartItems" :key="index" class="list-group-item">
+              {{ item.name }}
+              <button class="btn btn-danger float-end" @click="removeItem(index)">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </li>
+          </ul>
+          <div class="card-footer">
             <p>
               Total Items: {{ totalItems }}
             </p>
@@ -204,16 +176,18 @@ export default {
       </div>
     </div>
 
-
+    <router-link :to="{ name: 'home' }" class="btn btn-primary">
+      Torna ai ristoranti
+    </router-link>
   </div>
-
-  <!-- <CartItem></CartItem> -->
-
-  <router-link :to="{ name: 'home' }" class="btn btn-primary">
-    Torna ai ristoranti
-  </router-link>
-
 </template>
 
 
-<style lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+
+#dish-menu{
+  height: 140px;
+}
+
+</style>
