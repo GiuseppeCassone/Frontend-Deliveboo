@@ -74,49 +74,61 @@ export default{
     methods: {
         apiCall(){
 
-            axios.get(this.apiBaseUrl + '/restaurant', {
-                params: {
-                    page: this.apiPageNumber
-                }
-            }).then(res => {
-                // console.log(res.data.results.links)
-
+            
+            const params = {
+                page: this.apiPageNumber,
+            };
+            
+            // Combino le tipologie selezionate in una stringa separata da virgole
+            if (this.checkBoxValue.length > 0) {
+                params.typologies = this.checkBoxValue.join(',');
+            }
+            
+            axios.get(this.apiBaseUrl + '/restaurant', { params })
+            .then((res) => {
                 this.restaurants = res.data.results.data;
                 this.apiLinks = res.data.results.links;
+            });
+            
+            // axios.get(this.apiBaseUrl + '/restaurant', {
+            //     params: {
+            //         page: this.apiPageNumber
+            //     }
+            // }).then(res => {
+            //     // console.log(res.data.results.links)
 
-            })
+            //     this.restaurants = res.data.results.data;
+            //     this.apiLinks = res.data.results.links;
 
-            // axios.get(this.apiBaseUrl + '/typologies').then(res => {
-            //     // console.log(res.data.results);
-
-            //     this.typologies = res.data.results;
-
-            //     // console.log(this.typologies);
-            // });
-
+            // })
         },
 
 
         // funzione che filtra i ristoranti in base alle tipologie scelte nella checkbox
         apiFilterByTypes(){
-            this.apiPageNumber = 1;
-            if(this.checkBoxValue.length > 0) {
-                axios.get(this.apiBaseUrl + '/restaurant?typologies=' + this.checkBoxValue, {
-                    params: {
-                        page: this.apiPageNumber
-                    }
-                }).then(res => {
-                    // console.log(res.data.results)
+            // this.apiPageNumber = 1;
+            // if(this.checkBoxValue.length > 0) {
+            //     axios.get(this.apiBaseUrl + '/restaurant?typologies=' + this.checkBoxValue, {
+            //         params: {
+            //             page: this.apiPageNumber
+            //         }
+            //     }).then(res => {
+            //         // console.log(res.data.results)
     
-                    this.restaurants = res.data.results.data;
-                    this.apiLinks = res.data.results.links;
+            //         this.restaurants = res.data.results.data;
+            //         this.apiLinks = res.data.results.links;
     
-                    // console.log(this.checkBoxValue)
-                })
+            //         // console.log(this.checkBoxValue)
+            //     })
 
-            } else {
-                this.apiCall();
-            }
+            // } else {
+            //     this.apiCall();
+            // }
+            
+            // Reimposto il numero di pagina a 1 per i risultati filtrati
+            this.apiPageNumber = 1; 
+             // Chiama apiCall con i parametri aggiornati
+            this.apiCall();
         },
 
         // metodo che gestisce la paginazione
@@ -138,12 +150,6 @@ export default{
 
             this.apiCall();
         },
-
-        // check() {
-        //     console.log('checked');
-
-        //     return this.checkBoxValue ? true : false;
-        // }
     },
 
 
