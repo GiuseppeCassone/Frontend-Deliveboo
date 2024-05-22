@@ -126,18 +126,19 @@ export default {
 
       const existingItem = this.CartItems.find(item => item.itemId === newItem.itemId);
       if (existingItem) {
-        
-        
-        console.log(newItem.itemQuantity)
-        existingItem.itemQuantity+=newItem.itemQuantity;
+          
+        // console.log(existingItem)
+        existingItem.itemQuantity++;
         existingItem.ItemTotalPrice+=newItem.itemPrice;
-        
+        let totalPrice = existingItem.ItemTotalPrice.toFixed(2);
+        existingItem.ItemTotalPrice = Number(totalPrice);
+
       } else {
         
         this.CartItems.push(newItem);
       }
       localStorage.setItem('CartItems', JSON.stringify(this.CartItems));
-      console.log(newItem)
+      // console.log(newItem)
     },
     removeItem(index) {
       this.CartItems.splice(index, 1);
