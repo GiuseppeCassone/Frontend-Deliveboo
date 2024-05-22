@@ -34,9 +34,18 @@ export default {
 
       // Elementi per la gestione del carrello
 
-      // newItem: [],
+      newItem: {
+
+        dish: null,
+        quantity: 0,
+        TotalPrice: 0
+
+      },
+
+
 
       CartItems: [],
+
 
     }
   },
@@ -106,9 +115,25 @@ export default {
     // },
     addItem(dish) {
       // this.items.push(this.newItem);
-      this.CartItems.push(dish);
+      const newItem = {
+        itemId : dish.id,
+        itemName: dish.name,
+        itemPrice : dish.price,
+        itemQuantity : 1,
+        // ItemTotalPrice : itemPrice * itemQuantity,
+
+      }
+
+      const existingItem = this.CartItems.find(item => item.itemId === newItem.itemId);
+      if (existingItem) {
+        let index = this.CartItems.indexOf(newItem)
+        console.log(index)
+        console.log(newItem.itemQuantity)
+        newItem.itemQuantity+=1;
+      }
+      this.CartItems.push(newItem);
       localStorage.setItem('CartItems', JSON.stringify(this.CartItems));
-      console.log(dish)
+      console.log(newItem)
     },
     removeItem(index) {
       this.CartItems.splice(index, 1);
@@ -145,9 +170,9 @@ export default {
           <ul class="list-group list-group-flush" v-for="dish in restaurant.dishes">
             <li id="dish-menu" class="list-group-item d-flex gap-3">
               <img class="img-fluid h-100" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img"
-                  alt=""> <span class="align-self-center">{{ dish.name }}</span>
+                alt=""> <span class="align-self-center">{{ dish.name }}</span>
               <button @click="addItem(dish)" class="btn btn-primary h-50 align-self-center  ms-auto">
-                Add to Cart
+                Aggiungi al carrello
               </button>
             </li>
           </ul>
@@ -161,7 +186,7 @@ export default {
           </div>
           <ul class="list-group list-group-flush">
             <li v-for="(item, index) in CartItems" :key="index" class="list-group-item">
-              {{ item.name }}
+              {{ item.itemName }} {{ item.itemPrice }} {{ item.itemQuantity }}
               <button class="btn btn-danger float-end" @click="removeItem(index)">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
@@ -169,7 +194,7 @@ export default {
           </ul>
           <div class="card-footer">
             <p>
-              Total Items: {{ totalItems }}
+              Totale dei Prodotti : {{ totalItems }}
             </p>
           </div>
         </div>
@@ -185,9 +210,7 @@ export default {
 
 
 <style lang="scss" scoped>
-
-#dish-menu{
+#dish-menu {
   height: 140px;
 }
-
 </style>
