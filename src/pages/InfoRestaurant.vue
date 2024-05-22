@@ -211,6 +211,9 @@ export default {
 
 <template>
   <div class="container">
+    <router-link :to="{ name: 'home' }" class="btn btn-primary btn-color mt-3">
+      <i class="fa-solid fa-arrow-left"></i> Torna ai ristoranti
+    </router-link>
     <div class="row my-3">
       <div class="col-12">
         <h1 class="display-2 fw-bolder m-0">{{ restaurant.name }}</h1>
@@ -243,13 +246,13 @@ export default {
           <ul class="list-group list-group-flush">
             <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item">
               <div class="dish-info">
-                {{ item.itemName }}    {{ item.ItemTotalPrice }}€
+                {{ item.itemName }}    €{{ item.ItemTotalPrice }}
               </div>
               <div class="dish-options">
                 <div class="add-remove">
-                  <span class="remove" @click="removeActualDish(index)">-</span>
-                  {{ item.itemQuantity }}
-                  <span class="add" @click="addActualDish(index)">+</span>
+                  <button type="button" @click="removeActualDish(index)" class="btn btn-success btn-color remove"><i class="fa-solid fa-minus"></i></button>
+                  <strong class="px-2">{{ item.itemQuantity }}</strong>
+                  <button type="button" @click="addActualDish(index)" class="btn btn-success btn-color add"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <button class="btn btn-danger float-end" @click="removeItem(index)">
                   <i class="fa-solid fa-trash-can"></i>
@@ -260,24 +263,33 @@ export default {
           <div class="card-footer">
             <p>
               Totale dei Prodotti: {{ totalItems }} <br> 
-              Totale prezzo: {{ totalCartPrice.toFixed(2) }}€
+              Totale prezzo: €{{ totalCartPrice.toFixed(2) }}
             </p>
           </div>
         </div>
       </div>
     </div>
 
-    <router-link :to="{ name: 'home' }" class="btn btn-primary">
-      Torna ai ristoranti
-    </router-link>
+    
   </div>
 </template>
 
 
 
 <style lang="scss" scoped>
+@use '../styles/variables' as *;
+
+
 #dish-menu {
   height: 140px;
+}
+.btn-color{
+  background-color: $secondColor;
+  border-color: $primaryColor;
+
+  &:hover{
+  background-color: $primaryColor;
+  }
 }
 
 .list-group{
@@ -291,18 +303,6 @@ export default {
       display: flex;
       align-items: center;
       gap: 20px;
-
-      .add-remove{
-        span{
-          padding: 5px;
-
-          background-color: rgba(0, 255, 0, .5);
-          
-          cursor: pointer;
-        }
-
-      }
-
     }
   }
 
