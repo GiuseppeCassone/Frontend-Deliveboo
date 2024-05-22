@@ -6,7 +6,7 @@ export default {
 
 <template>
   
-  <footer class="bg-dark text-center text-white">
+  <footer class="text-center text-white">
 
     <div class="container">
       <h1 class="display-6 py-4">WOWDELIVE Un servizio del quale non riuscirai più a fare a meno!</h1>
@@ -94,7 +94,7 @@ export default {
 
     <div class="container pb-4">
       
-      <section class="d-flex justify-content-center justify-content-lg-between py-4">
+      <section class="d-flex justify-content-center justify-content-around py-4">
         
         <div class="me-5 d-none d-lg-block">
           <span>Rimani in contatto attraverso i nostri social:</span>
@@ -138,6 +138,11 @@ export default {
 </template>
 
 <style scoped lang="scss">
+@use '../styles/variables' as *;
+
+footer {
+  background-color: $primaryColor;
+}
 
 .link-hover{
   text-decoration: none;
@@ -149,8 +154,8 @@ export default {
 
 .hover-icon{
 
-  height: 34px;
-  width: 34px;
+  height: 20px;
+  width: 20px;
   
   border: 1px solid transparent;
   border-radius: 50%;

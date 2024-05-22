@@ -155,7 +155,7 @@ export default{
 
 
 <template>
-    <div class="container mb-5">
+    <div class="container mb-5 mt-3">
         
         <!-- sezione lista delle tipologie -->
         <div class="restaurant-typologies d-flex gap-3 mb-3">
