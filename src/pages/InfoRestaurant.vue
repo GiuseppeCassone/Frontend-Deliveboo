@@ -118,20 +118,24 @@ export default {
       const newItem = {
         itemId : dish.id,
         itemName: dish.name,
-        itemPrice : dish.price,
+        itemPrice : Number(dish.price),
         itemQuantity : 1,
-        // ItemTotalPrice : itemPrice * itemQuantity,
+        ItemTotalPrice : Number(dish.price),
 
       }
 
       const existingItem = this.CartItems.find(item => item.itemId === newItem.itemId);
       if (existingItem) {
-        let index = this.CartItems.indexOf(newItem)
-        console.log(index)
+        
+        
         console.log(newItem.itemQuantity)
-        newItem.itemQuantity+=1;
+        existingItem.itemQuantity+=newItem.itemQuantity;
+        existingItem.ItemTotalPrice+=newItem.itemPrice;
+        
+      } else {
+        
+        this.CartItems.push(newItem);
       }
-      this.CartItems.push(newItem);
       localStorage.setItem('CartItems', JSON.stringify(this.CartItems));
       console.log(newItem)
     },
@@ -186,7 +190,7 @@ export default {
           </div>
           <ul class="list-group list-group-flush">
             <li v-for="(item, index) in CartItems" :key="index" class="list-group-item">
-              {{ item.itemName }} {{ item.itemPrice }} {{ item.itemQuantity }}
+              {{ item.itemName }} {{ item.ItemTotalPrice }} {{ item.itemQuantity }}
               <button class="btn btn-danger float-end" @click="removeItem(index)">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
