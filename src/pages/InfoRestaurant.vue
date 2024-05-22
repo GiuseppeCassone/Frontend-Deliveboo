@@ -228,8 +228,8 @@ export default {
         <div class="card">
           <ul class="list-group list-group-flush" v-for="dish in restaurant.dishes">
             <li id="dish-menu" class="list-group-item d-flex gap-3">
-              <img class="img-fluid h-100" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img"
-                alt=""> <span class="align-self-center">{{ dish.name }} {{ dish.price }}€</span>
+              <img class="img-fluid h-100 w-25 object-fit-cover" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img"
+                alt=""> <span class="align-self-center"><span class="fw-bold">{{ dish.name }}</span> <br> {{ dish.price }}€</span>
               <button @click="addItem(dish)" class="btn btn-primary h-50 align-self-center  ms-auto">
                 Aggiungi al carrello
               </button>
@@ -246,7 +246,7 @@ export default {
           <ul class="list-group list-group-flush">
             <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item">
               <div class="dish-info">
-                {{ item.itemName }}    €{{ item.ItemTotalPrice }}
+                {{ item.itemName }} <br>   <span class=" fw-light ">{{ item.ItemTotalPrice }} €</span> 
               </div>
               <div class="dish-options">
                 <div class="add-remove">
