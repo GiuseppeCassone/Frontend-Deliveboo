@@ -45,6 +45,7 @@ export default {
 
 
       CartItems: [],
+      dishesId : [],
 
 
     }
@@ -120,7 +121,7 @@ export default {
         itemName: dish.name,
         itemPrice : Number(dish.price),
         itemQuantity : 1,
-        ItemTotalPrice : Number(dish.price),
+        ItemTotalPrice : Number(dish.price) * 1,
 
       }
 
@@ -129,13 +130,16 @@ export default {
         
         
         console.log(newItem.itemQuantity)
-        existingItem.itemQuantity+=newItem.itemQuantity;
-        existingItem.ItemTotalPrice+=newItem.itemPrice;
+        existingItem.itemQuantity += newItem.itemQuantity;
+        existingItem.ItemTotalPrice = existingItem.itemQuantity * existingItem.itemPrice;
         
       } else {
         
         this.CartItems.push(newItem);
       }
+
+      const itemCurrentId = 
+
       localStorage.setItem('CartItems', JSON.stringify(this.CartItems));
       console.log(newItem)
     },
@@ -149,6 +153,9 @@ export default {
     totalItems() {
       return this.CartItems.length;
     },
+    totalPrice() {
+    return this.CartItems.reduce((total, item) => total + item.ItemTotalPrice, 0);
+  },
   }
 
 }
@@ -198,7 +205,8 @@ export default {
           </ul>
           <div class="card-footer">
             <p>
-              Totale dei Prodotti : {{ totalItems }}
+              Totale dei Prodotti : {{ totalItems }} <br>
+              Totale dei Prezzi : {{ totalPrice.toFixed(2) }}
             </p>
           </div>
         </div>
