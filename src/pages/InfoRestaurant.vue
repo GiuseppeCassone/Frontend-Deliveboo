@@ -112,11 +112,7 @@ export default {
     },
 
     removeFromToTotalCart(index) {
-      // console.log(this.CartItems[index])
-      // console.log(this.CartItems[index].ItemTotalPrice)
-      // console.log(this.totalCartPrice)
       this.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
-      // console.log(this.totalCartPrice)
     },
 
     addItem(dish) {
@@ -132,24 +128,12 @@ export default {
         ItemTotalPrice : Number(this.store.currentDish.price),
       }
 
-      // newItem.itemPrice = newItem.itemPrice.toFixed(2);
-      // newItem.ItemTotalPrice = newItem.ItemTotalPrice.toFixed(2);
-      // console.log(newItem.ItemTotalPrice)
-
       const existingItem = this.store.CartItems.find(item => item.itemId === newItem.itemId);
       if (existingItem) {
              
         existingItem.itemQuantity++;
         existingItem.ItemTotalPrice += existingItem.itemPrice;
         existingItem.ItemTotalPrice = Number(existingItem.ItemTotalPrice.toFixed(2));
-        
-        // let price = existingItem.itemPrice
-        // console.log(price)
-        // let total = parseFloat(existingItem.ItemTotalPrice).toFixed(2);
-        // existingItem.itemPrice = Number(price);
-        
-
-        // console.log(parseFloat(10).toFixed(2))
 
       } else {
         
@@ -213,10 +197,19 @@ export default {
           </div>
           <ul class="list-group list-group-flush">
             <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item">
-              {{ item.itemName }}  {{ item.itemPrice }}€  {{ item.itemQuantity }}  {{ item.ItemTotalPrice }}€
-              <button class="btn btn-danger float-end" @click="removeItem(index)">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
+              <div class="dish-info">
+                {{ item.itemName }}    {{ item.ItemTotalPrice }}€
+              </div>
+              <div class="dish-options">
+                <div class="add-remove">
+                  <span class="remove">-</span>
+                  {{ item.itemQuantity }}
+                  <span class="add">+</span>
+                </div>
+                <button class="btn btn-danger float-end" @click="removeItem(index)">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
             </li>
           </ul>
           <div class="card-footer">
@@ -240,5 +233,33 @@ export default {
 <style lang="scss" scoped>
 #dish-menu {
   height: 140px;
+}
+
+.list-group{
+
+  li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .dish-options{
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      .add-remove{
+        span{
+          padding: 5px;
+
+          background-color: rgba(0, 255, 0, .5);
+          
+          cursor: pointer;
+        }
+
+      }
+
+    }
+  }
+
 }
 </style>
