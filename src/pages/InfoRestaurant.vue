@@ -219,7 +219,7 @@ export default {
         <h1 class="display-2 fw-bolder m-0">{{ restaurant.name }}</h1>
         <h4>{{ restaurant.description }}</h4>
         <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
-          class="img-fluid rounded-start card-img-top" alt="...">
+          class="img-fluid rounded-2 card-img-top" alt="...">
       </div>
     </div>
 
