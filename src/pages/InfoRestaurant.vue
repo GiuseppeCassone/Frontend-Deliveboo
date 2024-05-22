@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { router } from '../router';
 import CartItem from '../components/CartItem.vue';
-// import { store } from '../store';
+import { store } from '../store';
 
 export default {
 
@@ -22,7 +22,7 @@ export default {
 
     return {
 
-      // store,
+      store,
 
       restaurant: null,
 
@@ -33,18 +33,10 @@ export default {
       apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
       // Elementi per la gestione del carrello
+      // CartItems: [],
+      totalCartPrice: 0,
+      dishCounter: 1,
 
-      newItem: {
-
-        dish: null,
-        quantity: 0,
-        TotalPrice: 0
-
-      },
-
-
-
-      CartItems: [],
 
 
     }
@@ -80,6 +72,7 @@ export default {
     })
   },
   methods: {
+    
     // addToCart(product) {
     //     // Controllare se il prodotto è già nel carrello
     //     const existingItem = cart.items.find(item => item.id === product.id);
@@ -113,42 +106,71 @@ export default {
     //    this.store.cartItems.push(item);
 
     // },
-    addItem(dish) {
-      // this.items.push(this.newItem);
-      const newItem = {
-        itemId : dish.id,
-        itemName: dish.name,
-        itemPrice : Number(dish.price),
-        itemQuantity : 1,
-        ItemTotalPrice : Number(dish.price),
+    addToTotalCart(item) {
+      this.totalCartPrice += Number(item.itemPrice);
+      this.totalCartPrice = Number(this.totalCartPrice.toFixed(2))
+    },
 
+    removeFromToTotalCart(index) {
+      // console.log(this.CartItems[index])
+      // console.log(this.CartItems[index].ItemTotalPrice)
+      // console.log(this.totalCartPrice)
+      this.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
+      // console.log(this.totalCartPrice)
+    },
+
+    addItem(dish) {
+
+      this.store.currentDish = dish;
+      // console.log(this.store.currentDish);
+      
+      const newItem = {
+        itemId : this.store.currentDish.id,
+        itemName: this.store.currentDish.name,
+        itemPrice : Number(this.store.currentDish.price),
+        itemQuantity : 1,
+        ItemTotalPrice : Number(this.store.currentDish.price),
       }
 
-      const existingItem = this.CartItems.find(item => item.itemId === newItem.itemId);
+      // newItem.itemPrice = newItem.itemPrice.toFixed(2);
+      // newItem.ItemTotalPrice = newItem.ItemTotalPrice.toFixed(2);
+      // console.log(newItem.ItemTotalPrice)
+
+      const existingItem = this.store.CartItems.find(item => item.itemId === newItem.itemId);
       if (existingItem) {
-          
-        // console.log(existingItem)
+             
         existingItem.itemQuantity++;
-        existingItem.ItemTotalPrice+=newItem.itemPrice;
-        let totalPrice = existingItem.ItemTotalPrice.toFixed(2);
-        existingItem.ItemTotalPrice = Number(totalPrice);
+        existingItem.ItemTotalPrice += existingItem.itemPrice;
+        existingItem.ItemTotalPrice = Number(existingItem.ItemTotalPrice.toFixed(2));
+        
+        // let price = existingItem.itemPrice
+        // console.log(price)
+        // let total = parseFloat(existingItem.ItemTotalPrice).toFixed(2);
+        // existingItem.itemPrice = Number(price);
+        
+
+        // console.log(parseFloat(10).toFixed(2))
 
       } else {
         
-        this.CartItems.push(newItem);
+        this.store.CartItems.push(newItem);
+
       }
-      localStorage.setItem('CartItems', JSON.stringify(this.CartItems));
+      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
       // console.log(newItem)
+      this.addToTotalCart(newItem);
     },
     removeItem(index) {
-      this.CartItems.splice(index, 1);
-      localStorage.setItem('CartItems', JSON.stringify(this.CartItems));
+      // console.log(this.CartItems[index])
+      this.removeFromToTotalCart(index);
+      this.store.CartItems.splice(index, 1);
+      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
     },
 
   },
   computed: {
     totalItems() {
-      return this.CartItems.length;
+      return this.store.CartItems.length;
     },
   }
 
@@ -175,7 +197,7 @@ export default {
           <ul class="list-group list-group-flush" v-for="dish in restaurant.dishes">
             <li id="dish-menu" class="list-group-item d-flex gap-3">
               <img class="img-fluid h-100" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img"
-                alt=""> <span class="align-self-center">{{ dish.name }}</span>
+                alt=""> <span class="align-self-center">{{ dish.name }} {{ dish.price }}€</span>
               <button @click="addItem(dish)" class="btn btn-primary h-50 align-self-center  ms-auto">
                 Aggiungi al carrello
               </button>
@@ -190,8 +212,8 @@ export default {
             <h2>Carrello</h2>
           </div>
           <ul class="list-group list-group-flush">
-            <li v-for="(item, index) in CartItems" :key="index" class="list-group-item">
-              {{ item.itemName }} {{ item.ItemTotalPrice }} {{ item.itemQuantity }}
+            <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item">
+              {{ item.itemName }}  {{ item.itemPrice }}€  {{ item.itemQuantity }}  {{ item.ItemTotalPrice }}€
               <button class="btn btn-danger float-end" @click="removeItem(index)">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
@@ -199,7 +221,8 @@ export default {
           </ul>
           <div class="card-footer">
             <p>
-              Totale dei Prodotti : {{ totalItems }}
+              Totale dei Prodotti: {{ totalItems }} <br> 
+              Totale prezzo: {{ totalCartPrice.toFixed(2) }}€
             </p>
           </div>
         </div>
