@@ -112,12 +112,22 @@ export default {
 
     // metodo che aggiorna il prezzo totale nel carrello quando viene rimosso un piatto
     removeFromToTotalCart(index) {
-      this.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
+      // this.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
+        if (this.store.CartItems.length > 0 && index < this.store.CartItems.length) {
+        this.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
+          if (this.totalCartPrice < 0) {
+            this.totalCartPrice = 0; // Resetto il prezzo totale a 0 se diventa negativo
+          }
+        }
     },
 
     // metodo che aggiunge un piatto al carrello
     addItem(dish) {
-
+      // Verifico se il carrello contiene già elementi di un altro ristorante
+      if (this.store.CartItems.length > 0 && this.store.CartItems[0].restaurantId !== dish.restaurant_id) {
+        alert("Non puoi aggiungere piatti da un ristorante diverso finché non svuoti il carrello.");
+        return;
+      }
       // inizializzo la variabile currentDish nello store
       // con il piatto che viene passato come parametro al click del bottone 'aggiungi al carrello'
       this.store.currentDish = dish;
@@ -130,6 +140,7 @@ export default {
         itemPrice : Number(this.store.currentDish.price),
         itemQuantity : 1,
         ItemTotalPrice : Number(this.store.currentDish.price),
+        restaurantId: this.restaurant.id,
       }
 
       // controllo se il piatto esiste già all'interno del carrello
