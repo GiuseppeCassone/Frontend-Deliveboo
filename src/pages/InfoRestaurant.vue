@@ -7,8 +7,6 @@ import { store } from '../store';
 
 export default {
 
-  // store,
-
   name: 'InfoRestaurant',
 
   components: {
@@ -106,20 +104,26 @@ export default {
     //    this.store.cartItems.push(item);
 
     // },
+    // metodo che aggiorna il prezzo totale nel carrello quando viene aggiunto un piatto
     addToTotalCart(item) {
       this.totalCartPrice += Number(item.itemPrice);
       this.totalCartPrice = Number(this.totalCartPrice.toFixed(2))
     },
 
+    // metodo che aggiorna il prezzo totale nel carrello quando viene rimosso un piatto
     removeFromToTotalCart(index) {
       this.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
     },
 
+    // metodo che aggiunge un piatto al carrello
     addItem(dish) {
 
+      // inizializzo la variabile currentDish nello store
+      // con il piatto che viene passato come parametro al click del bottone 'aggiungi al carrello'
       this.store.currentDish = dish;
       // console.log(this.store.currentDish);
       
+      // dichiaro un oggetto che prende le informazione del mio piatto
       const newItem = {
         itemId : this.store.currentDish.id,
         itemName: this.store.currentDish.name,
@@ -128,52 +132,72 @@ export default {
         ItemTotalPrice : Number(this.store.currentDish.price),
       }
 
+      // controllo se il piatto esiste già all'interno del carrello
       const existingItem = this.store.CartItems.find(item => item.itemId === newItem.itemId);
+      // se esiste
       if (existingItem) {
-             
+        // aumento la quantità
         existingItem.itemQuantity++;
+        // aggiorno il prezzo totale dello stesso piatto all'interno del carello
         existingItem.ItemTotalPrice += existingItem.itemPrice;
         existingItem.ItemTotalPrice = Number(existingItem.ItemTotalPrice.toFixed(2));
 
       } else {
-        
+        // altrimenti aggiungo il nuovo piatto al carrello
         this.store.CartItems.push(newItem);
 
       }
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
       // console.log(newItem)
+      // aggiorno il prezzo totale del carrello
       this.addToTotalCart(newItem);
     },
+
+    // metodo che rimuove tutta la quantità di uno stesso piatto
     removeItem(index) {
       // console.log(this.CartItems[index])
+      // aggiorno il prezzo totale del carrello
       this.removeFromToTotalCart(index);
       this.store.CartItems.splice(index, 1);
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
     },
 
+    // metodo che aggiunge un singolo piatto già presente nel carrello
     addActualDish(index) {
+      // aggiorno la quantità di quel piatto nel carrello
       this.store.CartItems[index].itemQuantity++;
+      // aggiorno il prezzo totale dello stesso piatto all'interno del carello
       this.store.CartItems[index].ItemTotalPrice += this.store.CartItems[index].itemPrice;
       this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
+      // aggiorno il prezzo totale del carrello
       this.addToTotalCart(this.store.CartItems[index]);
     },
 
+    // metodo che rimuove un singolo piatto già presente nel carrello
     removeActualDish(index) {
+      // controllo se la quantità di quel piatto nel carrello
+      // è maggiore di 1
       if(this.store.CartItems[index].itemQuantity > 1) {
+        // aggiorno la quantità di quel piatto nel carrello
         this.store.CartItems[index].itemQuantity--;
+        // aggiorno il prezzo totale dello stesso piatto all'interno del carello
         this.store.CartItems[index].ItemTotalPrice -= this.store.CartItems[index].itemPrice;
         this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
+        // aggiorno il prezzo totale del carrello
         this.totalCartPrice -= Number(this.store.CartItems[index].itemPrice);
       } else {
+        // altrimenti rimuovo quel piatto dal carrello
         this.removeItem(index);
       }
     },
 
   },
   computed: {
+    // alla creazione riporto la quantità degli elementi nel carrello
     totalItems() {
       return this.store.CartItems.length;
     },
+    // alla creazione riporto il prezzo totale del carrello
     totalPrice() {
     return this.CartItems.reduce((total, item) => total + item.ItemTotalPrice, 0);
   },
