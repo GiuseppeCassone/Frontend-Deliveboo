@@ -156,6 +156,9 @@ export default {
     totalItems() {
       return this.store.CartItems.length;
     },
+    totalPrice() {
+    return this.CartItems.reduce((total, item) => total + item.ItemTotalPrice, 0);
+  },
   }
 
 }
