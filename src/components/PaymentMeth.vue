@@ -33,14 +33,14 @@ name: 'PaymentMeth',
       //   }
       //   this.instance = instance;
       // });
-      var button = document.querySelector('#submit-button');
+      const button = document.querySelector('#submit-button');
 
           braintree.dropin.create({
             authorization: 'sandbox_jy7rszf3_k2ntnrxddj6mzc6v',
             selector: '#dropin-container'
             }, function (err, instance) {
               button.addEventListener('click', function () {
-                instance.requestPaymentMethod(function (err, payload) {
+                this.instance.requestPaymentMethod(function (err, payload) {
                   // Submit payload.nonce to your server
                 });
               })
@@ -72,7 +72,7 @@ name: 'PaymentMeth',
     
     <div>
     <div id="dropin-container"></div>
-    <button @click="submitPayment" class="button button--small button--green">Purchase</button>
+    <button id="submit-button" @click="submitPayment()" class="button button--small button--green">Purchase</button>
   </div>
 
 </template>
