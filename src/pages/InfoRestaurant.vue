@@ -46,6 +46,11 @@ export default {
       if (storedTotalPrice !== null) {
         this.totalCartPrice = Number(storedTotalPrice);
       }
+      if(this.store.CartItems.length < 1) {
+        this.totalCartPrice = 0;
+      }
+      // da rivedere
+      // this.totalCartPrice = 0;
   },
 
   created() {
