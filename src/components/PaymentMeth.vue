@@ -17,22 +17,34 @@ name: 'PaymentMeth',
   },
   methods: {
     getClientToken() {
-      axios.get('/braintree/token').then(response => {
+      axios.get('http://127.0.0.1:8000/api/braintree/token').then(response => {
         this.clientToken = response.data.token;
         this.initializeDropin();
       });
     },
     initializeDropin() {
-      dropin.create({
-        authorization: this.clientToken,
-        container: '#dropin-container'
-      }, (err, instance) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        this.instance = instance;
-      });
+      // dropin.create({
+      //   authorization: this.clientToken,
+      //   container: '#dropin-container'
+      // }, (err, instance) => {
+      //   if (err) {
+      //     console.error(err);
+      //     return;
+      //   }
+      //   this.instance = instance;
+      // });
+      var button = document.querySelector('#submit-button');
+
+          braintree.dropin.create({
+            authorization: 'sandbox_jy7rszf3_k2ntnrxddj6mzc6v',
+            selector: '#dropin-container'
+            }, function (err, instance) {
+              button.addEventListener('click', function () {
+                instance.requestPaymentMethod(function (err, payload) {
+                  // Submit payload.nonce to your server
+                });
+              })
+          });
     },
     submitPayment() {
       this.instance.requestPaymentMethod((err, payload) => {
@@ -40,7 +52,7 @@ name: 'PaymentMeth',
           console.error(err);
           return;
         }
-        axios.post('/braintree/checkout', {
+        axios.post('http://127.0.0.1:8000/api/braintree/checkout', {
           paymentMethodNonce: payload.nonce
         }).then(response => {
           console.log('Payment successful!', response.data);
@@ -52,18 +64,7 @@ name: 'PaymentMeth',
   }
 };
 
-var button = document.querySelector('#submit-button');
 
-braintree.dropin.create({
-  authorization: 'sandbox_g42y39zw_348pk9cgf3bgyw2b',
-  selector: '#dropin-container'
-}, function (err, instance) {
-  button.addEventListener('click', function () {
-    instance.requestPaymentMethod(function (err, payload) {
-      // Submit payload.nonce to your server
-    });
-  })
-});
 
 </script>
 
