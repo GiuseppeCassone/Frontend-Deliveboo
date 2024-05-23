@@ -39,6 +39,8 @@ export default{
             // link base per la chiamata api per le immagini
             apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
+            isTypologiesCollapsed: true,
+
         }
     },
 
@@ -150,6 +152,9 @@ export default{
 
             this.apiCall();
         },
+        toggleTypologies() {
+            this.isTypologiesCollapsed = !this.isTypologiesCollapsed;
+        },
     },
 
 
@@ -161,22 +166,30 @@ export default{
 
 
 <template>
-    <div class="containe-fluid mb-5 mt-3">
-        <div class="row px-5">
+    <div class="container-fluid mb-5 mt-3">
+        <div class="row d-flex flex-column justify-content-center align-items-center flex-md-row mx-5">
 
-            <div class="col-12 col-md-2 restaurant-typologies d-flex flex-column gap-3 mb-3">
-                <h2>TIPOLOGIE</h2>
+            <div class="col-12 col-sm-3 restaurant-typologies d-flex flex-column gap-3 mb-3">
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-secondary " type="button" role="button" @click="toggleTypologies">
+                        <h3>Filtra i ristoranti per tipologia</h3>
+                    </button>
     
-                <div v-for="typology in typologies" class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()"> <!-- v-model="checkBoxValue" -->
+                    <!-- <button class="btn btn-info btn-color d-flex justify-content-center align-items-center py-2 px-3 d-block d-sm-none" @click="toggleTypologies">
+                        <i class="fa-solid fa-bars"></i>
+                    </button> -->
+                </div>
+                <div v-for="typology in typologies" class="nav-item form-check form-switch" v-bind:class="{ 'd-block d-sm-none': isTypologiesCollapsed, 'd-none d-sm-block': !isTypologiesCollapsed }">
+                    <input class="form-check-input" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()">
                     <label class="form-check-label" :for="typology.type">{{typology.type}}</label>
                 </div>
-    
+
             </div>
+
             
             <!-- sezione lista dei ristoranti -->
-            <div class="col-12 col-md-10 restaurants-list d-flex gap-3">
-                <!-- <h2 >RISTORANTI</h2> -->
+            <div class="col-12 col-sm-9 restaurants-list mb-4 d-flex flex-column row-cols-3 justify-content-between align-items-between flex-md-row flex-wrap">
+                <h2 class="col-12 m-0">RISTORANTI</h2>
     
                 <AppRestaurant 
                     v-for="restaurant in restaurants" :restaurant="restaurant"
@@ -189,7 +202,7 @@ export default{
         <!-- sezione lista delle tipologie -->
 
         <!-- sezione per la paginazione -->
-        <div class="pages">
+        <div class="pages d-flex justify-content-center gap-2">
             <div class="previous" 
                 :class="apiPageNumber == 1 ? 'none' : ''"
                 @click="changeApiPage(apiLinks[0].label)"
@@ -217,9 +230,17 @@ export default{
 <style scoped lang="scss">
 @use '../styles/variables' as *;
 
-.restaurants-list{
+h2{
+    height: 38px;
+}
 
-    margin-bottom: 50px;
+.btn-color{
+  background-color: $secondColor;
+  border-color: $primaryColor;
+
+  &:hover{
+  background-color: $primaryColor;
+  }
 }
 
 .pages {
@@ -256,7 +277,14 @@ export default{
     }
 }
 
-.restaurant-typologies{
-    overflow-x: auto;
+
+@media (min-width: 768px){
+
+    // .row{
+    //     .restaurant-typologies{
+    //         display: block;
+    //     }
+    // }
 }
+
 </style>

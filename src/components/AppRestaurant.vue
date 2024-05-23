@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios';
 
 export default {
   name: 'AppRestaurant',
@@ -24,41 +23,37 @@ export default {
 
 <template>
 
-    <router-link  :to="{ name: 'info-restaurant', params: { id: restaurant.id } }"
-     class="restaurant">
-        <img :src="getImageUrl(restaurant.img)" alt="">
-
-        <div class="restauran-info">
-
-            <div class="info-top">
-                <div class="left">
-                    <div class="restaurant-name text-black">
-                        {{ restaurant.name }}
-                    </div>
-                    <div class="restaurant-address">
-                        {{ restaurant.address }}
-                    </div>
-                    <div class="restaurant-phone">
-                        <i class="fa-solid fa-phone"></i>
-                        {{ restaurant.phone_number }}
-                    </div>
-                    <div class="d-flex gap-1 mt-1" v-if="restaurant.typologies.length">
-                        <span 
-                            v-for="(typology, index) in restaurant.typologies" 
-                            :key="index" 
-                            class="badge">
-                            {{ typology.type }}
-                        </span>
-                    </div>
-                </div>
+  <router-link  :to="{ name: 'info-restaurant', params: { id: restaurant.id } }"
+  class="restaurant rounded-3 mb-5">
+    <img class="rounded-2 w-100 h-100 object-fit-cover " :src="getImageUrl(restaurant.img)" alt="immagine ristorante">
+    <div class="restauran-info gap-2 bg-white rounded-2 p-2">
+        <div class="info-top d-flex flex-column justify-content-start">
+            <div class="info">
+              <div class="restaurant-name text-black fw-bold">
+                  {{ restaurant.name }}
+              </div>
+              <div style="font-size: .7em;" class="restaurant-address text-secondary">
+                <!-- {{ restaurant.address }} -->
+              </div>
+              <div style="font-size: .7em;" class="restaurant-phone text-secondary">
+                <i class="fa-solid fa-phone"></i>
+                {{ restaurant.phone_number }}
+              </div>
+              <div class="d-flex gap-1 mt-1" v-if="restaurant.typologies.length">
+                <span 
+                    v-for="(typology, index) in restaurant.typologies" 
+                    :key="index" 
+                    style="background-color: #40A578;"
+                    class="badge">
+                    {{ typology.type }}
+                </span>
+              </div>
             </div>
-            <div class="info-bot">
+        </div>
+    </div>  
+  </router-link>
 
-            </div>
-        </div>  
-    </router-link>
-
-  </template>
+</template>
   
 
   
@@ -66,63 +61,41 @@ export default {
 @use '../styles/variables' as *;
 
 .restaurant{
-    position: relative;
+  position: relative;
 
-    height: 150px;
-    width: 400px;
+  height: 150px;
+  min-width: 300px;
 
-    border: 3px solid transparent;
-    border-radius: 12px;
+  border: 3px solid transparent;
 
-    &:hover{
-      border: 3px solid $primaryColor;
-    }
+  &:hover{
+    border: 3px solid $primaryColor;
+  }
 
-    img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+  .restauran-info{
+    width: 90%;
+    // height: 97px;
+    
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-        border-radius: 10px;
-    }
-
-    .restauran-info{
-        width: 90%;
-        /* height: 100px; */
-        background-color: white;
-        /* test */
-
-        padding: 10px;
-
-        position: absolute;
-        top: 90%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        border-radius: 10px;
-
-        box-shadow: rgba(0, 0, 0, .5) 5px 5px 5px;
-
-        .info-top{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .restaurant-name{
-                font-weight: bold;
-            }
-
-            .restaurant-address, .restaurant-phone{
-                font-size: .7em;
-
-                color: rgba(0, 0, 0, .5);
-            }
-
-            .badge{
-                background-color: $secondColor;
-            }
-        }
-    }
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  }
 }
+
+@media (max-width: 951px){
+  .restaurant{
+    width: 100%;
+  }
+}
+
+@media (min-width: 952px) and (max-width: 1352px) {
+  .restaurant{
+    width: 50%;
+  }
+}
+
+
 </style>
-  
