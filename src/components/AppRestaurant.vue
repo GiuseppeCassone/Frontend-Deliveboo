@@ -24,14 +24,15 @@ export default {
 
 <template>
 
-    <div class="restaurant">
+    <router-link  :to="{ name: 'info-restaurant', params: { id: restaurant.id } }"
+     class="restaurant">
         <img :src="getImageUrl(restaurant.img)" alt="">
 
         <div class="restauran-info">
 
             <div class="info-top">
                 <div class="left">
-                    <div class="restaurant-name">
+                    <div class="restaurant-name text-black">
                         {{ restaurant.name }}
                     </div>
                     <div class="restaurant-address">
@@ -50,20 +51,12 @@ export default {
                         </span>
                     </div>
                 </div>
-                <div class="right">
-                    <div class="restaurant-link">
-                        <router-link 
-                            :to="{ name: 'info-restaurant', params: { id: restaurant.id } }">
-                            <i class="fa-solid fa-utensils"></i>
-                        </router-link>
-                    </div>
-                </div>
             </div>
             <div class="info-bot">
 
             </div>
         </div>  
-    </div>
+    </router-link>
 
   </template>
   
@@ -76,6 +69,14 @@ export default {
     position: relative;
 
     height: 150px;
+    width: 400px;
+
+    border: 3px solid transparent;
+    border-radius: 12px;
+
+    &:hover{
+      border: 3px solid $primaryColor;
+    }
 
     img{
         width: 100%;
@@ -86,7 +87,7 @@ export default {
     }
 
     .restauran-info{
-        width: 80%;
+        width: 90%;
         /* height: 100px; */
         background-color: white;
         /* test */
@@ -120,65 +121,8 @@ export default {
             .badge{
                 background-color: $secondColor;
             }
-
-            .restaurant-link{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                width: 30px;
-                height: 30px;
-                /* background-color: #E4706F; */
-                background-color: $thirdColor;
-
-                border-radius: 50%;
-
-                cursor: pointer;
-
-                transition: all .3s ease;
-
-                &:hover{
-                    transform: scale(1.3);
-                }
-
-                .fa-utensils{
-                    color: white;
-                }
-            }
         }
     }
 }
-/* .card {
-    margin-bottom: 1.5rem;
-    width: 18rem;
-  }
-  
-  .card-img-top {
-    object-fit: cover;
-    height: 200px;
-  }
-  
-  .card-body {
-    padding: 1rem;
-    background-color: #f8f9fa;
-  }
-  
-  .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-  }
-  
-  .card-text {
-    margin-bottom: 0.5rem;
-  }
-  
-  .badge {
-    font-size: 0.85rem;
-  }
-  
-  .btn {
-    width: 100%;
-    text-align: center;
-  } */
 </style>
   
