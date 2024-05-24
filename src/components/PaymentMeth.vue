@@ -4,12 +4,23 @@ import dropin from 'braintree-web-drop-in';
 
 export default {
 
-name: 'PaymentMeth',
+  name: 'PaymentMeth',
 
   data() {
     return {
       clientToken: null,
-      instance: null
+      instance: null,
+
+      FormData:{
+
+        customer_name: '',
+        customer_lastname:'',
+        customer_email:'',
+        customer_address:'',
+        customer_phone: '',
+        order_total:localStorage.getItem('totalCartPrice') 
+
+      }
     };
   },
   mounted() {
@@ -21,7 +32,7 @@ name: 'PaymentMeth',
         this.clientToken = response.data.token;
         this.initializeDropin();
       }).catch(error => {
-          console.error('Fallita la richiesta del client token', error);
+        console.error('Fallita la richiesta del client token', error);
       });
     },
     initializeDropin() {
@@ -62,7 +73,21 @@ name: 'PaymentMeth',
           console.error('Payment error:', error.response.data);
         });
       });
-    }
+    },
+    // checkout() {
+    //   // const user = {
+    //   //   firstName: this.user.firstName,
+    //   //   lastName: this.user.lastName,
+    //   //   email: this.user.email,
+    //   //   address: this.user.address,
+    //   //   phone: this.user.phone
+    //   // };
+    //   // const dishes = this.dishes; // Assuming 'dishes' is an array of dish objects
+    //   // const totalCartPrice = this.totalCartPrice;
+
+    //   // Send user, dishes, and totalCartPrice to server-side checkout
+    //   // ...
+    // }
   }
 };
 
@@ -71,14 +96,41 @@ name: 'PaymentMeth',
 </script>
 
 <template>
-    
-    <div>
+
+  <div>
+    <form @submit.prevent="checkout">
+      <div class="user-info">
+        <label for="firstName">Nome:</label>
+        <input type="text" id="firstName" v-model="user.firstName" required>
+
+        <label for="lastName">Cognome:</label>
+        <input type="text" id="lastName" v-model="user.lastName" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" v-model="user.email" required>
+
+        <label for="address">Indirizzo:</label>
+        <input type="text" id="address" v-model="user.address" required>
+
+        <label for="phone">Telefono:</label>
+        <input type="tel" id="phone" v-model="user.phone" required>
+      </div>
+
+      <div class="order-details">
+        <ul>
+          <li v-for="dish in dishes" :key="dish.id">
+            {{ dish.name }} - {{ dish.price }}€
+          </li>
+        </ul>
+        <p>Totale: {{ totalCartPrice }}€</p>
+      </div>
+
+      <button type="submit">Paga</button>
+    </form>
     <div id="dropin-container"></div>
     <button id="submit-button" @click="submitPayment()" class="button button--small button--green">Purchase</button>
   </div>
 
 </template>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
