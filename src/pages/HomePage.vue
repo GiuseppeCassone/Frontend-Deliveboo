@@ -180,8 +180,8 @@ export default{
                 </button>
 
                 <div class="d-flex flex-wrap flex-md-column flex-lg-row row align-items-center justify-content-evenly row-gap-2">
-                    <div v-for="typology in typologies" class="Type col-6 form-check form-switch border border-1 rounded-2" v-bind:class="{ 'd-flex d-sm-none': isTypologiesCollapsed, 'd-none d-sm-flex': !isTypologiesCollapsed }">
-                        <input class="form-check-input" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()">
+                    <div v-for="typology in typologies" class="Type col-6 form-check form-switch rounded-2" v-bind:class="{ 'd-flex d-sm-none': isTypologiesCollapsed, 'd-none d-sm-flex': !isTypologiesCollapsed }">
+                        <input class="form-check-input switch" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()">
                         <label class="Labell form-check-label d-flex align-items-center" :for="typology.type">{{typology.type}}</label>
                     </div>
                 </div>
@@ -242,6 +242,9 @@ export default{
     width: 140px;
 
     .form-check-input{
+        & svg{
+            fill: #40A578;
+        }
 
         &:focus{
             box-shadow: $focus-ring-box-shadow;
@@ -268,14 +271,7 @@ export default{
 }
 
 
-.bg{
-    border: white;
-    background-color: $component-active-bg;
 
-    color: $focus-ring-color;
-
-
-}
 
 .btn-color{
   background-color: $secondColor;
