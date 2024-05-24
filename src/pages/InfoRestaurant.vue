@@ -117,7 +117,7 @@ export default {
     addToTotalCart(item) {
       this.totalCartPrice += Number(item.itemPrice);
       this.totalCartPrice = Number(this.totalCartPrice.toFixed(2));
-      // localStorage.setItem('totalCartPrice', this.totalCartPrice);
+      localStorage.setItem('totalCartPrice', this.totalCartPrice);
     },
 
     // metodo che aggiorna il prezzo totale nel carrello quando viene rimosso un piatto
@@ -130,7 +130,7 @@ export default {
           }
         }
 
-        // localStorage.setItem('totalCartPrice', this.totalCartPrice);
+        localStorage.setItem('totalCartPrice', this.totalCartPrice);
     },
 
     // metodo che aggiunge un piatto al carrello
