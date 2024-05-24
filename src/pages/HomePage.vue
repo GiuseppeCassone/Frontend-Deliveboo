@@ -39,7 +39,7 @@ export default{
             // link base per la chiamata api per le immagini
             apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
-            isTypologiesCollapsed: true,
+            isTypologiesCollapsed: false,
 
         }
     },
@@ -167,59 +167,62 @@ export default{
 
 <template>
     <div class="container-fluid mb-5 mt-3">
-        <div class="row d-flex flex-column justify-content-center align-items-center flex-md-row mx-5">
 
-            <div class="col-12 col-sm-3 restaurant-typologies d-flex flex-column gap-3 mb-3">
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-outline-secondary " type="button" role="button" @click="toggleTypologies">
-                        <h3>Filtra i ristoranti per tipologia</h3>
-                    </button>
-    
-                    <!-- <button class="btn btn-info btn-color d-flex justify-content-center align-items-center py-2 px-3 d-block d-sm-none" @click="toggleTypologies">
-                        <i class="fa-solid fa-bars"></i>
-                    </button> -->
-                </div>
-                <div v-for="typology in typologies" class="nav-item form-check form-switch" v-bind:class="{ 'd-block d-sm-none': isTypologiesCollapsed, 'd-none d-sm-block': !isTypologiesCollapsed }">
-                    <input class="form-check-input" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()">
-                    <label class="form-check-label" :for="typology.type">{{typology.type}}</label>
+        <!-- row -->
+        <div class="row d-flex flex-column flex-sm-row mx-5">
+
+            <!-- sezione lista delle tipologie -->
+            <div class="col-12 col-sm-3 restaurant-typologies d-flex flex-column ">
+                
+                <button class="mb-3 btn btn-outline-secondary d-flex justify-content-between align-items-center" type="button" role="button" @click="toggleTypologies">
+                    <h3 class="mb-1 text-uppercase">filtra</h3>
+                    <i class="fa-solid fa-arrow-down-wide-short"></i>
+                </button>
+
+                <div class="d-flex flex-wrap flex-md-column flex-lg-row row align-items-center justify-content-evenly row-gap-2">
+                    <div v-for="typology in typologies" class="Type col-6 form-check form-switch border border-1 rounded-2" v-bind:class="{ 'd-flex d-sm-none': isTypologiesCollapsed, 'd-none d-sm-flex': !isTypologiesCollapsed }">
+                        <input class="form-check-input" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()">
+                        <label class="Labell form-check-label d-flex align-items-center" :for="typology.type">{{typology.type}}</label>
+                    </div>
                 </div>
 
             </div>
 
             
             <!-- sezione lista dei ristoranti -->
-            <div class="col-12 col-sm-9 restaurants-list mb-4 d-flex flex-column row-cols-3 justify-content-between align-items-between flex-md-row flex-wrap">
-                <h2 class="col-12 m-0">RISTORANTI</h2>
+            <div class="col-12 col-sm-9 restaurants-list d-flex flex-column row-cols-3 justify-content-between align-items-between flex-md-row flex-wrap">
+                <button class="btn btn-light col-12 mb-3 bg-white" disabled>
+                    <h3 class="col-12 mb-1">RISTORANTI</h3>
+
+                </button>
     
                 <AppRestaurant 
                     v-for="restaurant in restaurants" :restaurant="restaurant"
                 >
                 </AppRestaurant>
     
-            </div>
-        </div>
+                <!-- sezione per la paginazione -->
+                <div class="pages text-white col-12 justify-content-center gap-2">
+                    <div class="previous" 
+                        :class="apiPageNumber == 1 ? 'none' : ''"
+                        @click="changeApiPage(apiLinks[0].label)"
+                        >
+                        <i class="fa-solid fa-arrow-left"
+                        :class="apiPageNumber == 1 ? 'none' : ''"></i>
+                    </div>
         
-        <!-- sezione lista delle tipologie -->
+                    <div class="next" 
+                        :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"
+                        @click="changeApiPage(apiLinks[apiLinks.length - 1].label)"
+                        >
+                        <i class="fa-solid fa-arrow-right"
+                        :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"></i>
+                    </div>
+                </div>
 
-        <!-- sezione per la paginazione -->
-        <div class="pages d-flex justify-content-center gap-2">
-            <div class="previous" 
-                :class="apiPageNumber == 1 ? 'none' : ''"
-                @click="changeApiPage(apiLinks[0].label)"
-                >
-                <i class="fa-solid fa-arrow-left"
-                :class="apiPageNumber == 1 ? 'none' : ''"></i>
             </div>
 
-            <div class="next" 
-                :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"
-                @click="changeApiPage(apiLinks[apiLinks.length - 1].label)"
-                >
-                <i class="fa-solid fa-arrow-right"
-                :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"></i>
-            </div>
         </div>
-
 
     </div>
 </template>
@@ -230,8 +233,18 @@ export default{
 <style scoped lang="scss">
 @use '../styles/variables' as *;
 
-h2{
-    height: 38px;
+.Type{   
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    height: 50px;
+    width: 140px;
+
+    .Labell{
+        width: 140px;
+        height: 50px;
+    }
 }
 
 .btn-color{
@@ -239,7 +252,7 @@ h2{
   border-color: $primaryColor;
 
   &:hover{
-  background-color: $primaryColor;
+    background-color: $primaryColor;
   }
 }
 
@@ -247,8 +260,6 @@ h2{
     display: flex;
     justify-content: center;
     gap: 10px;
-
-    color: white;
 
     .previous, .next {
         display: flex;
@@ -282,7 +293,7 @@ h2{
 
     // .row{
     //     .restaurant-typologies{
-    //         display: block;
+    //         flex-direction: column;
     //     }
     // }
 }

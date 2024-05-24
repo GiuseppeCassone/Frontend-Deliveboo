@@ -33,12 +33,12 @@ export default {
                   {{ restaurant.name }}
               </div>
               <div style="font-size: .7em;" class="restaurant-address text-secondary">
-                <!-- {{ restaurant.address }} -->
+                {{ restaurant.address }}
               </div>
-              <div style="font-size: .7em;" class="restaurant-phone text-secondary">
+              <!-- <div style="font-size: .7em;" class="restaurant-phone text-secondary">
                 <i class="fa-solid fa-phone"></i>
                 {{ restaurant.phone_number }}
-              </div>
+              </div> -->
               <div class="d-flex gap-1 mt-1" v-if="restaurant.typologies.length">
                 <span 
                     v-for="(typology, index) in restaurant.typologies" 
