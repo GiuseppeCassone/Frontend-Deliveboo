@@ -64,7 +64,7 @@ export default {
   position: relative;
 
   height: 150px;
-  min-width: 300px;
+  // min-width: 300px;
 
   border: 3px solid transparent;
 

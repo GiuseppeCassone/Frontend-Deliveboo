@@ -241,10 +241,40 @@ export default{
     height: 50px;
     width: 140px;
 
+    .form-check-input{
+
+        &:focus{
+            box-shadow: $focus-ring-box-shadow;
+        }
+
+        &:checked {
+          background-color: #40A578;
+          border-color: #006769;
+        }
+
+        &:not(:checked) {
+          background-color: #fff;
+          border-color: lightgrey;
+
+        }
+        
+    }
+
+
     .Labell{
         width: 140px;
         height: 50px;
     }
+}
+
+
+.bg{
+    border: white;
+    background-color: $component-active-bg;
+
+    color: $focus-ring-color;
+
+
 }
 
 .btn-color{
