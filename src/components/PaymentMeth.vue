@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 import dropin from 'braintree-web-drop-in';
+import {store} from '../store';
 
 export default {
 
@@ -8,6 +9,8 @@ export default {
 
   data() {
     return {
+      store,
+
       clientToken: null,
       instance: null,
 
@@ -20,7 +23,9 @@ export default {
         customer_phone: '',
         order_total:localStorage.getItem('totalCartPrice'), 
 
-      }
+      },
+
+      dishes: JSON.parse(localStorage.getItem('cartItems')) || [],
     };
   },
   mounted() {
@@ -66,8 +71,17 @@ export default {
           console.error(err);
           return;
         }
-        axios.post('http://127.0.0.1:8000/api/braintree/checkout', this.FormData).then(res => {
-          console.log(res);
+
+        const paymentData = {
+          ...this.FormData,
+          paymentMethodNonce: payload.nonce,
+          orderData: JSON.stringify(this.dishes),
+        }
+        axios.post('http://127.0.0.1:8000/api/braintree/checkout', paymentData).then(res => {
+          console.log('Pagamento avvenuto con successo', res);
+        })
+        .catch(error => {
+          console.error('Pagamento Fallito', error.response.data);
         });
         // axios.post('http://127.0.0.1:8000/api/braintree/checkout', {
         //   paymentMethodNonce: payload.nonce,
@@ -79,20 +93,7 @@ export default {
         // });
       });
     },
-    // checkout() {
-    //   // const user = {
-    //   //   firstName: this.user.firstName,
-    //   //   lastName: this.user.lastName,
-    //   //   email: this.user.email,
-    //   //   address: this.user.address,
-    //   //   phone: this.user.phone
-    //   // };
-    //   // const dishes = this.dishes; // Assuming 'dishes' is an array of dish objects
-    //   // const totalCartPrice = this.totalCartPrice;
-
-    //   // Send user, dishes, and totalCartPrice to server-side checkout
-    //   // ...
-    // }
+    
   }
 };
 
@@ -131,7 +132,7 @@ export default {
         <p>Totale: {{ FormData.order_total }}€</p>
       </div>
 
-      <button type="submit">Paga</button>
+      <!-- <button type="submit">Paga</button> -->
     </form>
     <div id="dropin-container"></div>
     <button id="submit-button" @click="submitPayment()" class="button button--small button--green">Purchase</button>

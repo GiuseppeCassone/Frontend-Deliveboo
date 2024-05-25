@@ -297,6 +297,12 @@ export default {
               Totale dei Prodotti: {{ totalItems }} <br> 
               Totale prezzo: €{{ totalCartPrice.toFixed(2) }}
             </p>
+            <div class="checkout btn btn-primary">
+              <router-link 
+                :to="{ name: 'payment'}">
+                <span class="text-white">Procedi al pagamento</span>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
