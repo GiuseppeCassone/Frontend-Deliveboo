@@ -25,7 +25,7 @@ export default {
 
       },
 
-      dishes: JSON.parse(localStorage.getItem('cartItems')) || [],
+      // dishes: JSON.parse(localStorage.getItem('cartItems')) || [],
     };
   },
   mounted() {
@@ -125,8 +125,8 @@ export default {
 
       <div class="order-details">
         <ul>
-          <li v-for="dish in dishes" :key="dish.id">
-            {{ dish.name }} - {{ dish.price }}€
+          <li v-for="dish in this.store.CartItems" :key="dish.id">
+            {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ dish.ItemTotalPrice }}€
           </li>
         </ul>
         <p>Totale: {{ FormData.order_total }}€</p>
