@@ -10,8 +10,11 @@ export default {
 </script>
 
 <template>
-<h1>ciao</h1>
-        <PaymentMeth></PaymentMeth>
+    <div class="container ">
+        <h1 class="my-3 p-0">Benvenuto Nella pagina di pagamento </h1>
+                <PaymentMeth></PaymentMeth>
+
+    </div>
 </template>
 
 <style>

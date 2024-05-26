@@ -23,6 +23,7 @@ export default {
   },
   mounted() {
     this.getClientToken();
+   
   },
   methods: {
     getClientToken() {
@@ -120,9 +121,9 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <form @submit.prevent="submitPayment" method="POST">
-      <div class="user-info">
+      <div class="user-info d-flex flex-column ">
         <label for="customer_name">Nome:</label>
         <input type="text" id="customer_name" name="customer_name" v-model="FormData.customer_name" required>
 
@@ -139,9 +140,9 @@ export default {
         <input type="tel" id="customer_phone" name="customer_phone" v-model="FormData.customer_phone" required>
       </div>
 
-      <div class="order-details">
-        <ul>
-          <li v-for="(dish, index) in dishes" :key="dish.itemId">
+      <div class="order-details border border-1 my-3 p-3">
+        <ul class="p-0 m-0">
+          <li class=" list-unstyled" v-for="(dish, index) in dishes" :key="dish.itemId">
             {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ (dish.ItemTotalPrice * dish.itemQuantity).toFixed(2) }}€
             <button type="button" @click="decreaseQuantity(index)">-</button>
             <button type="button" @click="increaseQuantity(index)">+</button>
@@ -153,12 +154,13 @@ export default {
     </form>
     <div v-if="dishes.length > 0">
       <div id="dropin-container"></div>
-      <button id="submit-button" @click="submitPayment" class="button button--small button--green">Acquista</button>
+      <button id="submit-button" @click="submitPayment" class="btn btn-success">Acquista</button>
     </div>
-    <div v-else>
+    <div v-else class=" p-3 text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-3">
+      
         Attenzione!!!
         Carrello vuoto <router-link 
-                            :to="{ name: 'info-restaurant', params: { id:1 } }">
+                            :to="{ name: 'info-restaurant', params: {  id: store.currentIdRestaurant } }">
                             torna al ristorante precedente
                         </router-link>
     </div>

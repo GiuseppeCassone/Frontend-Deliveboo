@@ -143,6 +143,9 @@ export default {
       // inizializzo la variabile currentDish nello store
       // con il piatto che viene passato come parametro al click del bottone 'aggiungi al carrello'
       this.store.currentDish = dish;
+
+      this.store.currentIdRestaurant = dish.restaurant_id;
+      console.log('Intendevo questo',this.store.currentIdRestaurant)
       // console.log(this.store.currentDish);
       
       // dichiaro un oggetto che prende le informazione del mio piatto
