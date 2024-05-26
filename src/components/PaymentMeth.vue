@@ -21,15 +21,21 @@ export default {
         customer_email:'',
         customer_address:'',
         customer_phone: '',
-        order_total:localStorage.getItem('totalCartPrice'), 
+        order_total:localStorage.getItem('totalCartPrice'),
+
 
       },
 
-      // dishes: JSON.parse(localStorage.getItem('cartItems')) || [],
+      actualDishes: JSON.parse(localStorage.getItem('CartItems')) || [],
     };
   },
   mounted() {
     this.getClientToken();
+    
+    const savedCartItems = localStorage.getItem('CartItems');
+    if (savedCartItems) {
+      this.store.CartItems = JSON.parse(savedCartItems);
+    }
   },
   methods: {
     getClientToken() {
@@ -66,22 +72,38 @@ export default {
       //     });
     },
     submitPayment() {
+
+      if (!this.FormData.customer_name || !this.FormData.customer_lastname || !this.FormData.customer_email || !this.FormData.customer_address || !this.FormData.customer_phone) {
+        console.error('Tutti i campi utente sono obbligatori.');
+        return;
+      }
+
       this.instance.requestPaymentMethod((err, payload) => {
         if (err) {
           console.error(err);
           return;
         }
 
+        console.log('Nonce ricevuto:', payload.nonce);
+
         const paymentData = {
           ...this.FormData,
           paymentMethodNonce: payload.nonce,
-          orderData: JSON.stringify(this.dishes),
+          orderData: JSON.stringify(this.actualDishes.map(dish => ({
+            dish_id: dish.itemId,  // Assicurati che dish.itemId sia corretto
+            quantity: dish.itemQuantity  // Assicurati che dish.itemQuantity sia corretto
+          }))),
+          // orderData: JSON.stringify(this.actualDishes),
         }
+
+        console.log('Dati del pagamento:', paymentData);
+
         axios.post('http://127.0.0.1:8000/api/braintree/checkout', paymentData).then(res => {
           console.log('Pagamento avvenuto con successo', res);
         })
         .catch(error => {
-          console.error('Pagamento Fallito', error.response.data);
+          // console.error('Pagamento Fallito', error.response.data);
+          console.error('Pagamento fallito:', error.response ? error.response.data : error.message);
         });
         // axios.post('http://127.0.0.1:8000/api/braintree/checkout', {
         //   paymentMethodNonce: payload.nonce,
@@ -93,6 +115,14 @@ export default {
         // });
       });
     },
+    // addDish(dish) {
+    //   this.store.CartItems.push(dish);
+    //   localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
+    // },
+    // updateDish(dish) {
+    //   // logica per aggiornare il piatto
+    //   localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
+    // },
     
   }
 };
@@ -103,10 +133,10 @@ export default {
 
 <template>
 
-  <div>
+  <div class="container ">
     <form @submit.prevent="submitPayment()" method="POST">
-      @csrf
-      <div class="user-info">
+      
+      <div class="user-info d-flex flex-column">
         <label for="customer_name">Nome:</label>
         <input type="text" id="customer_name" name="customer_name" v-model="FormData.customer_name" required>
 
@@ -123,10 +153,11 @@ export default {
         <input type="tel" id="customer_phone" name="customer_phone" v-model="FormData.customer_phone" required>
       </div>
 
-      <div class="order-details">
-        <ul>
-          <li v-for="dish in this.store.CartItems" :key="dish.id">
-            {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ dish.ItemTotalPrice }}€
+      <div class="order-details border border-2 rounded-2 my-3">
+        <h3>Riassunto dei tuoi Ordini</h3>
+        <ul class="m-0 p-2">
+          <li class=" list-unstyled " v-for="actualDishes in this.store.CartItems" :key="actualDishes.id">
+            {{ actualDishes.itemName }} X {{ actualDishes.itemQuantity }} = {{ actualDishes.ItemTotalPrice }}€
           </li>
         </ul>
         <p>Totale: {{ FormData.order_total }}€</p>
@@ -140,4 +171,5 @@ export default {
 
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>
