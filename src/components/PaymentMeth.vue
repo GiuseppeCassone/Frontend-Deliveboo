@@ -25,11 +25,12 @@ export default {
 
       },
 
-      // dishes: JSON.parse(localStorage.getItem('cartItems')) || [],
+      dishes: JSON.parse(localStorage.getItem('CartItems')) || [],
     };
   },
   mounted() {
     this.getClientToken();
+    this.loadCartItems();
   },
   methods: {
     getClientToken() {
@@ -93,6 +94,13 @@ export default {
         // });
       });
     },
+
+    loadCartItems() {
+      const savedCartItems = localStorage.getItem('CartItems');
+      if (savedCartItems) {
+        this.store.CartItems = JSON.parse(savedCartItems);
+      }
+    }
     
   }
 };
