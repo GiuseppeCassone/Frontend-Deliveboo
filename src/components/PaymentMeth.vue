@@ -168,7 +168,7 @@ export default {
 
 <template>
   <div class="container position-relative">
-    <form @submit.prevent="submitPayment" method="POST">
+    <form @submit.prevent="submitPayment" method="POST" id="myForm">
       <div class="user-info p-2 rounded-2">
         <div class="mb-3">
           <label for="customer_name" class="form-label">Nome:</label>
