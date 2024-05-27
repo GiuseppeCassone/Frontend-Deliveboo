@@ -44,7 +44,7 @@ export default {
     this.items = JSON.parse(localStorage.getItem('items')) || [];
     const storedTotalPrice = localStorage.getItem('totalCartPrice');
       if (storedTotalPrice !== null) {
-        this.totalCartPrice = Number(storedTotalPrice);
+        this.store.totalCartPrice = Number(storedTotalPrice);
       }
       const storedCartItems = localStorage.getItem('CartItems');
       if (storedCartItems) {
@@ -115,22 +115,22 @@ export default {
     // },
     // metodo che aggiorna il prezzo totale nel carrello quando viene aggiunto un piatto
     addToTotalCart(item) {
-      this.totalCartPrice += Number(item.itemPrice);
-      this.totalCartPrice = Number(this.totalCartPrice.toFixed(2));
-      localStorage.setItem('totalCartPrice', this.totalCartPrice);
+      this.store.totalCartPrice += Number(item.itemPrice);
+      this.store.totalCartPrice = Number(this.store.totalCartPrice.toFixed(2));
+      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
     },
 
     // metodo che aggiorna il prezzo totale nel carrello quando viene rimosso un piatto
     removeFromToTotalCart(index) {
-      // this.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
+      // this.store.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
         if (this.store.CartItems.length > 0 && index < this.store.CartItems.length) {
-        this.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
-          if (this.totalCartPrice < 0) {
-            this.totalCartPrice = 0; // Resetto il prezzo totale a 0 se diventa negativo
+        this.store.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
+          if (this.store.totalCartPrice < 0) {
+            this.store.totalCartPrice = 0; // Resetto il prezzo totale a 0 se diventa negativo
           }
         }
 
-        localStorage.setItem('totalCartPrice', this.totalCartPrice);
+        localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
     },
 
     // metodo che aggiunge un piatto al carrello
@@ -198,7 +198,7 @@ export default {
       // aggiorno il prezzo totale del carrello
       this.addToTotalCart(this.store.CartItems[index]);
 
-      localStorage.setItem('totalCartPrice', this.totalCartPrice);
+      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
     },
 
@@ -213,13 +213,13 @@ export default {
         this.store.CartItems[index].ItemTotalPrice -= this.store.CartItems[index].itemPrice;
         this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
         // aggiorno il prezzo totale del carrello
-        this.totalCartPrice -= Number(this.store.CartItems[index].itemPrice);
+        this.store.totalCartPrice -= Number(this.store.CartItems[index].itemPrice);
       } else {
         // altrimenti rimuovo quel piatto dal carrello
         this.removeItem(index);
       }
 
-      localStorage.setItem('totalCartPrice', this.totalCartPrice);
+      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
     },
 
@@ -298,7 +298,7 @@ export default {
           <div class="card-footer">
             <p>
               Totale dei Prodotti: {{ totalItems }} <br> 
-              Totale prezzo: €{{ totalCartPrice.toFixed(2) }}
+              Totale prezzo: €{{ store.totalCartPrice.toFixed(2) }}
             </p>
             <div class="checkout btn btn-primary">
               <router-link 

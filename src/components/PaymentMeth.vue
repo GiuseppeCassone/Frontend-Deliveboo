@@ -93,26 +93,50 @@ export default {
       });
     },
     increaseQuantity(index) {
-      this.dishes[index].itemQuantity++;
-      this.updateTotalPrice();
-      this.saveCart();
+      this.store.CartItems[index].itemQuantity++;
+      this.store.CartItems[index].ItemTotalPrice += this.store.CartItems[index].itemPrice;
+      this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
+      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
+      
+      this.store.totalCartPrice += Number(this.store.CartItems[index].itemPrice);
+      this.store.totalCartPrice = Number(this.store.totalCartPrice.toFixed(2));
+      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
     },
     decreaseQuantity(index) {
-      if (this.dishes[index].itemQuantity > 1) {
-        this.dishes[index].itemQuantity--;
-        this.updateTotalPrice();
-        this.saveCart();
+      // if (this.dishes[index].itemQuantity > 1) {
+      //   this.dishes[index].itemQuantity--;
+      //   this.updateTotalPrice();
+      //   this.saveCart();
+      // } else {
+      //   this.removeItem(index);
+      // }
+      if(this.store.CartItems[index].itemQuantity > 1) {
+        // aggiorno la quantità di quel piatto nel carrello
+        this.store.CartItems[index].itemQuantity--;
+        // aggiorno il prezzo totale dello stesso piatto all'interno del carello
+        this.store.CartItems[index].ItemTotalPrice -= this.store.CartItems[index].itemPrice;
+        this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
+        // aggiorno il prezzo totale del carrello
+        this.store.totalCartPrice -= Number(this.store.CartItems[index].itemPrice);
       } else {
+        // altrimenti rimuovo quel piatto dal carrello
         this.removeItem(index);
       }
+
+      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
+      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
     },
     removeItem(index) {
-      this.dishes.splice(index, 1);
-      this.updateTotalPrice();
-      this.saveCart();
+      this.store.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
+      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
+      this.store.CartItems.splice(index, 1);
+      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
+
+      // this.updateTotalPrice();
+      // this.saveCart();
     },
     updateTotalPrice() {
-      this.FormData.order_total = this.dishes.reduce((total, item) => total + item.ItemTotalPrice * item.itemQuantity, 0).toFixed(2);
+      // this.FormData.order_total = this.dishes.reduce((total, item) => total + item.ItemTotalPrice * item.itemQuantity, 0).toFixed(2);
       localStorage.setItem('totalCartPrice', this.FormData.order_total);
     },
     saveCart() {
@@ -144,14 +168,14 @@ export default {
 
       <div class="order-details border border-1 my-3 p-3">
         <ul class="p-0 m-0">
-          <li class=" list-unstyled" v-for="(dish, index) in dishes" :key="dish.itemId">
-            {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ (dish.ItemTotalPrice * dish.itemQuantity).toFixed(2) }}€ 
+          <li class=" list-unstyled" v-for="(dish, index) in store.CartItems" :key="dish.itemId">
+            {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ dish.ItemTotalPrice.toFixed(2) }}€ 
             <button type="button" @click="decreaseQuantity(index)">-</button>
             <button type="button" @click="increaseQuantity(index)">+</button>
             <button type="button" @click="removeItem(index)">Rimuovi</button>
           </li>
         </ul>
-        <p>Totale: {{ FormData.order_total }}€</p>
+        <p>Totale: {{ store.totalCartPrice }}€</p>
       </div>
     </form>
     <div v-if="dishes.length > 0">
