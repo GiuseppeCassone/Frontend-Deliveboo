@@ -48,6 +48,8 @@ export default {
         this.instance = instance;
       });
     },
+
+    // Funzione per il pagamento di braintree
     submitPayment() {
       this.instance.requestPaymentMethod((err, payload) => {
         if (err) {
@@ -143,7 +145,7 @@ export default {
       <div class="order-details border border-1 my-3 p-3">
         <ul class="p-0 m-0">
           <li class=" list-unstyled" v-for="(dish, index) in dishes" :key="dish.itemId">
-            {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ (dish.ItemTotalPrice * dish.itemQuantity).toFixed(2) }}€
+            {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ (dish.ItemTotalPrice * dish.itemQuantity).toFixed(2) }}€ 
             <button type="button" @click="decreaseQuantity(index)">-</button>
             <button type="button" @click="increaseQuantity(index)">+</button>
             <button type="button" @click="removeItem(index)">Rimuovi</button>
