@@ -247,39 +247,59 @@ export default {
       <i class="fa-solid fa-arrow-left"></i> Torna ai ristoranti
     </router-link>
     <div class="row my-3">
-      <div class="col-12">
-        <h1 class="display-2 fw-bolder m-0">{{ restaurant.name }}</h1>
-        <h4>{{ restaurant.description }}</h4>
+      <div class="col-12 position-relative">
+        <div id="title-box" class="z-1 p-2">
+          <h1 class="display-2 fw-bolder m-0">{{ restaurant.name }}</h1>
+          <h4 class="fw-normal"> {{ restaurant.description }}</h4>
+        </div>
+        <section class="z-1 p-2">
+          <div id="contact" class="d-flex flex-column justify-content-between gap-2">
+            <h5 class="text-uppercase">Contatti: </h5>
+            <p class="mb-0"><i class="fa-solid fa-map-location-dot"></i> {{ restaurant.address }}</p>
+            <p class="mb-0"> <img class="img-fluid" src="/public/images/vat.svg" alt=""> {{ restaurant.vat }}</p>
+            <p class="mb-0"><i class="fa-solid fa-phone"></i> {{ restaurant.phone_number }}</p>
+          </div>
+        </section>
         <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
           class="img-fluid rounded-2 card-img-top" alt="...">
       </div>
     </div>
 
     <div class="row d-flex justify-content-center py-5">
+      <!-- COLONNA PIATTI -->
       <div class="col-md-7">
         <div class="card">
-          <ul class="list-group list-group-flush" v-for="dish in restaurant.dishes">
-            <li id="dish-menu" class="list-group-item d-flex gap-1">
-              <img class="img-fluid h-100 w-25 object-fit-cover" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img"
-                alt=""> 
-                <div class="d-flex flex-wrap gap-3">
-                    <span class="align-self-center"><span class="fw-bold">{{ dish.name }}</span> <br> {{ dish.price }}€</span>
-                  <button @click="addItem(dish)" class="btn btn-primary h-50 align-self-center  ms-auto">
-                    Aggiungi al carrello
-                  </button>
-                </div>
+          <ul class="list-group list-group-flush">
+            <li id="dish-menu" class="row list-group-item d-flex justify-content-between align-items-center" v-for="dish in restaurant.dishes">
+              <!-- Colonna per l'immagine -->
+              <div class="col-4">
+                <img style="max-height: 124px;" class="img-fluid h-100 w-100 object-fit-cover" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt="">
+              </div>
+              <!-- Colonna per il nome e il prezzo -->
+              <div class="col d-flex flex-column justify-content-center">
+                <span class="fw-bold">{{ dish.name }}</span>
+                <span>{{ dish.price }}€</span>
+              </div>
+              <!-- Colonna per il pulsante -->
+              <div class="col d-flex align-items-center">
+                <button @click="addItem(dish)" class="btn-color btn btn-primary ms-auto">
+                  Aggiungi al carrello
+                </button>
+              </div>
             </li>
           </ul>
         </div>
       </div>
 
+
+      <!-- COLONNA CARRELLO -->
       <div class="col-md-5">
         <div class="card">
           <div class="card-header">
             <h2>Carrello</h2>
           </div>
-          <ul class="list-group list-group-flush">
-            <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item">
+          <ul class="list-group list-group-flush cart">
+            <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
               <div class="dish-info">
                 {{ item.itemName }} <br>   <span class=" fw-light ">{{ item.ItemTotalPrice }} €</span> 
               </div>
@@ -300,10 +320,10 @@ export default {
               Totale dei Prodotti: {{ totalItems }} <br> 
               Totale prezzo: €{{ store.totalCartPrice.toFixed(2) }}
             </p>
-            <div class="checkout btn btn-primary">
+            <div class="checkout btn btn-primary btn-pay" v-if="store.CartItems.length > 0">
               <router-link 
                 :to="{ name: 'payment'}">
-                <span class="text-white">Procedi al pagamento</span>
+                <span class="text-white text-decoration-none">Procedi al pagamento</span>
               </router-link>
             </div>
           </div>
@@ -320,9 +340,49 @@ export default {
 <style lang="scss" scoped>
 @use '../styles/variables' as *;
 
+// MENU
+
+#title-box{
+  background-color: rgba(0, 0, 0, 0.484);
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 12px;
+
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 7px;
+}
+
+
+section{
+  color: white;
+  background-color: rgba(0, 0, 0, 0.484);
+  position: absolute;
+  bottom: 0;
+  right: 12px;
+  max-width: 400px;
+  min-width: 250px;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 7px;
+
+  #contact{
+
+    img{
+      height: 16px;
+      width: auto;
+      filter: invert(1);
+    }
+  }
+}
+
 
 #dish-menu {
   height: 140px;
+
 }
 .btn-color{
   background-color: $secondColor;
@@ -333,19 +393,27 @@ export default {
   }
 }
 
-.list-group{
 
-  li{
+// CARRELLO
+
+.cart{
+
+  .dish-options{
     display: flex;
-    justify-content: space-between;
     align-items: center;
-
-    .dish-options{
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
+    gap: 20px;
   }
 
 }
+.btn-pay{
+  background-color: $primaryColor;
+  border-bottom: $secondColor;
+
+  &:hover{
+    background-color: #024849;
+    border-color: $primaryColor;
+  }
+}
+
+
 </style>
