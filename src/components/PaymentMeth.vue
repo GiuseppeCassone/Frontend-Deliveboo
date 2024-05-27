@@ -192,7 +192,7 @@ export default {
 
         <div class="mb-3">
           <label for="customer_phone" class="form-label">Telefono:</label>
-          <input type="tel" class="form-control" id="customer_phone" name="customer_phone" v-model="FormData.customer_phone" required>
+          <input type="tel" class="form-control" id="customer_phone" name="customer_phone" maxlength="10" pattern="\d{10}" v-model="FormData.customer_phone" required>
         </div>
       </div>
 
