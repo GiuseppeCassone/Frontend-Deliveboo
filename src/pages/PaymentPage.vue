@@ -11,8 +11,9 @@ export default {
 
 <template>
     <div class="container ">
-        <h1 class="my-3 p-0">Benvenuto Nella pagina di pagamento </h1>
-                <PaymentMeth></PaymentMeth>
+        
+        <h1 class="my-3 p-0">Benvenuto nella pagina di pagamento </h1>
+        <PaymentMeth></PaymentMeth>
 
     </div>
 </template>

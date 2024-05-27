@@ -34,7 +34,7 @@ export default {
       }
       console.log(this.store.CartItems)
 
-      console.log('mounted', this.FormData.order_total);
+      // console.log('mounted', this.FormData.order_total);
 
    
   },
@@ -172,38 +172,60 @@ export default {
 <template>
   <div class="container position-relative">
     <form @submit.prevent="submitPayment" method="POST">
-      <div class="user-info d-flex flex-column ">
-        <label for="customer_name">Nome:</label>
-        <input type="text" id="customer_name" name="customer_name" v-model="FormData.customer_name" required>
+      <div class="user-info p-2 rounded-2">
+        <div class="mb-3">
+          <label for="customer_name" class="form-label">Nome:</label>
+          <input type="text" class="form-control" id="customer_name" name="customer_name" v-model="FormData.customer_name" required>
+        </div>
 
-        <label for="customer_lastname">Cognome:</label>
-        <input type="text" id="customer_lastname" name="customer_lastname" v-model="FormData.customer_lastname" required>
+        <div class="mb-3">
+          <label for="customer_lastname" class="form-label">Cognome:</label>
+          <input type="text" class="form-control" id="customer_lastname" name="customer_lastname" v-model="FormData.customer_lastname" required>
+        </div>
 
-        <label for="customer_email">Email:</label>
-        <input type="email" id="customer_email" name="customer_email" v-model="FormData.customer_email" required>
+        <div class="mb-3">
+          <label for="customer_email" class="form-label">Email:</label>
+          <input type="email" class="form-control" id="customer_email" name="customer_email" v-model="FormData.customer_email" required>
+        </div>
 
-        <label for="customer_address">Indirizzo:</label>
-        <input type="text" id="customer_address" name="customer_address" v-model="FormData.customer_address" required>
+        <div class="mb-3">
+          <label for="customer_address" class="form-label">Indirizzo:</label>
+          <input type="text" class="form-control" id="customer_address" name="customer_address" v-model="FormData.customer_address" required>
+        </div>
 
-        <label for="customer_phone">Telefono:</label>
-        <input type="tel" id="customer_phone" name="customer_phone" v-model="FormData.customer_phone" required>
+        <div class="mb-3">
+          <label for="customer_phone" class="form-label">Telefono:</label>
+          <input type="tel" class="form-control" id="customer_phone" name="customer_phone" v-model="FormData.customer_phone" required>
+        </div>
       </div>
 
-      <div class="order-details border border-1 my-3 p-3">
-        <ul class="p-0 m-0">
-          <li class=" list-unstyled row mb-2" v-for="(dish, index) in store.CartItems" :key="dish.itemId">
-            <div class="col">
-              {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ dish.ItemTotalPrice.toFixed(2) }}€ 
-            </div>
-            <div class="col d-flex gap-3">
-              <button type="button" class="btn btn-success fw-bold" @click="increaseQuantity(index)"><i class="fa-solid fa-plus"></i></button>
-              <button type="button" class="btn btn-success fw-bold" @click="decreaseQuantity(index)"><i class="fa-solid fa-minus"></i></button>
-              <button type="button" class="btn btn-danger fw-bold" @click="removeItem(index)"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
-          </li>
-        </ul>
+
+      <div class="order-details rounded-2 my-3 p-3">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Piatto</th>
+              <th scope="col">Quantità</th>
+              <th scope="col">Prezzo Totale</th>
+              <th scope="col">Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(dish, index) in store.CartItems" :key="dish.itemId">
+              <td>{{ dish.itemName }}</td>
+              <td>{{ dish.itemQuantity }}</td>
+              <td>{{ dish.itemName }} X {{ dish.itemQuantity }} = €{{ dish.ItemTotalPrice.toFixed(2) }}</td>
+              <td class="d-flex gap-2">
+                <button type="button" class="btn btn-success fw-bold" @click="increaseQuantity(index)"><i class="fa-solid fa-plus"></i></button>
+                <button type="button" class="btn btn-success fw-bold" @click="decreaseQuantity(index)"><i class="fa-solid fa-minus"></i></button>
+                <button type="button" class="btn btn-danger fw-bold" @click="removeItem(index)"><i class="fa-solid fa-trash-can"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <p>Totale: {{ store.totalCartPrice }}€</p>
       </div>
+
     </form>
     <div v-if="store.CartItems.length > 0">
       <div id="dropin-container"></div>
@@ -227,6 +249,10 @@ export default {
 
 <style lang="scss">
 @use '../styles/variables' as *;
+
+.user-info, .order-details{
+  border: 3px solid $primaryColor;
+}
 
 #alert{
 

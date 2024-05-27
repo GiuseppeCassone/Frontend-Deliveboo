@@ -278,7 +278,7 @@ export default {
               <!-- Colonna per il nome e il prezzo -->
               <div class="col d-flex flex-column justify-content-center">
                 <span class="fw-bold">{{ dish.name }}</span>
-                <span>{{ dish.price }}€</span>
+                <span>€{{ dish.price }}</span>
               </div>
               <!-- Colonna per il pulsante -->
               <div class="col d-flex align-items-center">
@@ -299,11 +299,11 @@ export default {
             <h2>Carrello</h2>
           </div>
           <ul class="list-group list-group-flush cart">
-            <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
-              <div class="dish-info">
-                {{ item.itemName }} <br>   <span class=" fw-light ">{{ item.ItemTotalPrice }} €</span> 
+            <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item d-flex flex-column flex-xl-row justify-content-between align-items-center row-gap-2">
+              <div class="dish-info d-flex gap-3 align-self-start">
+                {{ item.itemName }} <br>   <span class=" fw-light ">{{ item.itemQuantity }} x €{{ item.itemPrice }}</span> 
               </div>
-              <div class="dish-options">
+              <div class="dish-options d-flex align-self-start">
                 <div class="add-remove">
                   <button type="button" @click="removeActualDish(index)" class="btn btn-success btn-color remove"><i class="fa-solid fa-minus"></i></button>
                   <strong class="px-2">{{ item.itemQuantity }}</strong>
@@ -317,7 +317,7 @@ export default {
           </ul>
           <div class="card-footer">
             <p>
-              Totale dei Prodotti: {{ totalItems }} <br> 
+              Totale dei Prodotti: {{ store.CartItems.length }} <br> 
               Totale prezzo: €{{ store.totalCartPrice.toFixed(2) }}
             </p>
             <div class="checkout btn btn-primary btn-pay" v-if="store.CartItems.length > 0">

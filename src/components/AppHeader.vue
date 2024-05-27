@@ -11,13 +11,13 @@ export default {
         <a class="navbar-brand" href="#">
           <img class="img-fluid w-50 personal_logo" src="/images/wowdelive.svg" alt="logo">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a href="http://127.0.0.1:8000/register" target="_blank" class="btn btn-light rounded-pill px-4">Collabora con noi</a>
+              <a href="http://127.0.0.1:8000/register" target="_blank" class="btn btn-light rounded-2 px-4">Collabora con noi</a>
             </li>
           </ul>
         </div>
@@ -41,13 +41,5 @@ export default {
 
 .personal_logo {
   filter: invert(1);
-}
-
-.navbar-toggler {
-  border: none;
-}
-
-.nav-link {
-  margin-right: 1rem;
 }
 </style>
