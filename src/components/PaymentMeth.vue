@@ -2,20 +2,18 @@
 import axios from 'axios';
 import dropin from 'braintree-web-drop-in';
 import { store } from '../store';
-import PaymentApproved from '../pages/PaymentApproved.vue';
+import { router } from '../router';
 
 export default {
   name: 'PaymentMeth',
 
-  components: {
-    PaymentApproved,
-  },
   
   data() {
     return {
       store,
       clientToken: null,
       instance: null,
+      paymentSuccess: false,
       FormData: {
         customer_name: '',
         customer_lastname: '',
@@ -102,6 +100,7 @@ export default {
         axios.post('http://127.0.0.1:8000/api/braintree/checkout', paymentData)
           .then(res => {
             console.log('Pagamento avvenuto con successo', res);
+            this.$router.push({name : 'payment-success'});
           })
           .catch(error => {
             console.error('Pagamento fallito', error.response.data);
@@ -127,13 +126,6 @@ export default {
       this.updateTotalPrice();
     },
     decreaseQuantity(index) {
-      // if (this.dishes[index].itemQuantity > 1) {
-      //   this.dishes[index].itemQuantity--;
-      //   this.updateTotalPrice();
-      //   this.saveCart();
-      // } else {
-      //   this.removeItem(index);
-      // }
       if(this.store.CartItems[index].itemQuantity > 1) {
         // aggiorno la quantità di quel piatto nel carrello
         this.store.CartItems[index].itemQuantity--;
@@ -194,8 +186,6 @@ export default {
         <input type="tel" id="customer_phone" name="customer_phone" maxlength="10" pattern="\d{10}" v-model="FormData.customer_phone" required>
       </div>
 
-      <PaymentApproved></PaymentApproved>
-
       <div class="order-details border border-1 my-3 p-3">
         <ul class="p-0 m-0">
           <li class=" list-unstyled row mb-2" v-for="(dish, index) in store.CartItems" :key="dish.itemId">
@@ -215,9 +205,6 @@ export default {
     <div v-if="store.CartItems.length > 0">
       <div id="dropin-container"></div>
       <button id="submit-button" @click="submitPayment" class="btn btn-success">Acquista</button>
-      <!-- <router-link :to="{ name: 'payment-success' }" @click="submitPayment()" class="btn btn-success">
-        Acquista
-      </router-link> -->
     </div>
     <div v-else>
       <!-- Alert Bootstrap 5 -->
