@@ -2,14 +2,18 @@
 import axios from 'axios';
 import dropin from 'braintree-web-drop-in';
 import { store } from '../store';
+import { router } from '../router';
 
 export default {
   name: 'PaymentMeth',
+
+  
   data() {
     return {
       store,
       clientToken: null,
       instance: null,
+      paymentSuccess: false,
       FormData: {
         customer_name: '',
         customer_lastname: '',
@@ -65,28 +69,23 @@ export default {
     // Funzione per il pagamento di braintree
     submitPayment() {
       this.FormData.order_total = this.store.totalCartPrice;
-      console.log(this.FormData.order_total);
-      this.instance.requestPaymentMethod((err, payload) => {
+
+      const form = document.getElementById('myForm');
+      console.log(form)
+
+        // event.preventDefault(); // Evita l'invio del form
+
+        if (!form.checkValidity()) {
+          alert("Compilare tutti i campi correttamente!");
+          // document.getElementById('try').innerHTML = 'ciao';
+          return;
+        }
+        // console.log(this.FormData.order_total);
+        this.instance.requestPaymentMethod((err, payload) => {
         if (err) {
           console.error(err);
           return;
         }
-
-        // // Assicura che tutti i piatti abbiano il campo 'id'
-        // const validDishes = this.dishes.map(dish => {
-        //   if (!dish.itemId) {
-        //     console.error('Piatto mancante di itemId:', dish);
-        //   }
-        //   return {
-        //     itemId: dish.itemId,
-        //     itemName: dish.itemName,
-        //     itemPrice: dish.itemPrice,
-        //     itemQuantity: dish.itemQuantity,
-        //     ItemTotalPrice: dish.ItemTotalPrice,
-        //     restaurantId: dish.restaurantId,
-        //   };
-        // });
-
         const paymentData = {
           ...this.FormData,
           paymentMethodNonce: payload.nonce,
@@ -101,11 +100,16 @@ export default {
         axios.post('http://127.0.0.1:8000/api/braintree/checkout', paymentData)
           .then(res => {
             console.log('Pagamento avvenuto con successo', res);
+            this.$router.push({name : 'payment-success'});
           })
           .catch(error => {
             console.error('Pagamento fallito', error.response.data);
           });
       });
+
+        // Processa i dati del form (ad esempio, inviali al server)
+
+     
     },
     increaseQuantity(index) {
       this.store.CartItems[index].itemQuantity++;
@@ -122,13 +126,6 @@ export default {
       this.updateTotalPrice();
     },
     decreaseQuantity(index) {
-      // if (this.dishes[index].itemQuantity > 1) {
-      //   this.dishes[index].itemQuantity--;
-      //   this.updateTotalPrice();
-      //   this.saveCart();
-      // } else {
-      //   this.removeItem(index);
-      // }
       if(this.store.CartItems[index].itemQuantity > 1) {
         // aggiorno la quantità di quel piatto nel carrello
         this.store.CartItems[index].itemQuantity--;
@@ -243,7 +240,7 @@ export default {
       </div>
 
     </div>
-
+    <div id="try"></div>
   </div>
 </template>
 
