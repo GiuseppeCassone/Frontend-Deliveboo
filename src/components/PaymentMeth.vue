@@ -13,7 +13,7 @@ export default {
       store,
       clientToken: null,
       instance: null,
-
+      paymentSuccess: false,
       FormData: {
         customer_name: '',
         customer_lastname: '',
@@ -26,6 +26,8 @@ export default {
     };
   },
   mounted() {
+    this.paymentSuccess = false;
+
     this.getClientToken();
     this.items = JSON.parse(localStorage.getItem('items')) || [];
     const storedTotalPrice = localStorage.getItem('totalCartPrice');
@@ -97,10 +99,12 @@ export default {
 
         console.log('Dati del pagamento inviati:', paymentData);
 
+        this.paymentSuccess = true;
         axios.post('http://127.0.0.1:8000/api/braintree/checkout', paymentData)
           .then(res => {
             console.log('Pagamento avvenuto con successo', res);
             this.$router.push({name : 'payment-success'});
+            this.clearCart();
           })
           .catch(error => {
             console.error('Pagamento fallito', error.response.data);
@@ -162,12 +166,22 @@ export default {
     saveCart() {
       localStorage.setItem('CartItems', JSON.stringify(this.dishes));
     },
+
+    clearCart() {
+      this.store.CartItems.splice(0, this.store.CartItems.length);
+      localStorage.setItem('CartItems', this.store.CartItems);
+      localStorage.setItem('totalCartPrice', 0);
+      console.log(this.store.CartItems);
+    },
   },
 };
 </script>
 
 <template>
-  <div class="container position-relative">
+  <div class="container position-relative" :class="paymentSuccess ? 'disabled' : ''">
+    <div class="spin spinner-border text-success" role="status" v-if="paymentSuccess">
+      <span class="visually-hidden">Loading...</span>
+    </div>
     <form @submit.prevent="submitPayment" method="POST" id="myForm">
       <div class="user-info p-2 rounded-2">
         <div class="mb-3">
@@ -249,6 +263,19 @@ export default {
 
 .user-info, .order-details{
   border: 3px solid $primaryColor;
+}
+
+.disabled{
+  pointer-events: none;
+
+  opacity: 50%;
+}
+
+.spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50%, -50%;
 }
 
 #alert{
