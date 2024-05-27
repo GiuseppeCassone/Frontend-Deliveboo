@@ -8,9 +8,9 @@ export default {
   <div class="container-fluid px-0 personal_shadow">
     <nav class="navbar navbar-expand-md">
       <div class="container">
-        <a class="navbar-brand" href="#">
+        <router-link :to="{name: 'home'}" class="navbar-brand">
           <img class="img-fluid w-50 personal_logo" src="/images/wowdelive.svg" alt="logo">
-        </a>
+        </router-link>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

@@ -236,7 +236,7 @@ export default {
       <div id="alert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center justify-content-center" role="alert">
         <img src="/images/cart2.png" alt="">
         <h2 class="my-3"><strong>Attenzione!!!</strong> Carrello vuoto :(</h2>
-        <router-link id="link" :to="{ name: 'info-restaurant', params: { id: store.currentIdRestaurant } }" class="text-black text-decoration-none btn btn-info btn-lg fw-bold fs-3">
+        <router-link id="link" :to="{ name: 'home' }" class="text-black text-decoration-none btn btn-info btn-lg fw-bold fs-3">
           <i class="fa-solid fa-arrow-left fa-beat me-2"></i> Torna al ristorante <i class="fa-solid fa-utensils"></i>
         </router-link>
         <!-- <button type="button" class="btn-close position-absolute top-0 end-0" data-bs-dismiss="alert" aria-label="Close"></button> -->
