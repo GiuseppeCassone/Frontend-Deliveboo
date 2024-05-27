@@ -217,7 +217,7 @@ export default {
         <router-link id="link" :to="{ name: 'info-restaurant', params: { id: store.currentIdRestaurant } }" class="text-black text-decoration-none btn btn-info btn-lg fw-bold fs-3">
           <i class="fa-solid fa-arrow-left fa-beat me-2"></i> Torna al ristorante <i class="fa-solid fa-utensils"></i>
         </router-link>
-        <button type="button" class="btn-close position-absolute top-0 end-0" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- <button type="button" class="btn-close position-absolute top-0 end-0" data-bs-dismiss="alert" aria-label="Close"></button> -->
       </div>
 
     </div>
