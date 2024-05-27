@@ -23,6 +23,19 @@ export default {
   },
   mounted() {
     this.getClientToken();
+    this.items = JSON.parse(localStorage.getItem('items')) || [];
+    const storedTotalPrice = localStorage.getItem('totalCartPrice');
+      if (storedTotalPrice !== null) {
+        this.store.totalCartPrice = Number(storedTotalPrice);
+      }
+      const storedCartItems = localStorage.getItem('CartItems');
+      if (storedCartItems) {
+        this.store.CartItems = JSON.parse(storedCartItems);
+      }
+      console.log(this.store.CartItems)
+
+      console.log('mounted', this.FormData.order_total);
+
    
   },
   methods: {
@@ -51,6 +64,8 @@ export default {
 
     // Funzione per il pagamento di braintree
     submitPayment() {
+      this.FormData.order_total = this.store.totalCartPrice;
+      console.log(this.FormData.order_total);
       this.instance.requestPaymentMethod((err, payload) => {
         if (err) {
           console.error(err);
@@ -101,6 +116,10 @@ export default {
       this.store.totalCartPrice += Number(this.store.CartItems[index].itemPrice);
       this.store.totalCartPrice = Number(this.store.totalCartPrice.toFixed(2));
       localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
+
+      console.log(this.FormData.order_total);
+
+      this.updateTotalPrice();
     },
     decreaseQuantity(index) {
       // if (this.dishes[index].itemQuantity > 1) {
@@ -125,6 +144,8 @@ export default {
 
       localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
+
+      this.updateTotalPrice();
     },
     removeItem(index) {
       this.store.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
@@ -132,12 +153,14 @@ export default {
       this.store.CartItems.splice(index, 1);
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
 
+      this.updateTotalPrice();
       // this.updateTotalPrice();
       // this.saveCart();
     },
     updateTotalPrice() {
       // this.FormData.order_total = this.dishes.reduce((total, item) => total + item.ItemTotalPrice * item.itemQuantity, 0).toFixed(2);
-      localStorage.setItem('totalCartPrice', this.FormData.order_total);
+      // localStorage.setItem('totalCartPrice', this.FormData.order_total);
+      // this.FormData.order_total = this.store.totalCartPrice;
     },
     saveCart() {
       localStorage.setItem('CartItems', JSON.stringify(this.dishes));
@@ -178,7 +201,7 @@ export default {
         <p>Totale: {{ store.totalCartPrice }}€</p>
       </div>
     </form>
-    <div v-if="dishes.length > 0">
+    <div v-if="store.CartItems.length > 0">
       <div id="dropin-container"></div>
       <button id="submit-button" @click="submitPayment" class="btn btn-success">Acquista</button>
     </div>
@@ -186,7 +209,7 @@ export default {
       
         Attenzione!!!
         Carrello vuoto <router-link 
-                            :to="{ name: 'info-restaurant', params: {  id: store.currentIdRestaurant } }">
+                            :to="{ name: 'home' }">
                             torna al ristorante precedente
                         </router-link>
     </div>
