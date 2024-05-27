@@ -2,9 +2,15 @@
 import axios from 'axios';
 import dropin from 'braintree-web-drop-in';
 import { store } from '../store';
+import PaymentApproved from '../pages/PaymentApproved.vue';
 
 export default {
   name: 'PaymentMeth',
+
+  components: {
+    PaymentApproved,
+  },
+  
   data() {
     return {
       store,
@@ -65,28 +71,23 @@ export default {
     // Funzione per il pagamento di braintree
     submitPayment() {
       this.FormData.order_total = this.store.totalCartPrice;
-      console.log(this.FormData.order_total);
-      this.instance.requestPaymentMethod((err, payload) => {
+
+      const form = document.getElementById('myForm');
+      console.log(form)
+
+        // event.preventDefault(); // Evita l'invio del form
+
+        if (!form.checkValidity()) {
+          alert("Compilare tutti i campi correttamente!");
+          // document.getElementById('try').innerHTML = 'ciao';
+          return;
+        }
+        // console.log(this.FormData.order_total);
+        this.instance.requestPaymentMethod((err, payload) => {
         if (err) {
           console.error(err);
           return;
         }
-
-        // // Assicura che tutti i piatti abbiano il campo 'id'
-        // const validDishes = this.dishes.map(dish => {
-        //   if (!dish.itemId) {
-        //     console.error('Piatto mancante di itemId:', dish);
-        //   }
-        //   return {
-        //     itemId: dish.itemId,
-        //     itemName: dish.itemName,
-        //     itemPrice: dish.itemPrice,
-        //     itemQuantity: dish.itemQuantity,
-        //     ItemTotalPrice: dish.ItemTotalPrice,
-        //     restaurantId: dish.restaurantId,
-        //   };
-        // });
-
         const paymentData = {
           ...this.FormData,
           paymentMethodNonce: payload.nonce,
@@ -106,6 +107,10 @@ export default {
             console.error('Pagamento fallito', error.response.data);
           });
       });
+
+        // Processa i dati del form (ad esempio, inviali al server)
+
+     
     },
     increaseQuantity(index) {
       this.store.CartItems[index].itemQuantity++;
@@ -171,7 +176,7 @@ export default {
 
 <template>
   <div class="container position-relative">
-    <form @submit.prevent="submitPayment" method="POST">
+    <form @submit.prevent="submitPayment" method="POST" id="myForm">
       <div class="user-info d-flex flex-column ">
         <label for="customer_name">Nome:</label>
         <input type="text" id="customer_name" name="customer_name" v-model="FormData.customer_name" required>
@@ -186,8 +191,10 @@ export default {
         <input type="text" id="customer_address" name="customer_address" v-model="FormData.customer_address" required>
 
         <label for="customer_phone">Telefono:</label>
-        <input type="tel" id="customer_phone" name="customer_phone" v-model="FormData.customer_phone" required>
+        <input type="tel" id="customer_phone" name="customer_phone" maxlength="10" pattern="\d{10}" v-model="FormData.customer_phone" required>
       </div>
+
+      <PaymentApproved></PaymentApproved>
 
       <div class="order-details border border-1 my-3 p-3">
         <ul class="p-0 m-0">
@@ -208,20 +215,23 @@ export default {
     <div v-if="store.CartItems.length > 0">
       <div id="dropin-container"></div>
       <button id="submit-button" @click="submitPayment" class="btn btn-success">Acquista</button>
+      <!-- <router-link :to="{ name: 'payment-success' }" @click="submitPayment()" class="btn btn-success">
+        Acquista
+      </router-link> -->
     </div>
     <div v-else>
       <!-- Alert Bootstrap 5 -->
       <div id="alert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center justify-content-center" role="alert">
         <img src="/images/cart2.png" alt="">
-        <h2 class="my-3"><strong>Attenzione!!!</strong> Carrello vuoto :(</h2>
-        <router-link id="link" :to="{ name: 'info-restaurant', params: { id: store.currentIdRestaurant } }" class="text-black text-decoration-none btn btn-info btn-lg fw-bold fs-3">
+        <h2 class="my-3"><strong>Attenzione!!!</strong> Carrello vuoto :</h2>
+        <router-link id="link" :to="{ name: 'home' }" class="text-black text-decoration-none btn btn-info btn-lg fw-bold fs-3">
           <i class="fa-solid fa-arrow-left fa-beat me-2"></i> Torna al ristorante <i class="fa-solid fa-utensils"></i>
         </router-link>
         <!-- <button type="button" class="btn-close position-absolute top-0 end-0" data-bs-dismiss="alert" aria-label="Close"></button> -->
       </div>
 
     </div>
-
+    <div id="try"></div>
   </div>
 </template>
 

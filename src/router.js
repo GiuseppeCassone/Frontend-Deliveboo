@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from './pages/HomePage.vue';
 import InfoRestaurant from './pages/InfoRestaurant.vue';
 import PaymentPage from './pages/PaymentPage.vue';
+import PaymentApproved from './pages/PaymentApproved.vue';
 
 
 const router = createRouter({
@@ -27,6 +28,12 @@ const router = createRouter({
             path: '/payment',
             name: 'payment',
             component: PaymentPage
+        },
+
+        {
+            path: '/payment-success',
+            name: 'payment-success',
+            component: PaymentApproved,
         }
     ]
 
