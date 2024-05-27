@@ -13,7 +13,7 @@ export default {
       store,
       clientToken: null,
       instance: null,
-      paymentSuccess: false,
+
       FormData: {
         customer_name: '',
         customer_lastname: '',
