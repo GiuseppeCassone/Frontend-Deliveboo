@@ -170,7 +170,7 @@ export default {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container position-relative">
     <form @submit.prevent="submitPayment" method="POST">
       <div class="user-info d-flex flex-column ">
         <label for="customer_name">Nome:</label>
@@ -191,11 +191,15 @@ export default {
 
       <div class="order-details border border-1 my-3 p-3">
         <ul class="p-0 m-0">
-          <li class=" list-unstyled" v-for="(dish, index) in store.CartItems" :key="dish.itemId">
-            {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ dish.ItemTotalPrice.toFixed(2) }}€ 
-            <button type="button" @click="decreaseQuantity(index)">-</button>
-            <button type="button" @click="increaseQuantity(index)">+</button>
-            <button type="button" @click="removeItem(index)">Rimuovi</button>
+          <li class=" list-unstyled row mb-2" v-for="(dish, index) in store.CartItems" :key="dish.itemId">
+            <div class="col">
+              {{ dish.itemName }} X {{ dish.itemQuantity }} = {{ dish.ItemTotalPrice.toFixed(2) }}€ 
+            </div>
+            <div class="col d-flex gap-3">
+              <button type="button" class="btn btn-success fw-bold" @click="increaseQuantity(index)"><i class="fa-solid fa-plus"></i></button>
+              <button type="button" class="btn btn-success fw-bold" @click="decreaseQuantity(index)"><i class="fa-solid fa-minus"></i></button>
+              <button type="button" class="btn btn-danger fw-bold" @click="removeItem(index)"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
           </li>
         </ul>
         <p>Totale: {{ store.totalCartPrice }}€</p>
@@ -205,15 +209,48 @@ export default {
       <div id="dropin-container"></div>
       <button id="submit-button" @click="submitPayment" class="btn btn-success">Acquista</button>
     </div>
-    <div v-else class=" p-3 text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-3">
-      
-        Attenzione!!!
-        Carrello vuoto <router-link 
-                            :to="{ name: 'home' }">
-                            torna al ristorante precedente
-                        </router-link>
+    <div v-else>
+      <!-- Alert Bootstrap 5 -->
+      <div id="alert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center justify-content-center" role="alert">
+        <img src="/images/cart2.png" alt="">
+        <h2 class="my-3"><strong>Attenzione!!!</strong> Carrello vuoto :(</h2>
+        <router-link id="link" :to="{ name: 'info-restaurant', params: { id: store.currentIdRestaurant } }" class="text-black text-decoration-none btn btn-info btn-lg fw-bold fs-3">
+          <i class="fa-solid fa-arrow-left fa-beat me-2"></i> Torna al ristorante <i class="fa-solid fa-utensils"></i>
+        </router-link>
+        <button type="button" class="btn-close position-absolute top-0 end-0" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
     </div>
+
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+@use '../styles/variables' as *;
+
+#alert{
+
+  width: 100%;
+  height: 100%;
+
+  img{
+    filter: invert(1);
+    width: auto;
+    height: 200px;
+  }
+
+  #link{
+    background-color: $secondColor;
+    border: solid $primaryColor;
+  
+    &:hover{
+      transition: .3 ease-in-out;
+    background-color: $thirdColor;
+    border: solid $primaryColor;
+    }
+  }
+
+}
+
+
+</style>
