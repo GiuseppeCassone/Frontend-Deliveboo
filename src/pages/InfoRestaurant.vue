@@ -320,8 +320,8 @@ export default {
               Totale dei Prodotti: {{ store.CartItems.length }} <br> 
               Totale prezzo: €{{ store.totalCartPrice.toFixed(2) }}
             </p>
-            <div class="checkout btn btn-primary btn-pay" v-if="store.CartItems.length > 0">
-              <router-link 
+            <div class="checkout border-0 btn btn-primary btn-pay" v-if="store.CartItems.length > 0">
+              <router-link class=" text-decoration-none" 
                 :to="{ name: 'payment'}">
                 <span class="text-white text-decoration-none">Procedi al pagamento</span>
               </router-link>
