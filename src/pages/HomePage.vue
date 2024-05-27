@@ -39,6 +39,8 @@ export default{
             // link base per la chiamata api per le immagini
             apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
+            isTypologiesCollapsed: false,
+
         }
     },
 
@@ -150,6 +152,9 @@ export default{
 
             this.apiCall();
         },
+        toggleTypologies() {
+            this.isTypologiesCollapsed = !this.isTypologiesCollapsed;
+        },
     },
 
 
@@ -161,47 +166,63 @@ export default{
 
 
 <template>
-    <div class="container mb-5 mt-3">
-        
-        <!-- sezione lista delle tipologie -->
-        <div class="restaurant-typologies d-flex gap-3 mb-3">
+    <div class="container-fluid mb-5 mt-3">
 
-            <div v-for="typology in typologies" class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()"> <!-- v-model="checkBoxValue" -->
-                <label class="form-check-label" :for="typology.type">{{typology.type}}</label>
+        <!-- row -->
+        <div class="row d-flex flex-column flex-sm-row mx-5">
+
+            <!-- sezione lista delle tipologie -->
+            <div class="col-12 col-sm-3 restaurant-typologies d-flex flex-column ">
+                
+                <button class="mb-3 btn btn-outline-secondary d-flex justify-content-between align-items-center" type="button" role="button" @click="toggleTypologies">
+                    <h3 class="mb-1 text-uppercase">filtra</h3>
+                    <i class="fa-solid fa-arrow-down-wide-short"></i>
+                </button>
+
+                <div class="d-flex flex-wrap flex-md-column flex-lg-row row align-items-center justify-content-evenly row-gap-2">
+                    <div v-for="typology in typologies" class="Type col-6 form-check form-switch rounded-2" v-bind:class="{ 'd-flex d-sm-none': isTypologiesCollapsed, 'd-none d-sm-flex': !isTypologiesCollapsed }">
+                        <input class="form-check-input switch" type="checkbox" role="switch" :value="typology.type" :id="typology.type" :name="typology.type" v-model="checkBoxValue" @change="apiFilterByTypes()">
+                        <label class="Labell form-check-label d-flex align-items-center" :for="typology.type">{{typology.type}}</label>
+                    </div>
+                </div>
+
+            </div>
+
+            
+            <!-- sezione lista dei ristoranti -->
+            <div class="col-12 col-sm-9 restaurants-list d-flex flex-column row-cols-3 justify-content-between align-items-between flex-md-row flex-wrap">
+                <button class="btn btn-light col-12 mb-3 bg-white" disabled>
+                    <h3 class="col-12 mb-1">RISTORANTI</h3>
+
+                </button>
+    
+                <AppRestaurant 
+                    v-for="restaurant in restaurants" :restaurant="restaurant"
+                >
+                </AppRestaurant>
+    
+                <!-- sezione per la paginazione -->
+                <div class="pages text-white col-12 justify-content-center gap-2">
+                    <div class="previous" 
+                        :class="apiPageNumber == 1 ? 'none' : ''"
+                        @click="changeApiPage(apiLinks[0].label)"
+                        >
+                        <i class="fa-solid fa-arrow-left"
+                        :class="apiPageNumber == 1 ? 'none' : ''"></i>
+                    </div>
+        
+                    <div class="next" 
+                        :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"
+                        @click="changeApiPage(apiLinks[apiLinks.length - 1].label)"
+                        >
+                        <i class="fa-solid fa-arrow-right"
+                        :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"></i>
+                    </div>
+                </div>
+
             </div>
 
         </div>
-        
-        <!-- sezione lista dei ristoranti -->
-        <div class="restaurants-list d-flex flex-column justify-content-between">
-
-            <AppRestaurant 
-                v-for="restaurant in restaurants" :restaurant="restaurant"
-            >
-            </AppRestaurant>
-
-        </div>
-
-        <!-- sezione per la paginazione -->
-        <div class="pages">
-                <div class="previous" 
-                    :class="apiPageNumber == 1 ? 'none' : ''"
-                    @click="changeApiPage(apiLinks[0].label)"
-                    >
-                    <i class="fa-solid fa-arrow-left"
-                    :class="apiPageNumber == 1 ? 'none' : ''"></i>
-                </div>
- 
-                <div class="next" 
-                    :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"
-                    @click="changeApiPage(apiLinks[apiLinks.length - 1].label)"
-                    >
-                    <i class="fa-solid fa-arrow-right"
-                    :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"></i>
-                </div>
-            </div>
-
 
     </div>
 </template>
@@ -212,18 +233,59 @@ export default{
 <style scoped lang="scss">
 @use '../styles/variables' as *;
 
-.restaurants-list{
-    gap: 60px;
+.Type{   
+    display: flex;
+    align-items: center;
+    gap: 15px;
 
-    margin-bottom: 50px;
+    height: 50px;
+    width: 140px;
+
+    .form-check-input{
+        & svg{
+            fill: #40A578;
+        }
+
+        &:focus{
+            box-shadow: $focus-ring-box-shadow;
+        }
+
+        &:checked {
+          background-color: #40A578;
+          border-color: #006769;
+        }
+
+        &:not(:checked) {
+          background-color: #fff;
+          border-color: lightgrey;
+
+        }
+        
+    }
+
+
+    .Labell{
+        width: 140px;
+        height: 50px;
+    }
+}
+
+
+
+
+.btn-color{
+  background-color: $secondColor;
+  border-color: $primaryColor;
+
+  &:hover{
+    background-color: $primaryColor;
+  }
 }
 
 .pages {
     display: flex;
     justify-content: center;
     gap: 10px;
-
-    color: white;
 
     .previous, .next {
         display: flex;
@@ -252,7 +314,14 @@ export default{
     }
 }
 
-.restaurant-typologies{
-    overflow-x: auto;
+
+@media (min-width: 768px){
+
+    // .row{
+    //     .restaurant-typologies{
+    //         flex-direction: column;
+    //     }
+    // }
 }
+
 </style>
