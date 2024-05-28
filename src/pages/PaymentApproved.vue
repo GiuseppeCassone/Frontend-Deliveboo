@@ -1,8 +1,37 @@
 <script>
+import { store } from '../store';
 
 export default{
 
-    name: 'PaymentApproved'
+    name: 'PaymentApproved',
+
+    data() {
+        return {
+            store,
+
+            paymentSuccess: false,
+        }
+    },
+
+    mounted() {
+      
+      console.log('approved', this.store.lastOrder);
+      this.paymentSuccess = true;
+      if(this.paymentSuccess) this.clearCart();
+
+    },
+
+    methods: {
+
+        // metodo che svuota il carrello quando l'utente effettua il pagamento
+        clearCart() {
+            this.store.CartItems.splice(0, this.store.CartItems.length);
+            localStorage.setItem('CartItems', this.store.CartItems);
+            localStorage.setItem('totalCartPrice', 0);
+            console.log(this.store.CartItems);
+        },
+
+    },
 
 }
 
@@ -24,6 +53,16 @@ export default{
         <router-link :to="{ name: 'home' }" class="btn">
             Continua con i tuoi ordini 
         </router-link>
+
+        <div class="order">
+            <div v-for="item in store.lastOrder" class="single-order">
+                <div class="order-dish">{{ item.itemName }}</div>
+                <div class="order-price">{{ item.itemPrice }}</div>
+                <div class="order-quantity">{{ item.itemQuantity }}</div>
+                <div class="order-total-price">{{ item.ItemTotalPrice }}</div>
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -67,6 +106,8 @@ export default{
     .btn{
         border: 1px solid black;
 
+        margin: 20px;
+
         &:hover{
             border: 1px solid white;
 
@@ -75,6 +116,20 @@ export default{
             background-color: $thirdColor;
         }
     }
+
+    .order{
+        padding: 10px;
+
+        border: 1px solid black;
+        border-radius: 10px;
+    
+        .single-order{
+            display: flex;
+            justify-content: space-between;
+        }
+
+    }
+
 }
 
 </style>
