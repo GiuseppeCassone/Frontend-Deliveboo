@@ -4,9 +4,16 @@ import dropin from 'braintree-web-drop-in';
 import { store } from '../store';
 import { router } from '../router';
 
+// importo la libreria Vuelidate 2
+import { required, email, helpers, minLength, maxLength, alpha } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+
 export default {
   name: 'PaymentMeth',
-
+  setup() {
+    const v$ = useVuelidate();
+    return { v$ };
+  },
   
   data() {
     return {
@@ -25,24 +32,52 @@ export default {
       dishes: JSON.parse(localStorage.getItem('CartItems')) || [],
     };
   },
+  // validazioni per i campi di input
+  validations() {
+    return {
+      FormData: {
+        customer_name: { 
+          required: helpers.withMessage('Il campo Nome è obbligatorio.', required),
+          minLength: helpers.withMessage('Il Nome deve avere almeno 2 caratteri.', minLength(2)),
+          maxLength: helpers.withMessage('Il Nome non può superare i 30 caratteri.', maxLength(30)),
+          alpha: helpers.withMessage('Il Nome deve contenere solo lettere.', alpha)
+        },
+        customer_lastname: { 
+          required: helpers.withMessage('Il campo Cognome è obbligatorio.', required),
+          minLength: helpers.withMessage('Il Cognome deve avere almeno 2 caratteri.', minLength(2)),
+          maxLength: helpers.withMessage('Il Cognome non può superare i 30 caratteri.', maxLength(30)),
+          alpha: helpers.withMessage('Il Cognome deve contenere solo lettere.', alpha)
+        },
+        customer_email: { 
+          required: helpers.withMessage('Il campo Email è obbligatorio.', required), 
+          email: helpers.withMessage('L\'email deve essere valida.', email),
+        },
+        customer_address: { 
+          required: helpers.withMessage('Il campo Indirizzo è obbligatorio.', required),
+          minLength: helpers.withMessage('L\'Indirizzo deve avere almeno 5 caratteri.', minLength(5))
+        },
+        customer_phone: {
+          required: helpers.withMessage('Il campo Telefono è obbligatorio.', required),
+          phoneNumber: helpers.withMessage('Il numero di telefono deve essere valido (10 cifre).', helpers.regex('phoneNumber', /^[0-9]{10}$/))
+        },
+      },
+    };
+  },
+
   mounted() {
     this.paymentSuccess = false;
-
     this.getClientToken();
     this.items = JSON.parse(localStorage.getItem('items')) || [];
+    
     const storedTotalPrice = localStorage.getItem('totalCartPrice');
-      if (storedTotalPrice !== null) {
-        this.store.totalCartPrice = Number(storedTotalPrice);
-      }
-      const storedCartItems = localStorage.getItem('CartItems');
-      if (storedCartItems) {
-        this.store.CartItems = JSON.parse(storedCartItems);
-      }
-      console.log(this.store.CartItems)
+    if (storedTotalPrice !== null) {
+      this.store.totalCartPrice = Number(storedTotalPrice);
+    }
 
-      // console.log('mounted', this.FormData.order_total);
-
-   
+    const storedCartItems = localStorage.getItem('CartItems');
+    if (storedCartItems) {
+      this.store.CartItems = JSON.parse(storedCartItems);
+    }
   },
   methods: {
     getClientToken() {
@@ -55,10 +90,11 @@ export default {
           console.error('Fallita la richiesta del client token', error);
         });
     },
+
     initializeDropin() {
       dropin.create({
         authorization: this.clientToken,
-        container: '#dropin-container'
+        container: '#dropin-container',
       }, (err, instance) => {
         if (err) {
           console.error(err);
@@ -68,22 +104,17 @@ export default {
       });
     },
 
-    // Funzione per il pagamento di braintree
     submitPayment() {
       this.FormData.order_total = this.store.totalCartPrice;
 
-      const form = document.getElementById('myForm');
-      console.log(form)
+      // const form = document.getElementById('myForm');
 
-        // event.preventDefault(); // Evita l'invio del form
+    //   if (this.v$.$invalid) {
+    //     alert('Compilare tutti i campi correttamente!');
+    //   return;
+    // }
 
-        if (!form.checkValidity()) {
-          alert("Compilare tutti i campi correttamente!");
-          // document.getElementById('try').innerHTML = 'ciao';
-          return;
-        }
-        // console.log(this.FormData.order_total);
-        this.instance.requestPaymentMethod((err, payload) => {
+      this.instance.requestPaymentMethod((err, payload) => {
         if (err) {
           console.error(err);
           return;
@@ -92,54 +123,46 @@ export default {
           ...this.FormData,
           paymentMethodNonce: payload.nonce,
           orderData: JSON.stringify(this.dishes.map(dish => ({
-            dish_id: dish.itemId,  // Assicurati che `dish.itemId` sia corretto
-            quantity: dish.itemQuantity  // Assicurati che `dish.itemQuantity` sia corretto
+            dish_id: dish.itemId,
+            quantity: dish.itemQuantity,
           }))),
         };
 
-        console.log('Dati del pagamento inviati:', paymentData);
-
-        this.paymentSuccess = true;
         axios.post('http://127.0.0.1:8000/api/braintree/checkout', paymentData)
           .then(res => {
             console.log('Pagamento avvenuto con successo', res);
-            this.$router.push({name : 'payment-success'});
+            this.$router.push({ name: 'payment-success' });
             this.clearCart();
           })
           .catch(error => {
             console.error('Pagamento fallito', error.response.data);
           });
       });
-
-        // Processa i dati del form (ad esempio, inviali al server)
-
-     
     },
+
     increaseQuantity(index) {
-      this.store.CartItems[index].itemQuantity++;
-      this.store.CartItems[index].ItemTotalPrice += this.store.CartItems[index].itemPrice;
-      this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
+      const item = this.store.CartItems[index];
+      item.itemQuantity++;
+      item.ItemTotalPrice += item.itemPrice;
+      item.ItemTotalPrice = Number(item.ItemTotalPrice.toFixed(2));
+
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
-      
-      this.store.totalCartPrice += Number(this.store.CartItems[index].itemPrice);
+
+      this.store.totalCartPrice += Number(item.itemPrice);
       this.store.totalCartPrice = Number(this.store.totalCartPrice.toFixed(2));
       localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
 
-      console.log(this.FormData.order_total);
-
       this.updateTotalPrice();
     },
+
     decreaseQuantity(index) {
-      if(this.store.CartItems[index].itemQuantity > 1) {
-        // aggiorno la quantità di quel piatto nel carrello
-        this.store.CartItems[index].itemQuantity--;
-        // aggiorno il prezzo totale dello stesso piatto all'interno del carello
-        this.store.CartItems[index].ItemTotalPrice -= this.store.CartItems[index].itemPrice;
-        this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
-        // aggiorno il prezzo totale del carrello
-        this.store.totalCartPrice -= Number(this.store.CartItems[index].itemPrice);
+      const item = this.store.CartItems[index];
+      if (item.itemQuantity > 1) {
+        item.itemQuantity--;
+        item.ItemTotalPrice -= item.itemPrice;
+        item.ItemTotalPrice = Number(item.ItemTotalPrice.toFixed(2));
+        this.store.totalCartPrice -= Number(item.itemPrice);
       } else {
-        // altrimenti rimuovo quel piatto dal carrello
         this.removeItem(index);
       }
 
@@ -148,70 +171,132 @@ export default {
 
       this.updateTotalPrice();
     },
+
     removeItem(index) {
-      this.store.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
-      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
+      const item = this.store.CartItems[index];
+      this.store.totalCartPrice -= Number(item.ItemTotalPrice);
       this.store.CartItems.splice(index, 1);
+      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
 
       this.updateTotalPrice();
-      // this.updateTotalPrice();
-      // this.saveCart();
     },
-    updateTotalPrice() {
-      // this.FormData.order_total = this.dishes.reduce((total, item) => total + item.ItemTotalPrice * item.itemQuantity, 0).toFixed(2);
-      // localStorage.setItem('totalCartPrice', this.FormData.order_total);
-      // this.FormData.order_total = this.store.totalCartPrice;
-    },
+
     saveCart() {
       localStorage.setItem('CartItems', JSON.stringify(this.dishes));
     },
 
     clearCart() {
-      this.store.CartItems.splice(0, this.store.CartItems.length);
-      localStorage.setItem('CartItems', this.store.CartItems);
+      this.store.CartItems = [];
+      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
       localStorage.setItem('totalCartPrice', 0);
-      console.log(this.store.CartItems);
     },
+
+    // funzioni per validare il form in tempo reale usando il metodo touch()
+    validateField(field) {
+      this.v$.$touch();
+      this.v$[field].$touch();
+    },
+
+    validateForm() {
+      this.v$.$touch();
+      if (!this.v$.$invalid) {
+        this.submitPayment();
+      }
+    }
   },
 };
 </script>
+
 
 <template>
   <div class="container position-relative" :class="paymentSuccess ? 'disabled' : ''">
     <div class="spin spinner-border text-success" role="status" v-if="paymentSuccess">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <form @submit.prevent="submitPayment" method="POST" id="myForm">
+    <form @submit.prevent="validateForm" method="POST" id="myForm">
       <div class="user-info p-2 rounded-2">
+        <h3>Informazioni personali</h3>
+        <!-- Nome -->
         <div class="mb-3">
           <label for="customer_name" class="form-label">Nome:</label>
-          <input type="text" class="form-control" id="customer_name" name="customer_name" v-model="FormData.customer_name" required>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="customer_name" 
+            name="customer_name" 
+            v-model="FormData.customer_name" 
+            @input="v$.FormData.customer_name.$touch()" 
+            :class="{'is-invalid': v$.FormData.customer_name.$error}"
+            autofocus
+            required>
+          <div v-if="v$.FormData.customer_name.$error" class="invalid-feedback">{{ v$.FormData.customer_name.$errors[0].$message }}</div>
         </div>
-
+        
+        <!-- Cognome -->
         <div class="mb-3">
           <label for="customer_lastname" class="form-label">Cognome:</label>
-          <input type="text" class="form-control" id="customer_lastname" name="customer_lastname" v-model="FormData.customer_lastname" required>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="customer_lastname" 
+            name="customer_lastname" 
+            v-model="FormData.customer_lastname" 
+            @input="v$.FormData.customer_lastname.$touch()" 
+            :class="{'is-invalid': v$.FormData.customer_lastname.$error}"
+            required>
+          <div v-if="v$.FormData.customer_lastname.$error" class="invalid-feedback">{{ v$.FormData.customer_lastname.$errors[0].$message }}</div>
         </div>
-
+        
+        <!-- Email -->
         <div class="mb-3">
           <label for="customer_email" class="form-label">Email:</label>
-          <input type="email" class="form-control" id="customer_email" name="customer_email" v-model="FormData.customer_email" required>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="customer_email" 
+            name="customer_email" 
+            v-model="FormData.customer_email" 
+            @input="v$.FormData.customer_email.$touch()" 
+            :class="{'is-invalid': v$.FormData.customer_email.$error}"
+            required>
+          <div v-if="v$.FormData.customer_email.$error" class="invalid-feedback">{{ v$.FormData.customer_email.$errors[0].$message }}</div>
         </div>
-
+        
+        <!-- Indirizzo -->
         <div class="mb-3">
           <label for="customer_address" class="form-label">Indirizzo:</label>
-          <input type="text" class="form-control" id="customer_address" name="customer_address" v-model="FormData.customer_address" required>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="customer_address" 
+            name="customer_address" 
+            v-model="FormData.customer_address" 
+            @input="v$.FormData.customer_address.$touch()" 
+            :class="{'is-invalid': v$.FormData.customer_address.$error}"
+            required>
+          <div v-if="v$.FormData.customer_address.$error" class="invalid-feedback">{{ v$.FormData.customer_address.$errors[0].$message }}</div>
         </div>
-
+        
+        <!-- Telefono -->
         <div class="mb-3">
           <label for="customer_phone" class="form-label">Telefono:</label>
-          <input type="tel" class="form-control" id="customer_phone" name="customer_phone" maxlength="10" pattern="\d{10}" v-model="FormData.customer_phone" required>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="customer_phone" 
+            name="customer_phone" 
+            v-model="FormData.customer_phone" 
+            @input="v$.FormData.customer_phone.$touch()" 
+            :class="{'is-invalid': v$.FormData.customer_phone.$error}"
+            required>
+          <div v-if="v$.FormData.customer_phone.$error" class="invalid-feedback">{{ v$.FormData.customer_phone.$errors[0].$message }}</div>
         </div>
       </div>
+    </form>
 
-
-      <div class="order-details rounded-2 my-3 p-3">
+    <div class="order-details rounded-2 my-3 p-3">
+      <h3>Riepilogo ordine</h3>
         <table class="table">
           <thead>
             <tr>
@@ -236,11 +321,10 @@ export default {
         </table>
         <p>Totale: {{ store.totalCartPrice }}€</p>
       </div>
-
-    </form>
+    
     <div v-if="store.CartItems.length > 0">
       <div id="dropin-container"></div>
-      <button id="submit-button" @click="submitPayment" class="btn btn-success">Acquista</button>
+      <button id="submit-button" @click="validateForm" class="btn btn-success btn-lg my-3">Acquista</button>
     </div>
     <div v-else>
       <!-- Alert Bootstrap 5 -->
@@ -250,13 +334,14 @@ export default {
         <router-link id="link" :to="{ name: 'home' }" class="text-black text-decoration-none btn btn-info btn-lg fw-bold fs-3">
           <i class="fa-solid fa-arrow-left fa-beat me-2"></i> Torna al ristorante <i class="fa-solid fa-utensils"></i>
         </router-link>
-        <!-- <button type="button" class="btn-close position-absolute top-0 end-0" data-bs-dismiss="alert" aria-label="Close"></button> -->
       </div>
-
     </div>
+    
     <div id="try"></div>
   </div>
 </template>
+
+
 
 <style lang="scss">
 @use '../styles/variables' as *;

@@ -256,7 +256,7 @@ export default {
           <div id="contact" class="d-flex flex-column justify-content-between gap-2">
             <h5 class="text-uppercase">Contatti: </h5>
             <p class="mb-0"><i class="fa-solid fa-map-location-dot"></i> {{ restaurant.address }}</p>
-            <p class="mb-0"> <img class="img-fluid" src="/public/images/vat.svg" alt=""> {{ restaurant.vat }}</p>
+            <p class="mb-0"> <img class="img-fluid" src="/images/vat.svg" alt=""> {{ restaurant.vat }}</p>
             <p class="mb-0"><i class="fa-solid fa-phone"></i> {{ restaurant.phone_number }}</p>
           </div>
         </section>
