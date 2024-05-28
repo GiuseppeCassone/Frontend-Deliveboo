@@ -128,11 +128,17 @@ export default {
           }))),
         };
 
+        console.log('Dati del pagamento inviati:', paymentData);
+
+        this.paymentSuccess = true;
+        this.store.lastOrder = JSON.parse(localStorage.getItem('CartItems'));  // Recupera lo stato originale del carrello
+        localStorage.setItem('lastOrder', JSON.stringify(this.store.lastOrder));
         axios.post('http://127.0.0.1:8000/api/braintree/checkout', paymentData)
           .then(res => {
             console.log('Pagamento avvenuto con successo', res);
-            this.$router.push({ name: 'payment-success' });
-            this.clearCart();
+            this.$router.push({name : 'payment-success'});
+            // if(this.paymentSuccess) this.clearCart();
+            // this.clearCart();
           })
           .catch(error => {
             console.error('Pagamento fallito', error.response.data);

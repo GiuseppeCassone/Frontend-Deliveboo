@@ -8,4 +8,6 @@ export const store = reactive({
     totalCartPrice: 0,
     currentIdRestaurant: null,
 
+    lastOrder: [],
+
 })
