@@ -5,8 +5,9 @@ import { store } from '../store';
 import { router } from '../router';
 
 // importo la libreria Vuelidate 2
-import { required, email, helpers, minLength, maxLength, alpha } from '@vuelidate/validators';
+import { required, email, helpers, minLength, maxLength, alpha, numeric } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
+
 
 export default {
   name: 'PaymentMeth',
@@ -46,7 +47,7 @@ export default {
           required: helpers.withMessage('Il campo Cognome è obbligatorio.', required),
           minLength: helpers.withMessage('Il Cognome deve avere almeno 2 caratteri.', minLength(2)),
           maxLength: helpers.withMessage('Il Cognome non può superare i 30 caratteri.', maxLength(30)),
-          alpha: helpers.withMessage('Il Cognome deve contenere solo lettere.', alpha)
+          // alpha: helpers.withMessage('Il Cognome deve contenere solo lettere.', alpha)
         },
         customer_email: { 
           required: helpers.withMessage('Il campo Email è obbligatorio.', required), 
@@ -58,8 +59,11 @@ export default {
         },
         customer_phone: {
           required: helpers.withMessage('Il campo Telefono è obbligatorio.', required),
-          phoneNumber: helpers.withMessage('Il numero di telefono deve essere valido (10 cifre).', helpers.regex('phoneNumber', /^[0-9]{10}$/))
+          numeric: helpers.withMessage('Devi inserire solo numeri', numeric),
+          minLength: helpers.withMessage('Il numero di telefono deve avere almeno 10 caratteri.', minLength(10)),
+          maxLength: helpers.withMessage('Il numero di telefono non può superare i 10 caratteri.', maxLength(10)),
         },
+
       },
     };
   },
@@ -328,7 +332,8 @@ export default {
         <p>Totale: {{ store.totalCartPrice }}€</p>
       </div>
     
-    <div v-if="store.CartItems.length > 0">
+    <div class="user-info rounded-2 p-3 mb-3" v-if="store.CartItems.length > 0">
+      <h3 class="mb-0">Pagamento</h3>
       <div id="dropin-container"></div>
       <button id="submit-button" @click="validateForm" class="btn btn-success btn-lg my-3">Acquista</button>
     </div>
