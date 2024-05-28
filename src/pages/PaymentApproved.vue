@@ -1,7 +1,7 @@
 <script>
 import { store } from '../store';
 
-export default{
+export default {
 
     name: 'PaymentApproved',
 
@@ -13,25 +13,11 @@ export default{
         }
     },
 
-    created() {
-
-        
-        // localStorage.getItem('lastOrder');
-        // console.log('last', this.store.lastOrder)
-
-    },
-
     mounted() {
 
-        const storedLastOrder = localStorage.getItem('lastOrder');
-        if (storedLastOrder) {
-            this.store.lastOrder = JSON.parse(storedLastOrder);
-        }
-        // console.log(this.store.lastOrder)
-        
         console.log('approved', this.store.lastOrder);
         this.paymentSuccess = true;
-        if(this.paymentSuccess) this.clearCart();
+        if (this.paymentSuccess) this.clearCart();
 
     },
 
@@ -43,9 +29,6 @@ export default{
             localStorage.setItem('CartItems', this.store.CartItems);
             localStorage.setItem('totalCartPrice', 0);
             console.log(this.store.CartItems);
-
-            // Salva lastOrder in localStorage
-            localStorage.setItem('lastOrder', JSON.stringify(this.store.lastOrder));
         },
 
     },
@@ -56,40 +39,60 @@ export default{
 
 <template>
 
-<div class="container py-5">
-    
-    <div class="successful">
-        <i class="fa-solid fa-circle-check"></i>
+    <div class="container py-5">
 
-        <div class="text">
-            <span>Il pagamento è avvenuto con successo</span>
+        <div class="successful">
+            <i class="fa-solid fa-circle-check"></i>
 
-            <p>Riceverai presto una mail di conferma dell'ordine</p>
-        </div>
+            <div class="text">
+                <span>Il pagamento è avvenuto con successo</span>
 
-        <router-link :to="{ name: 'home' }" class="btn">
-            Continua con i tuoi ordini 
-        </router-link>
-
-        <div class="order">
-            <div v-for="item in store.lastOrder" class="single-order">
-                <div class="order-dish">{{ item.itemName }}</div>
-                <div class="order-price">{{ item.itemPrice }}</div>
-                <div class="order-quantity">{{ item.itemQuantity }}</div>
-                <div class="order-total-price">{{ item.ItemTotalPrice }}</div>
+                <p>Riceverai presto una mail di conferma dell'ordine</p>
             </div>
+
+            <router-link :to="{ name: 'home' }" class="btn">
+                Continua con i tuoi ordini
+            </router-link>
+
+            <div class="order">
+                <div v-for="item in store.lastOrder" class="single-order d-flex flex-column">
+                    <div class="order-dish">Nome del prodotto :{{ item.itemName }}</div>
+                    <div class="order-price"> Prezzo del prodotto :{{ item.itemPrice }}</div>
+                    <div class="order-quantity">Quantità selezionate :{{ item.itemQuantity }}</div>
+                    <div class="order-total-price">Totale :{{ item.ItemTotalPrice }}</div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+               
+            </div>
+
         </div>
 
     </div>
-
-</div>
 
 </template>
 
 <style scoped lang="scss">
 @use '../styles/variables.scss' as *;
 
-.container{
+.container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -97,7 +100,7 @@ export default{
 
     text-align: center;
 
-    .fa-circle-check{
+    .fa-circle-check {
         margin-bottom: 30px;
 
         font-size: 3em;
@@ -105,14 +108,14 @@ export default{
         color: $thirdColor;
     }
 
-    .text{
+    .text {
         span {
             margin-bottom: 10px;
 
             font-weight: bold;
         }
 
-        p{
+        p {
             margin-bottom: 20px;
 
             font-size: .8em;
@@ -120,27 +123,27 @@ export default{
 
     }
 
-    .btn{
+    .btn {
         border: 1px solid black;
 
         margin: 20px;
 
-        &:hover{
+        &:hover {
             border: 1px solid white;
 
             color: white;
-            
+
             background-color: $thirdColor;
         }
     }
 
-    .order{
+    .order {
         padding: 10px;
 
         border: 1px solid black;
         border-radius: 10px;
-    
-        .single-order{
+
+        .single-order {
             display: flex;
             justify-content: space-between;
         }
@@ -148,5 +151,4 @@ export default{
     }
 
 }
-
 </style>
