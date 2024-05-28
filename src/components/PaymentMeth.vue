@@ -162,7 +162,7 @@ export default {
       this.store.totalCartPrice = Number(this.store.totalCartPrice.toFixed(2));
       localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
 
-      this.updateTotalPrice();
+      
     },
 
     decreaseQuantity(index) {
@@ -179,7 +179,7 @@ export default {
       localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
 
-      this.updateTotalPrice();
+     
     },
 
     removeItem(index) {
@@ -189,7 +189,7 @@ export default {
       localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
 
-      this.updateTotalPrice();
+     
     },
 
     saveCart() {
