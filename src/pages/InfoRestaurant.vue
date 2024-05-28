@@ -223,6 +223,16 @@ export default {
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
     },
 
+    // metodo che svuota il carrello quando l'utente effettua il pagamento
+    clearCart() {
+            this.store.CartItems.splice(0, this.store.CartItems.length);
+            localStorage.setItem('CartItems', this.store.CartItems);
+            this.store.totalCartPrice = 0;
+            localStorage.setItem('totalCartPrice', 0);
+            console.log(this.store.CartItems);
+            console.log('carrello', this.store.totalCartPrice);
+    },
+
   },
   computed: {
     // alla creazione riporto la quantità degli elementi nel carrello
@@ -326,6 +336,7 @@ export default {
                 <span class="text-white text-decoration-none">Procedi al pagamento</span>
               </router-link>
             </div>
+            <button v-if="store.CartItems.length > 0" class="btn btn-danger" @click="clearCart()">Svuota il carrello</button>
           </div>
         </div>
       </div>

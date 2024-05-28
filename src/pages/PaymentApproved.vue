@@ -54,14 +54,6 @@ export default {
                 Continua con i tuoi ordini
             </router-link>
 
-            <!-- <div class="order">
-                <div v-for="item in store.lastOrder" class="single-order d-flex flex-column">
-                    <div class="order-dish">Nome del prodotto :{{ item.itemName }}</div>
-                    <div class="order-price"> Prezzo del prodotto :{{ item.itemPrice }}</div>
-                    <div class="order-quantity">Quantità selezionate :{{ item.itemQuantity }}</div>
-                    <div class="order-total-price">Totale :{{ item.ItemTotalPrice }}</div>
-                </div>
-            </div> -->
                 <table class="table">
                     <thead>
                         <tr>
