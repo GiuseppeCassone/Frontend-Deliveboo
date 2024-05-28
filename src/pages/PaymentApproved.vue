@@ -54,34 +54,35 @@ export default {
                 Continua con i tuoi ordini
             </router-link>
 
-            <div class="order">
+            <!-- <div class="order">
                 <div v-for="item in store.lastOrder" class="single-order d-flex flex-column">
                     <div class="order-dish">Nome del prodotto :{{ item.itemName }}</div>
                     <div class="order-price"> Prezzo del prodotto :{{ item.itemPrice }}</div>
                     <div class="order-quantity">Quantità selezionate :{{ item.itemQuantity }}</div>
                     <div class="order-total-price">Totale :{{ item.ItemTotalPrice }}</div>
                 </div>
+            </div> -->
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">Piatto</th>
+                            <th scope="col">Prezzo</th>
+                            <th scope="col">Quantità</th>
+                            <th scope="col">Totale piatto</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                        <tr v-for="item in store.lastOrder">
+                            <th scope="row">{{ item.itemName }}</th>
+                            <td>{{ item.itemPrice.toFixed(2) }}€</td>
+                            <td>x {{ item.itemQuantity }}</td>
+                            <td>{{ item.ItemTotalPrice.toFixed(2) }}€</td>
                         </tr>
 
                     </tbody>
                 </table>
                
-            </div>
+            
 
         </div>
 
