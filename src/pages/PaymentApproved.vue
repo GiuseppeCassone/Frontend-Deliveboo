@@ -13,11 +13,25 @@ export default{
         }
     },
 
+    created() {
+
+        
+        // localStorage.getItem('lastOrder');
+        // console.log('last', this.store.lastOrder)
+
+    },
+
     mounted() {
-      
-      console.log('approved', this.store.lastOrder);
-      this.paymentSuccess = true;
-      if(this.paymentSuccess) this.clearCart();
+
+        const storedLastOrder = localStorage.getItem('lastOrder');
+        if (storedLastOrder) {
+            this.store.lastOrder = JSON.parse(storedLastOrder);
+        }
+        // console.log(this.store.lastOrder)
+        
+        console.log('approved', this.store.lastOrder);
+        this.paymentSuccess = true;
+        if(this.paymentSuccess) this.clearCart();
 
     },
 
@@ -29,6 +43,9 @@ export default{
             localStorage.setItem('CartItems', this.store.CartItems);
             localStorage.setItem('totalCartPrice', 0);
             console.log(this.store.CartItems);
+
+            // Salva lastOrder in localStorage
+            localStorage.setItem('lastOrder', JSON.stringify(this.store.lastOrder));
         },
 
     },
