@@ -263,7 +263,7 @@ export default{
 <style scoped lang="scss">
 @use '../styles/variables' as *;
 #box{
-    height: 500px;
+    // height: 500px;
 }
 
 .Type{   

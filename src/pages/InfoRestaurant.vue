@@ -35,6 +35,7 @@ export default {
       totalCartPrice: 0,
       dishCounter: 1,
 
+      isCartEmpty: false,
 
 
     }
@@ -135,17 +136,23 @@ export default {
 
     // metodo che aggiunge un piatto al carrello
     addItem(dish) {
-      // Verifico se il carrello contiene già elementi di un altro ristorante
-      if (this.store.CartItems.length > 0 && this.store.CartItems[0].restaurantId !== dish.restaurant_id) {
-        alert("Non puoi aggiungere piatti da un ristorante diverso finché non svuoti il carrello.");
-        return;
-      }
+    console.log('Aggiunta di un piatto:', dish);
+    if (this.store.CartItems.length > 0 && this.store.CartItems[0].restaurantId !== dish.restaurant_id) {
+      console.log('Mostra il modale');
+      console.log('Elementi nel carrello:', this.store.CartItems);
+      this.isCartEmpty = true
+      // const myModal = document.getElementById('exampleModal')
+      // myModal.show();
+      return;
+    }
+
+
       // inizializzo la variabile currentDish nello store
       // con il piatto che viene passato come parametro al click del bottone 'aggiungi al carrello'
       this.store.currentDish = dish;
 
       this.store.currentIdRestaurant = dish.restaurant_id;
-      console.log('Intendevo questo',this.store.currentIdRestaurant)
+      // console.log('Intendevo questo',this.store.currentIdRestaurant)
       // console.log(this.store.currentDish);
       
       // dichiaro un oggetto che prende le informazione del mio piatto
@@ -233,6 +240,11 @@ export default {
             console.log('carrello', this.store.totalCartPrice);
     },
 
+    clearFromModal(){
+      // this.clearCart()
+      this.isCartEmpty = false
+    }
+
   },
   computed: {
     // alla creazione riporto la quantità degli elementi nel carrello
@@ -292,7 +304,7 @@ export default {
               </div>
               <!-- Colonna per il pulsante -->
               <div class="col d-flex align-items-center">
-                <button @click="addItem(dish)" class="btn-color btn btn-primary ms-auto">
+                <button @click="addItem(dish)" class="btn-color btn btn-primary ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   Aggiungi al carrello
                 </button>
               </div>
@@ -327,20 +339,43 @@ export default {
           </ul>
           <div class="card-footer">
             <p>
-              Totale dei Prodotti: {{ store.CartItems.length }} <br> 
               Totale prezzo: €{{ store.totalCartPrice.toFixed(2) }}
             </p>
-            <div class="checkout border-0 btn btn-primary btn-pay" v-if="store.CartItems.length > 0">
-              <router-link class=" text-decoration-none" 
-                :to="{ name: 'payment'}">
-                <span class="text-white text-decoration-none">Procedi al pagamento</span>
-              </router-link>
+            <div class="d-flex justify-content-between">
+              <div class="checkout border-0 btn btn-primary btn-pay" v-if="store.CartItems.length > 0">
+                <router-link class=" text-decoration-none" 
+                  :to="{ name: 'payment'}">
+                  <span class="text-white text-decoration-none"><i class="fa-solid fa-wallet"></i> Procedi al pagamento</span>
+                </router-link>
+              </div>
+              <button v-if="store.CartItems.length > 0" class="btn btn-danger" @click="clearCart()"><i class="fa-solid fa-trash-can"></i> Svuota il carrello</button>
             </div>
-            <button v-if="store.CartItems.length > 0" class="btn btn-danger" @click="clearCart()">Svuota il carrello</button>
           </div>
         </div>
       </div>
     </div>
+
+
+    <!-- Modale -->
+    <div v-if="isCartEmpty" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fw-bold fs-5" id="exampleModalLabel"><i class="fa-solid fa-triangle-exclamation"></i> ATTENZIONE <i class="fa-solid fa-triangle-exclamation"></i></h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <strong>Stai cercando di inserire un piatto di un altro ristorante!</strong> <br>
+            Svuota il carrello oppure procedi all'ordine sulla pagina del ristorante specifico.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="clearFromModal()" data-bs-dismiss="modal">Close</button>
+            <button v-if="store.CartItems.length > 0" class="btn btn-danger" @click="clearCart()"><i class="fa-solid fa-trash-can"></i> Svuota il carrello</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     
   </div>
