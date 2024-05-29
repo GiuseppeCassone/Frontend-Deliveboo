@@ -11,7 +11,6 @@ export const store = reactive({
     lastOrder: [],
 
     /* METODI PER LA GESTIONE DEL CARRELLO */
-
     // metodo che aggiunge un singolo piatto già presente nel carrello
     addActualDish(index) {
         // aggiorno la quantità di quel piatto nel carrello
@@ -48,7 +47,7 @@ export const store = reactive({
         // aggiorno il carrello nel localstorage
         localStorage.setItem('CartItems', JSON.stringify(this.CartItems));
     },
-    
+
     // metodo che rimuove tutta la quantità di uno stesso piatto
     removeItem(index) {
         // console.log(this.CartItems[index])
