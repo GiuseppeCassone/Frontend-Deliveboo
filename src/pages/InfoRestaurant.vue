@@ -79,59 +79,7 @@ export default {
     })
   },
   methods: {
-    
-    // addToCart(product) {
-    //     // Controllare se il prodotto è già nel carrello
-    //     const existingItem = cart.items.find(item => item.id === product.id);
-
-    //     if (existingItem) {
-    //         // Incrementare la quantità del prodotto esistente
-    //         existingItem.quantity++;
-    //     } else {
-    //         // Aggiungere un nuovo oggetto al carrello
-    //         cart.items.push({
-    //             id: product.id,
-    //             title: product.title,
-    //             price: product.price,
-    //             quantity: 1,
-    //         });
-    //     }
-
-    //     console.log(existingItem)
-    //     // Aggiornare la quantità e il prezzo totali
-    //     cart.totalQuantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-    //     cart.totalPrice = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-    //     // Salvare il carrello in localStorage
-    //     localStorage.setItem('cart', JSON.stringify(cart));
-    // },
-
-    // addToCart(item){
-    //   console.log(item)
-    //   //  this.store.currentDish = item;
-
-    //    this.store.cartItems.push(item);
-
-    // },
-    // metodo che aggiorna il prezzo totale nel carrello quando viene aggiunto un piatto
-    addToTotalCart(item) {
-      this.store.totalCartPrice += Number(item.itemPrice);
-      this.store.totalCartPrice = Number(this.store.totalCartPrice.toFixed(2));
-      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
-    },
-
-    // metodo che aggiorna il prezzo totale nel carrello quando viene rimosso un piatto
-    removeFromToTotalCart(index) {
-      // this.store.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
-        if (this.store.CartItems.length > 0 && index < this.store.CartItems.length) {
-        this.store.totalCartPrice -= Number(this.store.CartItems[index].ItemTotalPrice);
-          if (this.store.totalCartPrice < 0) {
-            this.store.totalCartPrice = 0; // Resetto il prezzo totale a 0 se diventa negativo
-          }
-        }
-
-        localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
-    },
+  
 
     // metodo che aggiunge un piatto al carrello
     addItem(dish) {
@@ -176,62 +124,10 @@ export default {
       localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
       // console.log(newItem)
       // aggiorno il prezzo totale del carrello
-      this.addToTotalCart(newItem);
+      this.store.addToTotalCart(newItem);
     },
 
-    // metodo che rimuove tutta la quantità di uno stesso piatto
-    removeItem(index) {
-      // console.log(this.CartItems[index])
-      // aggiorno il prezzo totale del carrello
-      this.removeFromToTotalCart(index);
-      this.store.CartItems.splice(index, 1);
-      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
-    },
-
-    // metodo che aggiunge un singolo piatto già presente nel carrello
-    addActualDish(index) {
-      // aggiorno la quantità di quel piatto nel carrello
-      this.store.CartItems[index].itemQuantity++;
-      // aggiorno il prezzo totale dello stesso piatto all'interno del carello
-      this.store.CartItems[index].ItemTotalPrice += this.store.CartItems[index].itemPrice;
-      this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
-      // aggiorno il prezzo totale del carrello
-      this.addToTotalCart(this.store.CartItems[index]);
-
-      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
-      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
-    },
-
-    // metodo che rimuove un singolo piatto già presente nel carrello
-    removeActualDish(index) {
-      // controllo se la quantità di quel piatto nel carrello
-      // è maggiore di 1
-      if(this.store.CartItems[index].itemQuantity > 1) {
-        // aggiorno la quantità di quel piatto nel carrello
-        this.store.CartItems[index].itemQuantity--;
-        // aggiorno il prezzo totale dello stesso piatto all'interno del carello
-        this.store.CartItems[index].ItemTotalPrice -= this.store.CartItems[index].itemPrice;
-        this.store.CartItems[index].ItemTotalPrice = Number(this.store.CartItems[index].ItemTotalPrice.toFixed(2));
-        // aggiorno il prezzo totale del carrello
-        this.store.totalCartPrice -= Number(this.store.CartItems[index].itemPrice);
-      } else {
-        // altrimenti rimuovo quel piatto dal carrello
-        this.removeItem(index);
-      }
-
-      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
-      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
-    },
-
-    // metodo che svuota il carrello quando l'utente effettua il pagamento
-    clearCart() {
-            this.store.CartItems.splice(0, this.store.CartItems.length);
-            localStorage.setItem('CartItems', this.store.CartItems);
-            this.store.totalCartPrice = 0;
-            localStorage.setItem('totalCartPrice', 0);
-            console.log(this.store.CartItems);
-            console.log('carrello', this.store.totalCartPrice);
-    },
+    
 
   },
   computed: {
@@ -315,11 +211,11 @@ export default {
               </div>
               <div class="dish-options d-flex align-self-start">
                 <div class="add-remove">
-                  <button type="button" @click="removeActualDish(index)" class="btn btn-success btn-color remove"><i class="fa-solid fa-minus"></i></button>
+                  <button type="button" @click="store.removeActualDish(index)" class="btn btn-success btn-color remove"><i class="fa-solid fa-minus"></i></button>
                   <strong class="px-2">{{ item.itemQuantity }}</strong>
-                  <button type="button" @click="addActualDish(index)" class="btn btn-success btn-color add"><i class="fa-solid fa-plus"></i></button>
+                  <button type="button" @click="store.addActualDish(index)" class="btn btn-success btn-color add"><i class="fa-solid fa-plus"></i></button>
                 </div>
-                <button class="btn btn-danger float-end" @click="removeItem(index)">
+                <button class="btn btn-danger float-end" @click="store.removeItem(index)">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
@@ -336,7 +232,7 @@ export default {
                 <span class="text-white text-decoration-none">Procedi al pagamento</span>
               </router-link>
             </div>
-            <button v-if="store.CartItems.length > 0" class="btn btn-danger" @click="clearCart()">Svuota il carrello</button>
+            <button v-if="store.CartItems.length > 0" class="btn btn-danger" @click="store.clearCart()">Svuota il carrello</button>
           </div>
         </div>
       </div>

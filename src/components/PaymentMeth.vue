@@ -83,6 +83,7 @@ export default {
       this.store.CartItems = JSON.parse(storedCartItems);
     }
   },
+  
   methods: {
     getClientToken() {
       axios.get('http://127.0.0.1:8000/api/braintree/token')
@@ -110,13 +111,6 @@ export default {
 
     submitPayment() {
       this.FormData.order_total = this.store.totalCartPrice;
-
-      // const form = document.getElementById('myForm');
-
-    //   if (this.v$.$invalid) {
-    //     alert('Compilare tutti i campi correttamente!');
-    //   return;
-    // }
 
       this.instance.requestPaymentMethod((err, payload) => {
         if (err) {
@@ -148,58 +142,6 @@ export default {
             console.error('Pagamento fallito', error.response.data);
           });
       });
-    },
-
-    increaseQuantity(index) {
-      const item = this.store.CartItems[index];
-      item.itemQuantity++;
-      item.ItemTotalPrice += item.itemPrice;
-      item.ItemTotalPrice = Number(item.ItemTotalPrice.toFixed(2));
-
-      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
-
-      this.store.totalCartPrice += Number(item.itemPrice);
-      this.store.totalCartPrice = Number(this.store.totalCartPrice.toFixed(2));
-      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
-
-      
-    },
-
-    decreaseQuantity(index) {
-      const item = this.store.CartItems[index];
-      if (item.itemQuantity > 1) {
-        item.itemQuantity--;
-        item.ItemTotalPrice -= item.itemPrice;
-        item.ItemTotalPrice = Number(item.ItemTotalPrice.toFixed(2));
-        this.store.totalCartPrice -= Number(item.itemPrice);
-      } else {
-        this.removeItem(index);
-      }
-
-      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
-      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
-
-     
-    },
-
-    removeItem(index) {
-      const item = this.store.CartItems[index];
-      this.store.totalCartPrice -= Number(item.ItemTotalPrice);
-      this.store.CartItems.splice(index, 1);
-      localStorage.setItem('totalCartPrice', this.store.totalCartPrice);
-      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
-
-     
-    },
-
-    saveCart() {
-      localStorage.setItem('CartItems', JSON.stringify(this.dishes));
-    },
-
-    clearCart() {
-      this.store.CartItems = [];
-      localStorage.setItem('CartItems', JSON.stringify(this.store.CartItems));
-      localStorage.setItem('totalCartPrice', 0);
     },
 
     // funzioni per validare il form in tempo reale usando il metodo touch()
@@ -322,9 +264,9 @@ export default {
               <td>{{ dish.itemQuantity }}</td>
               <td>{{ dish.itemName }} X {{ dish.itemQuantity }} = €{{ dish.ItemTotalPrice.toFixed(2) }}</td>
               <td class="d-flex gap-2">
-                <button type="button" class="btn btn-success fw-bold" @click="increaseQuantity(index)"><i class="fa-solid fa-plus"></i></button>
-                <button type="button" class="btn btn-success fw-bold" @click="decreaseQuantity(index)"><i class="fa-solid fa-minus"></i></button>
-                <button type="button" class="btn btn-danger fw-bold" @click="removeItem(index)"><i class="fa-solid fa-trash-can"></i></button>
+                <button type="button" class="btn btn-success fw-bold" @click="store.addActualDish(index)"><i class="fa-solid fa-plus"></i></button>
+                <button type="button" class="btn btn-success fw-bold" @click="store.removeActualDish(index)"><i class="fa-solid fa-minus"></i></button>
+                <button type="button" class="btn btn-danger fw-bold" @click="store.removeItem(index)"><i class="fa-solid fa-trash-can"></i></button>
               </td>
             </tr>
           </tbody>
@@ -341,7 +283,7 @@ export default {
       <!-- Alert Bootstrap 5 -->
       <div id="alert" class="alert alert-success alert-dismissible fade show position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center justify-content-center" role="alert">
         <img src="/images/cart2.png" alt="">
-        <h2 class="my-3"><strong>Attenzione!!!</strong> Carrello vuoto :(</h2>
+        <h2 class="my-3"><strong>Attenzione!!!</strong> Carrello vuoto :</h2>
         <router-link id="link" :to="{ name: 'home' }" class="text-black text-decoration-none btn btn-info btn-lg fw-bold fs-3">
           <i class="fa-solid fa-arrow-left fa-beat me-2"></i> Torna al ristorante <i class="fa-solid fa-utensils"></i>
         </router-link>
