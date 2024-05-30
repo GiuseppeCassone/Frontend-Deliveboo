@@ -69,6 +69,7 @@ export default {
   },
 
   mounted() {
+    this.scrollToTop();
     this.paymentSuccess = false;
     this.getClientToken();
     this.items = JSON.parse(localStorage.getItem('items')) || [];
@@ -213,7 +214,10 @@ export default {
       if (!this.v$.$invalid) {
         this.submitPayment();
       }
-    }
+    },
+    scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
   },
 };
 </script>

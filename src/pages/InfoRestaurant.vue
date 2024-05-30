@@ -268,12 +268,15 @@ export default {
     <router-link :to="{ name: 'home' }" class="btn btn-primary btn-color mt-3">
       <i class="fa-solid fa-arrow-left"></i> Torna ai ristoranti
     </router-link>
-    <div class="row my-3">
+    <div id="top-info" class="row my-3 animate__animated animate__zoomIn">
       <div class="col-12 position-relative">
-        <div id="title-box" class="z-1 p-2">
-          <h1 class="display-2 fw-bolder m-0">{{ restaurant.name }}</h1>
+        
+        <div id="title-box" class="z-1">
+          <h1 class=" fw-bold m-0">{{ restaurant.name }}</h1>
           <h4 class="fw-normal"> {{ restaurant.description }}</h4>
         </div>
+        <img id="rest-img" :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
+        class="card-img-top" alt="...">
         <section class="z-1 p-2">
           <div id="contact" class="d-flex flex-column justify-content-between gap-2">
             <h5 class="text-uppercase">Contatti: </h5>
@@ -282,41 +285,38 @@ export default {
             <p class="mb-0"><i class="fa-solid fa-phone"></i> {{ restaurant.phone_number }}</p>
           </div>
         </section>
-        <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
-          class="img-fluid rounded-2 card-img-top" alt="...">
+        
       </div>
     </div>
 
     <div class="row d-flex justify-content-center py-5">
       <!-- COLONNA PIATTI -->
       <div class="col-md-7">
-        <div class="card">
-          <ul class="list-group list-group-flush">
-            <li id="dish-menu" class="row list-group-item d-flex justify-content-between align-items-center" v-for="dish in restaurant.dishes">
-              <!-- Colonna per l'immagine -->
-              <div class="col-4">
-                <img style="max-height: 124px;" class="img-fluid h-100 w-100 object-fit-cover" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt="">
-              </div>
-              <!-- Colonna per il nome e il prezzo -->
-              <div class="col d-flex flex-column justify-content-center">
-                <span class="fw-bold">{{ dish.name }}</span>
-                <span>€{{ dish.price }}</span>
-              </div>
-              <!-- Colonna per il pulsante -->
-              <div class="col d-flex align-items-center">
-                <button @click="addItem(dish)" class="btn-color btn btn-primary ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Aggiungi al carrello
-                </button>
-              </div>
-            </li>
-          </ul>
-        </div>
+        <ul id="menu" class="list-group list-group-flush animate__animated animate__slideInLeft">
+          <li id="dish-menu" class="row list-group-item d-flex justify-content-between align-items-center" v-for="dish in restaurant.dishes">
+            <!-- Colonna per l'immagine -->
+            <div class="col-4">
+              <img style="max-height: 124px;" class="img-fluid h-100 w-100 object-fit-cover" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt="">
+            </div>
+            <!-- Colonna per il nome e il prezzo -->
+            <div class="col d-flex flex-column justify-content-center">
+              <span class="fw-bold">{{ dish.name }}</span>
+              <span>€{{ dish.price }}</span>
+            </div>
+            <!-- Colonna per il pulsante -->
+            <div class="col d-flex align-items-center">
+              <button @click="addItem(dish)" class="btn-color btn btn-primary ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Aggiungi al carrello
+              </button>
+            </div>
+          </li>
+        </ul>
       </div>
 
 
       <!-- COLONNA CARRELLO -->
       <div class="col-md-5">
-        <div class="card">
+        <div class="card animate__animated animate__slideInRight">
           <div class="card-header">
             <h2>Carrello</h2>
           </div>
@@ -341,7 +341,7 @@ export default {
             <p>
               Totale prezzo: €{{ store.totalCartPrice.toFixed(2) }}
             </p>
-            <div class="d-flex justify-content-between">
+            <div id="btn-box" class="d-flex justify-content-between">
               <div class="checkout border-0 btn btn-primary btn-pay" v-if="store.CartItems.length > 0">
                 <router-link class=" text-decoration-none" 
                   :to="{ name: 'payment'}">
@@ -386,6 +386,14 @@ export default {
 <style lang="scss" scoped>
 @use '../styles/variables' as *;
 
+#top-info{
+
+  #rest-img{
+    max-height: 500px;
+    object-fit: cover;
+  }
+}
+
 // MENU
 
 #title-box{
@@ -394,6 +402,8 @@ export default {
   position: absolute;
   top: 0;
   left: 12px;
+
+  padding: 0.5rem;
 
   border-top-left-radius: 7px;
   border-bottom-left-radius: 0;
@@ -408,7 +418,6 @@ section{
   position: absolute;
   bottom: 0;
   right: 12px;
-  max-width: 400px;
   min-width: 250px;
   border-top-left-radius: 7px;
   border-bottom-left-radius: 0;
@@ -460,6 +469,65 @@ section{
     border-color: $primaryColor;
   }
 }
+// -------------------------------------------------------------------------------------
 
+// MEDIA QUERY
+
+@media screen and (min-width:316px) and (max-width:416px){
+
+  #btn-box{
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+@media screen and (min-width:316px) and (max-width:515px){
+  
+}
+
+@media screen and (max-width:768px){
+
+  #title-box{
+    top: 0;
+    left: 12px;
+    width: 75%;
+  }
+
+  section{
+
+    position: static;
+
+    background-color: rgba(0, 0, 0, 0.477);
+    width: 100% !important;
+    // color: black;
+
+    border-radius: 0 0 10px 10px;
+
+  }
+
+  #rest-img{
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0px 7px 5px 0px rgba(0,0,0,0.56);
+  }
+
+}
+
+@media screen and (min-width:768px) and (max-width:1200px){
+
+  #btn-box{
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+@media screen and (min-width: 768px) {
+  
+  #rest-img{
+    border-radius: 10px;
+  }
+
+}
 
 </style>
