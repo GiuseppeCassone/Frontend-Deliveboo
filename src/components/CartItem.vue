@@ -92,4 +92,29 @@ export default {
 
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+
+// CARRELLO
+@use '../styles/variables' as *;
+
+.cart{
+
+.dish-options{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+}
+.btn-pay{
+background-color: $primaryColor;
+border-bottom: $secondColor;
+
+&:hover{
+  background-color: #024849;
+  border-color: $primaryColor;
+}
+}
+
+
+</style>

@@ -238,27 +238,4 @@ section{
   }
 }
 
-
-// CARRELLO
-
-.cart{
-
-  .dish-options{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-}
-.btn-pay{
-  background-color: $primaryColor;
-  border-bottom: $secondColor;
-
-  &:hover{
-    background-color: #024849;
-    border-color: $primaryColor;
-  }
-}
-
-
 </style>
