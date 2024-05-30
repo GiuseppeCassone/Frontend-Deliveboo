@@ -268,7 +268,7 @@ export default {
     <router-link :to="{ name: 'home' }" class="btn btn-primary btn-color mt-3">
       <i class="fa-solid fa-arrow-left"></i> Torna ai ristoranti
     </router-link>
-    <div class="row my-3">
+    <div id="top-info" class="row my-3 animate__animated animate__zoomIn">
       <div class="col-12 position-relative">
         
         <div id="title-box" class="z-1">
@@ -276,7 +276,7 @@ export default {
           <h4 class="fw-normal"> {{ restaurant.description }}</h4>
         </div>
         <img id="rest-img" :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
-        class="img-fluid card-img-top" alt="...">
+        class="card-img-top" alt="...">
         <section class="z-1 p-2">
           <div id="contact" class="d-flex flex-column justify-content-between gap-2">
             <h5 class="text-uppercase">Contatti: </h5>
@@ -292,7 +292,7 @@ export default {
     <div class="row d-flex justify-content-center py-5">
       <!-- COLONNA PIATTI -->
       <div class="col-md-7">
-        <ul id="menu" class="list-group list-group-flush">
+        <ul id="menu" class="list-group list-group-flush animate__animated animate__slideInLeft">
           <li id="dish-menu" class="row list-group-item d-flex justify-content-between align-items-center" v-for="dish in restaurant.dishes">
             <!-- Colonna per l'immagine -->
             <div class="col-4">
@@ -316,7 +316,7 @@ export default {
 
       <!-- COLONNA CARRELLO -->
       <div class="col-md-5">
-        <div class="card">
+        <div class="card animate__animated animate__slideInRight">
           <div class="card-header">
             <h2>Carrello</h2>
           </div>
@@ -385,6 +385,14 @@ export default {
 
 <style lang="scss" scoped>
 @use '../styles/variables' as *;
+
+#top-info{
+
+  #rest-img{
+    max-height: 500px;
+    object-fit: cover;
+  }
+}
 
 // MENU
 
@@ -475,9 +483,7 @@ section{
 }
 
 @media screen and (min-width:316px) and (max-width:515px){
-  #menu #dish-menu{
-    // flex-direction: column;
-  }
+  
 }
 
 @media screen and (max-width:768px){
