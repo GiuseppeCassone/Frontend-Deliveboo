@@ -3,7 +3,6 @@
 import axios from 'axios';
 
 import AppRestaurant from '../components/AppRestaurant.vue';
-import SplashPage from './SplashPage.vue';
 
 export default{
 
@@ -11,7 +10,6 @@ export default{
 
     components: {
         AppRestaurant,
-        SplashPage
     },
 
     data() {
@@ -43,34 +41,25 @@ export default{
 
             isTypologiesCollapsed: false,
 
-            // splash page
-            isLoading: true,
-            loadingCounter: 0,
-
         }
     },
 
     mounted() {
-        this.incrementLoading();
-        
-        // richiamo api che mostra tutte le tipologie
-        axios.get(this.apiBaseUrl + '/typologies').then(res => {
-            // console.log(res.data.results);
-            
-            this.typologies = res.data.results;
-
-            this.decrementLoading();
-            
-            // console.log(this.typologies);
-        });
-        
-        // this.incrementLoading();
         // richiamo api che mostra tutti i ristoranti
         this.apiCall();
+
+        // richiamo api che mostra tutte le tipologie
+        axios.get(this.apiBaseUrl + '/typologies').then(res => {
+                // console.log(res.data.results);
+
+                this.typologies = res.data.results;
+
+                // console.log(this.typologies);
+            });
+
     },
 
     created() {
-        this.incrementLoading();
         // chiamata axios per i link della paginazione
         axios.get(this.apiBaseUrl + '/restaurant', {
                 params: {
@@ -80,13 +69,12 @@ export default{
 
                 this.apiLinks = res.data.results.links;
                 // console.log(this.apiLinks)
-                this.decrementLoading();
+
             })
     },
 
     methods: {
         apiCall(){
-            this.incrementLoading();
 
             
             const params = {
@@ -102,7 +90,6 @@ export default{
             .then((res) => {
                 this.restaurants = res.data.results.data;
                 this.apiLinks = res.data.results.links;
-                this.decrementLoading();
             });
             
             // axios.get(this.apiBaseUrl + '/restaurant', {
@@ -165,27 +152,12 @@ export default{
 
             this.apiCall();
         },
-
         toggleTypologies() {
             this.isTypologiesCollapsed = !this.isTypologiesCollapsed;
         },
-
-        // incremento il counter di chiamate api per gestire la splash page
-        incrementLoading(){
-        this.loadingCounter++;
-        // console.log('Increment Loading:', this.loadingCounter);
-        },
-
-        // diminuisco il counter di chiamate api per gestire la splash page
-        decrementLoading(){
-            this.loadingCounter--;
-            // console.log('Decrement Loading:', this.loadingCounter);
-            if (this.loadingCounter > 0) {
-                this.isLoading = false;
-                // console.log('Loading Finished:', this.isLoading); 
-            }
-        }
     },
+
+
 
 }
 
@@ -194,15 +166,13 @@ export default{
 
 
 <template>
-    <div id="box" class="container-fluid mb-5 mt-3">
-
-        <SplashPage v-if="isLoading"></SplashPage>
+    <div class="container-fluid mb-5 mt-3">
 
         <!-- row -->
-        <div v-else class="row d-flex flex-column flex-sm-row mx-5">
+        <div class="row d-flex flex-column flex-sm-row mx-5">
 
             <!-- sezione lista delle tipologie -->
-            <div class="col-12 col-sm-3 restaurant-typologies d-flex flex-column animate__animated animate__zoomInLeft">
+            <div class="col-12 col-sm-3 restaurant-typologies d-flex flex-column ">
                 
                 <button class="mb-3 btn btn-outline-secondary d-flex justify-content-between align-items-center" type="button" role="button" @click="toggleTypologies">
                     <h3 class="mb-1 text-uppercase">filtra</h3>
@@ -220,8 +190,8 @@ export default{
 
             
             <!-- sezione lista dei ristoranti -->
-            <div class="col-12 col-sm-9 restaurants-list d-flex flex-column row-cols-3 align-items-between flex-md-row flex-wrap animate__animated animate__zoomInDown">
-                <button style="max-height: 50.89px;" class="btn btn-light col-12 mb-3 bg-white" disabled>
+            <div class="col-12 col-sm-9 restaurants-list d-flex flex-column row-cols-3 justify-content-between align-items-between flex-md-row flex-wrap">
+                <button class="btn btn-light col-12 mb-3 bg-white" disabled>
                     <h3 class="col-12 mb-1">RISTORANTI</h3>
 
                 </button>
@@ -262,7 +232,6 @@ export default{
 
 <style scoped lang="scss">
 @use '../styles/variables' as *;
-
 
 .Type{   
     display: flex;
@@ -346,18 +315,13 @@ export default{
 }
 
 
-@media (min-width: 1352px){
+@media (min-width: 768px){
 
-    #box{
-        height: 500px;
-    }
-}
-
-@media (min-width: 1239px) and (max-width: 1352px){
-
-    #box{
-        height: 500px;
-    }
+    // .row{
+    //     .restaurant-typologies{
+    //         flex-direction: column;
+    //     }
+    // }
 }
 
 </style>

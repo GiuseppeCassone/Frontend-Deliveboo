@@ -9,7 +9,7 @@ export default {
     <nav class="navbar navbar-expand-md">
       <div class="container">
         <router-link :to="{name: 'home'}" class="navbar-brand">
-          <img style="filter: invert(1);" class="img-fluid w-50 personal_logo" src="/images/wowdelive.svg" alt="logo">
+          <img class="img-fluid w-50 personal_logo" src="/images/wowdelive.svg" alt="logo">
         </router-link>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -17,7 +17,7 @@ export default {
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a href="http://127.0.0.1:8000/register" target="_blank" class="btn btn-light rounded-2 px-4 fw-bold"><i class="fa-solid fa-lock"></i> Area Riservata</a>
+              <a href="http://127.0.0.1:8000/register" target="_blank" class="btn btn-light rounded-2 px-4">Collabora con noi</a>
             </li>
           </ul>
         </div>
@@ -39,4 +39,7 @@ export default {
   background-color: $secondColor;
 }
 
+.personal_logo {
+  filter: invert(1);
+}
 </style>
