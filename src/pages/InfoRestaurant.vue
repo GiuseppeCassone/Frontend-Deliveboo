@@ -30,9 +30,6 @@ export default {
 
       apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
-      // totalCartPrice: 0,
-      // dishCounter: 1,
-
     }
   },
 
@@ -43,8 +40,6 @@ export default {
   created() {
 
     // recuperiamo il parametro dell'id del project dall'url
-    // console.log(this.$route.params.id);
-
     // lo assegnamo alla variabile projectId
     this.restaurantId = this.$route.params.id;
 
@@ -54,7 +49,7 @@ export default {
 
       if (res.data.success) {
 
-        // se troviamo il project lo salviamo
+        // se troviamo il ristorante lo salviamo
         this.restaurant = res.data.result;
 
       } else {
@@ -67,8 +62,8 @@ export default {
   },
   methods: {
   
-       // metodo che aggiunge un piatto al carrello
-       addItem(dish) {
+      // metodo che aggiunge un piatto al carrello
+      addItem(dish) {
       // Verifico se il carrello contiene già elementi di un altro ristorante
       if (this.store.CartItems.length > 0 && this.store.CartItems[0].restaurantId !== dish.restaurant_id) {
         alert("Non puoi aggiungere piatti da un ristorante diverso finché non svuoti il carrello.");

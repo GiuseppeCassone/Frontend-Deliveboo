@@ -47,7 +47,6 @@ export default {
           required: helpers.withMessage('Il campo Cognome è obbligatorio.', required),
           minLength: helpers.withMessage('Il Cognome deve avere almeno 2 caratteri.', minLength(2)),
           maxLength: helpers.withMessage('Il Cognome non può superare i 30 caratteri.', maxLength(30)),
-          // alpha: helpers.withMessage('Il Cognome deve contenere solo lettere.', alpha)
         },
         customer_email: { 
           required: helpers.withMessage('Il campo Email è obbligatorio.', required), 
@@ -135,8 +134,6 @@ export default {
           .then(res => {
             console.log('Pagamento avvenuto con successo', res);
             this.$router.push({name : 'payment-success'});
-            // if(this.paymentSuccess) this.clearCart();
-            // this.clearCart();
           })
           .catch(error => {
             console.error('Pagamento fallito', error.response.data);
