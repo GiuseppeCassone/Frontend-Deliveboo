@@ -1,6 +1,13 @@
 <script>
 export default {
   name: 'AppFooter',
+
+  methods: {
+    scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+  
 };
 </script>
 
@@ -11,7 +18,10 @@ export default {
     <div class="container">
       <h3 class="p-2">WOWDELIVE Un servizio del quale non riuscirai più a fare a meno!</h3>
     </div>
-
+    <!-- Scroll to Top Button -->
+    <div class="text-center p-1">
+      <button @click="scrollToTop" class="btn btn-primary">Torna in Cima</button>
+    </div>
     <hr>
 
     <!-- Grid container -->
@@ -125,6 +135,8 @@ export default {
       
 
     </div>
+
+    
 
     <!-- Copyright -->
     <div class="text-center p-1" style="background-color: rgba(0, 0, 0, 0.2)">

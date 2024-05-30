@@ -74,7 +74,7 @@ export default {
       this.store.currentDish = dish;
 
       this.store.currentIdRestaurant = dish.restaurant_id;
-      console.log('Intendevo questo',this.store.currentIdRestaurant)
+      // console.log('Intendevo questo',this.store.currentIdRestaurant)
       // console.log(this.store.currentDish);
       
       // dichiaro un oggetto che prende le informazione del mio piatto
@@ -126,12 +126,15 @@ export default {
     <router-link :to="{ name: 'home' }" class="btn btn-primary btn-color mt-3">
       <i class="fa-solid fa-arrow-left"></i> Torna ai ristoranti
     </router-link>
-    <div class="row my-3">
+    <div id="top-info" class="row my-3 animate__animated animate__zoomIn">
       <div class="col-12 position-relative">
-        <div id="title-box" class="z-1 p-2">
-          <h1 class="display-2 fw-bolder m-0">{{ restaurant.name }}</h1>
+        
+        <div id="title-box" class="z-1">
+          <h1 class=" fw-bold m-0">{{ restaurant.name }}</h1>
           <h4 class="fw-normal"> {{ restaurant.description }}</h4>
         </div>
+        <img id="rest-img" :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
+        class="card-img-top" alt="...">
         <section class="z-1 p-2">
           <div id="contact" class="d-flex flex-column justify-content-between gap-2">
             <h5 class="text-uppercase">Contatti: </h5>
@@ -140,8 +143,7 @@ export default {
             <p class="mb-0"><i class="fa-solid fa-phone"></i> {{ restaurant.phone_number }}</p>
           </div>
         </section>
-        <img :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
-          class="img-fluid rounded-2 card-img-top" alt="...">
+        
       </div>
     </div>
 
@@ -176,6 +178,7 @@ export default {
      
     </div>
 
+
     
   </div>
 </template>
@@ -185,6 +188,14 @@ export default {
 <style lang="scss" scoped>
 @use '../styles/variables' as *;
 
+#top-info{
+
+  #rest-img{
+    max-height: 500px;
+    object-fit: cover;
+  }
+}
+
 // MENU
 
 #title-box{
@@ -193,6 +204,8 @@ export default {
   position: absolute;
   top: 0;
   left: 12px;
+
+  padding: 0.5rem;
 
   border-top-left-radius: 7px;
   border-bottom-left-radius: 0;
@@ -207,7 +220,6 @@ section{
   position: absolute;
   bottom: 0;
   right: 12px;
-  max-width: 400px;
   min-width: 250px;
   border-top-left-radius: 7px;
   border-bottom-left-radius: 0;
@@ -236,6 +248,88 @@ section{
   &:hover{
   background-color: $primaryColor;
   }
+}
+
+
+// CARRELLO
+
+.cart{
+
+  .dish-options{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+}
+.btn-pay{
+  background-color: $primaryColor;
+  border-bottom: $secondColor;
+
+  &:hover{
+    background-color: #024849;
+    border-color: $primaryColor;
+  }
+}
+// -------------------------------------------------------------------------------------
+
+// MEDIA QUERY
+
+@media screen and (min-width:316px) and (max-width:416px){
+
+  #btn-box{
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+@media screen and (min-width:316px) and (max-width:515px){
+  
+}
+
+@media screen and (max-width:768px){
+
+  #title-box{
+    top: 0;
+    left: 12px;
+    width: 75%;
+  }
+
+  section{
+
+    position: static;
+
+    background-color: rgba(0, 0, 0, 0.477);
+    width: 100% !important;
+    // color: black;
+
+    border-radius: 0 0 10px 10px;
+
+  }
+
+  #rest-img{
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0px 7px 5px 0px rgba(0,0,0,0.56);
+  }
+
+}
+
+@media screen and (min-width:768px) and (max-width:1200px){
+
+  #btn-box{
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+@media screen and (min-width: 768px) {
+  
+  #rest-img{
+    border-radius: 10px;
+  }
+
 }
 
 </style>
