@@ -4,8 +4,12 @@ export default {
 
   methods: {
     scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const target = document.querySelector('#target'); // Sostituisci con l'ID del tuo elemento target
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     }
+
   }
   
 };
@@ -15,14 +19,10 @@ export default {
   
   <footer class="text-center text-white">
 
-    <div class="container">
-      <h3 class="p-2">WOWDELIVE Un servizio del quale non riuscirai più a fare a meno!</h3>
+    <div class="container py-2">
+      <h3 class="p-2 mb-0">WOWDELIVE Un servizio del quale non riuscirai più a fare a meno!</h3>
     </div>
-    <!-- Scroll to Top Button -->
-    <div class="text-center p-1">
-      <button @click="scrollToTop" class="btn btn-primary">Torna in Cima</button>
-    </div>
-    <hr>
+    <hr class="mt-0">
 
     <!-- Grid container -->
     <div class="container py-1">
@@ -154,6 +154,15 @@ export default {
 
 footer {
   background-color: $primaryColor;
+
+  .btn-color{
+  background-color: $secondColor;
+  border-color: $primaryColor;
+
+  &:hover{
+    background-color: $primaryColor;
+  }
+}
   
 }
 

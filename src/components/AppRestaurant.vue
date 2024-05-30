@@ -85,6 +85,16 @@ export default {
   }
 }
 
+// MEDIA QUERY
+
+@media screen and (max-width:200px){
+
+    .restauran-info{
+      display: none;
+    }
+
+}
+
 @media (max-width: 951px){
   .restaurant{
     width: 100%;

@@ -199,10 +199,10 @@ export default{
         <SplashPage v-if="isLoading"></SplashPage>
 
         <!-- row -->
-        <div v-else class="row d-flex flex-column flex-sm-row mx-5">
+        <div v-else class="row d-flex flex-column flex-sm-row mx-1">
 
             <!-- sezione lista delle tipologie -->
-            <div class="col-12 col-sm-3 restaurant-typologies d-flex flex-column animate__animated animate__zoomInLeft">
+            <div class="col-12 col-md-3 restaurant-typologies d-flex flex-column animate__animated animate__zoomInLeft">
                 
                 <button class="mb-3 btn btn-outline-secondary d-flex justify-content-between align-items-center" type="button" role="button" @click="toggleTypologies">
                     <h3 class="mb-1 text-uppercase">filtra</h3>
@@ -220,7 +220,7 @@ export default{
 
             
             <!-- sezione lista dei ristoranti -->
-            <div class="col-12 col-sm-9 restaurants-list d-flex flex-column row-cols-3 align-items-between flex-md-row flex-wrap animate__animated animate__zoomInDown">
+            <div class="col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-between flex-md-row flex-wrap animate__animated animate__zoomInDown">
                 <button style="max-height: 50.89px;" class="btn btn-light col-12 mb-3 bg-white" disabled>
                     <h3 class="col-12 mb-1">RISTORANTI</h3>
 
@@ -345,19 +345,5 @@ export default{
     }
 }
 
-
-@media (min-width: 1352px){
-
-    #box{
-        height: 500px;
-    }
-}
-
-@media (min-width: 1239px) and (max-width: 1352px){
-
-    #box{
-        height: 500px;
-    }
-}
 
 </style>

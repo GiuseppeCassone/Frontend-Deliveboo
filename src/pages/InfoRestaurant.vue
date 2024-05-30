@@ -80,40 +80,20 @@ export default {
     })
   },
   methods: {
+
+    scrollToTop() {
+      // Calculate the offset from the top of the page to the "target" div
+      const offset = document.getElementById('target').getBoundingClientRect().top;
+
+      // Scroll to the top with the specified offset
+      window.scrollTo({
+        top: offset,
+        behavior: 'smooth',
+      });
+    },
     
-    // addToCart(product) {
-    //     // Controllare se il prodotto è già nel carrello
-    //     const existingItem = cart.items.find(item => item.id === product.id);
 
-    //     if (existingItem) {
-    //         // Incrementare la quantità del prodotto esistente
-    //         existingItem.quantity++;
-    //     } else {
-    //         // Aggiungere un nuovo oggetto al carrello
-    //         cart.items.push({
-    //             id: product.id,
-    //             title: product.title,
-    //             price: product.price,
-    //             quantity: 1,
-    //         });
-    //     }
 
-    //     console.log(existingItem)
-    //     // Aggiornare la quantità e il prezzo totali
-    //     cart.totalQuantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-    //     cart.totalPrice = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-    //     // Salvare il carrello in localStorage
-    //     localStorage.setItem('cart', JSON.stringify(cart));
-    // },
-
-    // addToCart(item){
-    //   console.log(item)
-    //   //  this.store.currentDish = item;
-
-    //    this.store.cartItems.push(item);
-
-    // },
     // metodo che aggiorna il prezzo totale nel carrello quando viene aggiunto un piatto
     addToTotalCart(item) {
       this.store.totalCartPrice += Number(item.itemPrice);
@@ -257,7 +237,25 @@ export default {
   },
   }
 
+  
+
 }
+
+// JS PURO PER SCROLLSPY
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const targetTop = document.getElementById('target').getBoundingClientRect().top;
+
+  const button = document.querySelector('.btn-color.rounded-pill'); // Select the button element
+
+  if (scrollTop > targetTop) {
+    button.style.display = 'block'; // Show the button
+  } else {
+    button.style.display = 'none'; // Hide the button
+  }
+});
+
 
 
 </script>
@@ -269,7 +267,7 @@ export default {
       <i class="fa-solid fa-arrow-left"></i> Torna ai ristoranti
     </router-link>
     <div id="top-info" class="row my-3 animate__animated animate__zoomIn">
-      <div class="col-12 position-relative">
+      <div id="prova" class="col-12 position-relative">
         
         <div id="title-box" class="z-1">
           <h1 class=" fw-bold m-0">{{ restaurant.name }}</h1>
@@ -289,22 +287,22 @@ export default {
       </div>
     </div>
 
-    <div class="row d-flex justify-content-center py-5">
+    <div class="row d-flex justify-content-center row-gap-4 py-5">
       <!-- COLONNA PIATTI -->
       <div class="col-md-7">
         <ul id="menu" class="list-group list-group-flush animate__animated animate__slideInLeft">
           <li id="dish-menu" class="row list-group-item d-flex justify-content-between align-items-center" v-for="dish in restaurant.dishes">
             <!-- Colonna per l'immagine -->
-            <div class="col-4">
+            <div id="img-col" class="col-4">
               <img style="max-height: 124px;" class="img-fluid h-100 w-100 object-fit-cover" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt="">
             </div>
             <!-- Colonna per il nome e il prezzo -->
-            <div class="col d-flex flex-column justify-content-center">
+            <div id="name-col" class="col d-flex flex-column justify-content-center">
               <span class="fw-bold">{{ dish.name }}</span>
               <span>€{{ dish.price }}</span>
             </div>
             <!-- Colonna per il pulsante -->
-            <div class="col d-flex align-items-center">
+            <div id="btn-col" class="col d-flex align-items-center">
               <button @click="addItem(dish)" class="btn-color btn btn-primary ms-auto" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Aggiungi al carrello
               </button>
@@ -337,7 +335,7 @@ export default {
               </div>
             </li>
           </ul>
-          <div class="card-footer">
+          <div id="target" class="card-footer">
             <p>
               Totale prezzo: €{{ store.totalCartPrice.toFixed(2) }}
             </p>
@@ -374,6 +372,11 @@ export default {
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="text-center position-fixed bottom-0 end-0 p-1" data-bs-spy="scroll">
+      <button @click="scrollToTop" class="btn btn-primary btn-color rounded-pill btn-lg"><i class="fa-solid fa-arrow-up fa-beat"></i></button>
     </div>
 
 
@@ -472,6 +475,37 @@ section{
 // -------------------------------------------------------------------------------------
 
 // MEDIA QUERY
+
+@media screen and (max-width:200px){
+
+#title-box{
+  position: static;
+  width: 100%;
+  
+}
+
+#prova{
+  
+  section{
+    border-radius: 0;
+    font-size: 14px;
+  
+    max-width: 150px !important;
+    #contact{
+      border-radius: 0;
+      
+      max-width: 150px !important;
+
+      p {
+        line-height: 1.5;
+      }
+
+    }
+  }
+
+}
+
+}
 
 @media screen and (min-width:316px) and (max-width:416px){
 
