@@ -4,6 +4,7 @@ import axios from 'axios';
 import { router } from '../router';
 import CartItem from '../components/CartItem.vue';
 import { store } from '../store';
+import AlertDefault from '../components/AlertDefault.vue';
 
 export default {
 
@@ -12,6 +13,7 @@ export default {
   components: {
 
     // CartItem,
+    AlertDefault,
 
   },
 
@@ -35,7 +37,7 @@ export default {
       totalCartPrice: 0,
       dishCounter: 1,
 
-      isCartEmpty: false,
+      // isCartEmpty: false,
 
 
     }
@@ -140,9 +142,7 @@ export default {
     if (this.store.CartItems.length > 0 && this.store.CartItems[0].restaurantId !== dish.restaurant_id) {
       console.log('Mostra il modale');
       console.log('Elementi nel carrello:', this.store.CartItems);
-      this.isCartEmpty = true
-      // const myModal = document.getElementById('exampleModal')
-      // myModal.show();
+      // this.isCartEmpty = true
       return;
     }
 
@@ -242,7 +242,7 @@ export default {
 
     clearFromModal(){
       // this.clearCart()
-      this.isCartEmpty = false
+      // this.isCartEmpty = false
     }
 
   },
@@ -357,7 +357,7 @@ export default {
 
 
     <!-- Modale -->
-    <div v-if="isCartEmpty" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -369,12 +369,13 @@ export default {
             Svuota il carrello oppure procedi all'ordine sulla pagina del ristorante specifico.
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="clearFromModal()" data-bs-dismiss="modal">Close</button>
-            <button v-if="store.CartItems.length > 0" class="btn btn-danger" @click="clearCart()"><i class="fa-solid fa-trash-can"></i> Svuota il carrello</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button v-if="store.CartItems.length > 0" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Svuota il carrello</button>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+    <AlertDefault :visible="false" variant="success"></AlertDefault>
 
 
     
