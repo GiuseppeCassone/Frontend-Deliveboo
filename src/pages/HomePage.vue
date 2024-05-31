@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import AppRestaurant from '../components/AppRestaurant.vue';
 import SplashPage from './SplashPage.vue';
+import Jumbotron from '../components/Jumbotron.vue';
 
 export default{
 
@@ -11,7 +12,8 @@ export default{
 
     components: {
         AppRestaurant,
-        SplashPage
+        SplashPage,
+        Jumbotron
     },
 
     data() {
@@ -208,12 +210,16 @@ export default{
 
 
 <template>
-    <div id="box" class="container-fluid mb-5 mt-3">
+    
+    <div id="box" class="container-fluid mb-5 p-0">
 
         <SplashPage v-if="isLoading"></SplashPage>
+        
 
         <!-- row -->
+        
         <div v-else class="row d-flex flex-column flex-sm-row mx-1">
+            <Jumbotron></Jumbotron>
             <button style="max-height: 50.89px;" class="btn btn-light col-12 mb-3 bg-white" disabled>
                 <h3 class="col-12 mb-1">RISTORANTI</h3>
             </button>
