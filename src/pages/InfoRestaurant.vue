@@ -4,7 +4,6 @@ import axios from 'axios';
 import { router } from '../router';
 import CartItem from '../components/CartItem.vue';
 import { store } from '../store';
-import AlertDefault from '../components/AlertDefault.vue';
 
 export default {
 
@@ -13,7 +12,6 @@ export default {
   components: {
 
     // CartItem,
-    AlertDefault,
 
   },
 
@@ -38,6 +36,9 @@ export default {
       dishCounter: 1,
 
       // isCartEmpty: false,
+
+      // modale
+      openClose: this.visible,
 
 
     }
@@ -81,7 +82,20 @@ export default {
 
     })
   },
+
+  watch:{
+        visible: function(newVal, oldVal) {
+            this.openClose = newVal;
+            console.log('new ' + newVal + '==' + oldVal);
+        }
+  },
+
   methods: {
+
+    // metodo che gestisce il modale
+    OpenCloseFun() {
+            this.openClose = !this.openClose;
+    },
     
     // addToCart(product) {
     //     // Controllare se il prodotto è già nel carrello
@@ -142,6 +156,7 @@ export default {
     if (this.store.CartItems.length > 0 && this.store.CartItems[0].restaurantId !== dish.restaurant_id) {
       console.log('Mostra il modale');
       console.log('Elementi nel carrello:', this.store.CartItems);
+      this.OpenCloseFun();
       // this.isCartEmpty = true
       return;
     }
@@ -357,28 +372,29 @@ export default {
 
 
     <!-- Modale -->
-    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div v-if="openClose" class="modal fade show"
+      tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog"
+      style="display:block"
+    >
       <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fw-bold fs-5" id="exampleModalLabel"><i class="fa-solid fa-triangle-exclamation"></i> ATTENZIONE <i class="fa-solid fa-triangle-exclamation"></i></h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title">Carrello già in uso</h5>
+              <button type="button" class="btn-close" @click="OpenCloseFun()" aria-label="Close"></button>
+            </div>
           <div class="modal-body">
-            <strong>Stai cercando di inserire un piatto di un altro ristorante!</strong> <br>
-            Svuota il carrello oppure procedi all'ordine sulla pagina del ristorante specifico.
+            <p v-if="store.CartItems.length > 1">Non puoi ordinare piatti da altri ristoranti se stai già effettuando un ordine, svuota prima il carrello se vuoi ordinare da questo ristorante</p>
+            <p v-else>Hai eliminato il carrello, ora puoi procedere con l'ordine</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button v-if="store.CartItems.length > 0" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Svuota il carrello</button>
+            <button @click="OpenCloseFun()" type="button" class="btn btn-secondary">Chiudi</button>
+            <button v-if="store.CartItems.length > 1" @click="clearCart()" type="button" class="btn btn-danger">Svuota il carrello</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
           </div>
         </div>
       </div>
-    </div> -->
-    <AlertDefault :visible="false" variant="success"></AlertDefault>
+    </div>
 
-
-    
   </div>
 </template>
 
