@@ -260,7 +260,7 @@ export default{
             </div>
 
             <div v-else class="col-12 text-center">
-                <h1>Caricamento ristoranti in corso...</h1>
+                <h1 class="alert">Caricamento ristoranti in corso...</h1>
             </div>
             
         </div>

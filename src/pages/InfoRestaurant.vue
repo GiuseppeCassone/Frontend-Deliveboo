@@ -51,7 +51,8 @@ export default {
       if (storedCartItems) {
         this.store.CartItems = JSON.parse(storedCartItems);
       }
-      console.log(this.store.CartItems)
+      console.log(this.store.CartItems);
+      this.setupScrollListener();
   },
 
   created() {
@@ -82,14 +83,33 @@ export default {
   methods: {
 
     scrollToTop() {
-      // Calculate the offset from the top of the page to the "target" div
-      const offset = document.getElementById('target').getBoundingClientRect().top;
+      const target = document.getElementById('target');
+      if (target) {
+        const offset = target.getBoundingClientRect().top;
+        window.scrollTo({
+          top: offset,
+          behavior: 'smooth',
+        });
+      }
+    },
 
-      // Scroll to the top with the specified offset
-      window.scrollTo({
-        top: offset,
-        behavior: 'smooth',
-      });
+    setupScrollListener() {
+      window.addEventListener('scroll', this.handleScroll);
+    },
+
+    handleScroll() {
+      const scrollTop = window.scrollY;
+      const target = document.getElementById('target');
+      const button = document.querySelector('.btn-color.rounded-pill');
+
+      if (target && button) {
+        const targetTop = target.getBoundingClientRect().top;
+        if (scrollTop > targetTop) {
+          button.style.display = 'block';
+        } else {
+          button.style.display = 'none';
+        }
+      }
     },
     
 
@@ -241,20 +261,6 @@ export default {
 
 }
 
-// JS PURO PER SCROLLSPY
-
-window.addEventListener('scroll', () => {
-  const scrollTop = window.scrollY;
-  const targetTop = document.getElementById('target').getBoundingClientRect().top;
-
-  const button = document.querySelector('.btn-color.rounded-pill'); // Select the button element
-
-  if (scrollTop > targetTop) {
-    button.style.display = 'block'; // Show the button
-  } else {
-    button.style.display = 'none'; // Hide the button
-  }
-});
 
 
 
