@@ -46,6 +46,7 @@ export default{
             // splash page
             isLoading: true,
             loadingCounter: 0,
+            
 
         }
     },
@@ -200,6 +201,9 @@ export default{
 
         <!-- row -->
         <div v-else class="row d-flex flex-column flex-sm-row mx-1">
+            <button style="max-height: 50.89px;" class="btn btn-light col-12 mb-3 bg-white" disabled>
+                <h3 class="col-12 mb-1">RISTORANTI</h3>
+            </button>
 
             <!-- sezione lista delle tipologie -->
             <div class="col-12 col-md-3 restaurant-typologies d-flex flex-column animate__animated animate__zoomInLeft">
@@ -220,12 +224,8 @@ export default{
 
             
             <!-- sezione lista dei ristoranti -->
-            <div class="col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-between flex-md-row flex-wrap animate__animated animate__zoomInDown">
-                <button style="max-height: 50.89px;" class="btn btn-light col-12 mb-3 bg-white" disabled>
-                    <h3 class="col-12 mb-1">RISTORANTI</h3>
-
-                </button>
-    
+            <div v-if="this.restaurants.length > 0" class="col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-start flex-md-row flex-wrap animate__animated animate__zoomInDown">
+            
                 <AppRestaurant 
                     v-for="restaurant in restaurants" :restaurant="restaurant"
                 >
@@ -251,7 +251,12 @@ export default{
                 </div>
 
             </div>
-
+            <div v-else-if="this.restaurants.length = 0" class="col-12 col-md-9 animate__animated animate__jackInTheBox">
+                <h1 class="text-center">Nessun ristorante trovato!!</h1>
+                <div class="container-fluid d-flex justify-content-center">
+                    <img class="img-fluid" src="/images/404.webp" alt="">
+                </div>
+            </div>
         </div>
 
     </div>

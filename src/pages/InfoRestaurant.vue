@@ -358,9 +358,9 @@ window.addEventListener('scroll', () => {
     <div v-if="isCartEmpty" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header d-flex justify-content-center">
             <h1 class="modal-title fw-bold fs-5" id="exampleModalLabel"><i class="fa-solid fa-triangle-exclamation"></i> ATTENZIONE <i class="fa-solid fa-triangle-exclamation"></i></h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
           </div>
           <div class="modal-body">
             <strong>Stai cercando di inserire un piatto di un altro ristorante!</strong> <br>
