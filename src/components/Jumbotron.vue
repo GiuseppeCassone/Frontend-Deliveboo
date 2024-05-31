@@ -13,16 +13,16 @@ export default {
             apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
             homedishes: [],
-            restaurantDishid: null,
+            // restaurantDishid: null,
         }
 
 
     },
     mounted() {
 
-        this.restaurantDishid = this.$route.params.restaurant_id;
+        // this.restaurantDishid = this.$route.params.restaurant_id;
 
-        axios.get(this.apiBaseUrl + '/dishes' + this.restaurantDishid).then(res => {
+        axios.get(`${this.apiBaseUrl}/dishes?restaurant_id=${this.restaurantDishid}`).then(res => {
             console.log('questi sono i piatti:', res.data.results)
 
             this.homedishes = res.data.results
@@ -36,10 +36,10 @@ export default {
 <template>
 
     <div class="container-fluid py-4 my-bg-img">
-        <div class="container bg-opacity-75 pt-4" style=" background-color: rgba(0, 0, 0, 0.4);">
+        <div class="container bg-opacity-75 pt-4 rounded-3" style=" background-color: rgba(0, 0, 0, 0.4);">
 
             <div class="jumbotron p-5 ">
-                <h1 class="display-4 text-white">Benvenuti su <br> <span class="display-2">Wow Delive</span></h1>
+                <h1 class="display-4 text-white">Benvenuti su <br> <span class="display-2 fw-bolder">WOW DELIVE</span></h1>
                 <p class="lead text-white">
                     Tu scegli il piatto,<br> al resto ci pensiamo <span class="fw-bolder ">Noi</span>.
                 </p>
@@ -56,12 +56,12 @@ export default {
                                             class="my-img img-fluid rounded-start" :alt="homedish.name" />
                                     </div>
                                     <div class="col-md-8">
-                                        <div class="card-body">
+                                        <div class="card-body p-0 ps-2">
                                             <h5 class="card-title">{{ homedish.name }}</h5>
                                             <p class="card-text">{{ homedish.description }}</p>
                                             <router-link
-                                                :to="{ name: 'info-restaurant', params: { restaurant_id: this.$route.params.restaurant_id } }"
-                                                class="btn btn-primary rounded-3 mb-5"></router-link>
+                                                :to="{ name: 'info-restaurant', params: { id: homedish.restaurant_id } }"
+                                                class="btn my-btn-color rounded-3 mb-5">Vai al ristorante</router-link>
                                         </div>
                                     </div>
                                 </div>
@@ -87,6 +87,8 @@ export default {
 
 </template>
 <style lang="scss" scoped>
+@use '../styles/variables' as *;
+
 .my-bg-img {
     background-image: url('../public/images/jumbo-img.jpg');
     background-size: cover;
@@ -95,5 +97,10 @@ export default {
 .my-img {
     height: 200px;
     object-fit: cover;
+}
+
+.my-btn-color{
+    background-color: $secondColor;
+    color:white;
 }
 </style>
