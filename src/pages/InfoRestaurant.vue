@@ -35,7 +35,8 @@ export default {
       totalCartPrice: 0,
       dishCounter: 1,
 
-      isCartEmpty: false,
+      // modale
+      openClose: this.visible,
 
 
     }
@@ -53,10 +54,10 @@ export default {
       }
       console.log(this.store.CartItems);
       this.setupScrollListener();
+
   },
 
   created() {
-
     // recuperiamo il parametro dell'id del project dall'url
     // console.log(this.$route.params.id);
 
@@ -80,6 +81,14 @@ export default {
 
     })
   },
+
+  watch:{
+        visible: function(newVal, oldVal) {
+            this.openClose = newVal;
+            console.log('new ' + newVal + '==' + oldVal);
+        }
+  },
+
   methods: {
 
     scrollToTop() {
@@ -138,11 +147,8 @@ export default {
     addItem(dish) {
     console.log('Aggiunta di un piatto:', dish);
     if (this.store.CartItems.length > 0 && this.store.CartItems[0].restaurantId !== dish.restaurant_id) {
-      console.log('Mostra il modale');
       console.log('Elementi nel carrello:', this.store.CartItems);
-      this.isCartEmpty = true
-      // const myModal = document.getElementById('exampleModal')
-      // myModal.show();
+      this.OpenCloseFun();
       return;
     }
 
@@ -243,7 +249,17 @@ export default {
     clearFromModal(){
       // this.clearCart()
       this.isCartEmpty = false
-    }
+    },
+
+    // metodo che gestisce il modale
+    OpenCloseFun() {
+      this.openClose = !this.openClose;
+    //   if (this.openClose) {
+    //   document.body.classList.add('overflow-hidden');
+    // } else {
+    //   document.body.classList.remove('overflow-hidden');
+    // }
+    },
 
   },
   computed: {
@@ -255,9 +271,7 @@ export default {
     totalPrice() {
     return this.CartItems.reduce((total, item) => total + item.ItemTotalPrice, 0);
   },
-  }
-
-  
+  },
 
 }
 
@@ -361,19 +375,28 @@ export default {
 
 
     <!-- Modale -->
-    <div v-if="isCartEmpty" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div v-if="openClose" class="modal-backdrop" @click="OpenCloseFun()"></div>
+    <div v-if="openClose" class="modal fade show animate__animated animate__fadeIn"
+      tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog"
+      style="display:block"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header d-flex justify-content-center">
             <h1 class="modal-title fw-bold fs-5" id="exampleModalLabel"><i class="fa-solid fa-triangle-exclamation"></i> ATTENZIONE <i class="fa-solid fa-triangle-exclamation"></i></h1>
-            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            <!-- <button type="button" class="btn-close" @click="OpenCloseFun()" aria-label="Close"></button> -->
           </div>
           <div class="modal-body">
-            <strong>Stai cercando di inserire un piatto di un altro ristorante!</strong> <br>
-            Svuota il carrello oppure procedi all'ordine sulla pagina del ristorante specifico.
+            <div v-if="store.CartItems.length > 0">
+              <strong>Stai cercando di inserire un piatto di un altro ristorante!</strong> <br>
+              Svuota il carrello oppure procedi all'ordine sulla pagina del ristorante specifico.
+            </div>
+            <div v-else>
+              <p>Hai eliminato il carrello, ora puoi procedere con l'ordine</p>
+            </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="clearFromModal()" data-bs-dismiss="modal">Close</button>
+            <button @click="OpenCloseFun()" type="button" class="btn btn-secondary">Chiudi</button>
             <button v-if="store.CartItems.length > 0" class="btn btn-danger" @click="clearCart()"><i class="fa-solid fa-trash-can"></i> Svuota il carrello</button>
           </div>
         </div>
@@ -394,6 +417,17 @@ export default {
 
 <style lang="scss" scoped>
 @use '../styles/variables' as *;
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
 
 #top-info{
 
