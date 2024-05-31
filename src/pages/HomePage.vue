@@ -47,6 +47,9 @@ export default{
             isLoading: true,
             loadingCounter: 0,
             
+            // errori ristoranti non trovati
+            restaurantsLoaded: false,
+            restaurantsEmpty: false,
 
         }
     },
@@ -72,17 +75,20 @@ export default{
 
     created() {
         this.incrementLoading();
-        // chiamata axios per i link della paginazione
         axios.get(this.apiBaseUrl + '/restaurant', {
-                params: {
-                    page: this.apiPageNumber
-                }
-            }).then(res => {
-
-                this.apiLinks = res.data.results.links;
-                // console.log(this.apiLinks)
-                this.decrementLoading();
-            })
+            params: {
+                page: this.apiPageNumber,
+        },
+        }).then((res) => {
+            this.apiLinks = res.data.results.links;
+            this.restaurantsLoaded = true;
+            this.restaurantsEmpty = res.data.results.data.length === 0;
+            this.decrementLoading();
+        }).catch(() => {
+            this.restaurantsLoaded = true;
+            this.restaurantsEmpty = true;
+            this.decrementLoading();
+        });
     },
 
     methods: {
@@ -103,6 +109,13 @@ export default{
             .then((res) => {
                 this.restaurants = res.data.results.data;
                 this.apiLinks = res.data.results.links;
+                this.restaurantsLoaded = true;
+                this.restaurantsEmpty = this.restaurants.length === 0;
+                this.decrementLoading();
+            })
+            .catch(() => {
+                this.restaurantsLoaded = true;
+                this.restaurantsEmpty = true;
                 this.decrementLoading();
             });
             
@@ -222,41 +235,34 @@ export default{
 
             </div>
 
-            
             <!-- sezione lista dei ristoranti -->
-            <div v-if="this.restaurants.length > 0" class="col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-start flex-md-row flex-wrap animate__animated animate__zoomInDown">
-            
-                <AppRestaurant 
-                    v-for="restaurant in restaurants" :restaurant="restaurant"
-                >
-                </AppRestaurant>
-    
+            <div v-if="restaurantsLoaded && restaurants.length > 0" class="col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-start flex-md-row flex-wrap animate__animated animate__zoomInDown">
+                
+                <AppRestaurant v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></AppRestaurant>
+
                 <!-- sezione per la paginazione -->
                 <div class="pages text-white col-12 justify-content-center gap-2">
-                    <div class="previous" 
-                        :class="apiPageNumber == 1 ? 'none' : ''"
-                        @click="changeApiPage(apiLinks[0].label)"
-                        >
-                        <i class="fa-solid fa-arrow-left"
-                        :class="apiPageNumber == 1 ? 'none' : ''"></i>
-                    </div>
-        
-                    <div class="next" 
-                        :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"
-                        @click="changeApiPage(apiLinks[apiLinks.length - 1].label)"
-                        >
-                        <i class="fa-solid fa-arrow-right"
-                        :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"></i>
-                    </div>
+                <div class="previous" :class="apiPageNumber == 1 ? 'none' : ''" @click="changeApiPage(apiLinks[0].label)">
+                    <i class="fa-solid fa-arrow-left" :class="apiPageNumber == 1 ? 'none' : ''"></i>
                 </div>
 
-            </div>
-            <div v-else-if="this.restaurants.length = 0" class="col-12 col-md-9 animate__animated animate__jackInTheBox">
-                <h1 class="text-center">Nessun ristorante trovato!!</h1>
-                <div class="container-fluid d-flex justify-content-center">
-                    <img class="img-fluid" src="/images/404.webp" alt="">
+                <div class="next" :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''" @click="changeApiPage(apiLinks[apiLinks.length - 1].label)">
+                    <i class="fa-solid fa-arrow-right" :class="apiPageNumber == apiLinks.length - 2 ? 'none' : ''"></i>
+                </div>
                 </div>
             </div>
+
+            <div v-else-if="restaurantsLoaded && restaurantsEmpty" class="col-12 col-md-9 animate__animated animate__jackInTheBox">
+                <h1 class="text-center">Nessun ristorante trovato!!</h1>
+                <div class="container-fluid d-flex justify-content-center">
+                <img class="img-fluid" src="/images/404.webp" alt="">
+                </div>
+            </div>
+
+            <div v-else class="col-12 text-center">
+                <h1>Caricamento ristoranti in corso...</h1>
+            </div>
+            
         </div>
 
     </div>
@@ -305,8 +311,6 @@ export default{
         height: 50px;
     }
 }
-
-
 
 
 .btn-color{
