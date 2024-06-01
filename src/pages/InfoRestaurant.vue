@@ -151,6 +151,10 @@ export default {
 
     // metodo che aggiunge un piatto al carrello
     addItem(dish) {
+      if (!dish.is_visible) {
+      return;
+    }
+    
     console.log('Aggiunta di un piatto:', dish);
     if (this.store.CartItems.length > 0 && this.store.CartItems[0].restaurantId !== dish.restaurant_id) {
       console.log('Elementi nel carrello:', this.store.CartItems);
@@ -324,7 +328,7 @@ export default {
       <!-- COLONNA PIATTI -->
       <div class="col-md-7">
         <ul id="menu" class="list-group list-group-flush animate__animated animate__slideInLeft">
-          <li id="dish-menu" class="row list-group-item d-flex justify-content-between align-items-center" v-for="dish in restaurant.dishes">
+          <li id="dish-menu" class="row list-group-item d-flex justify-content-between align-items-center" v-for="dish in restaurant.dishes.filter(dish => dish.is_visible)">
             <!-- Colonna per l'immagine -->
             <div id="img-col" class="col-4">
               <img style="max-height: 124px;" class="img-fluid h-100 w-100 object-fit-cover" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt="">
