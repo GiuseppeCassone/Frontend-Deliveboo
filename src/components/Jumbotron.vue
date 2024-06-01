@@ -101,7 +101,7 @@ export default {
 
 }
 
-@media screen and (min-width: 700px) and (max-width: 1300px){
+@media screen and (min-width: 700px) and (max-width: 1800px){
 
     #carouselExampleCaptions{
 
