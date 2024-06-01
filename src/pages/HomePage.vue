@@ -228,7 +228,7 @@ export default {
             </button>
 
             <!-- sezione lista delle tipologie -->
-            <div class="col-12 col-md-3 restaurant-typologies d-flex flex-column animate__animated animate__zoomInLeft">
+            <div class=" my-high col-12 col-md-3 restaurant-typologies d-flex flex-column animate__animated animate__zoomInLeft">
 
                 <button class="mb-3 btn btn-outline-secondary d-flex justify-content-between align-items-center"
                     type="button" role="button" @click="toggleTypologies">
@@ -237,7 +237,7 @@ export default {
                 </button>
 
                 <div
-                    class="d-flex flex-wrap flex-md-column flex-lg-row row align-items-center justify-content-evenly row-gap-2">
+                    class=" d-flex flex-wrap flex-md-column flex-lg-row row align-items-center justify-content-evenly row-gap-2">
                     <div v-for="typology in typologies" class="Type col-6 form-check form-switch rounded-2"
                         v-bind:class="{ 'd-flex d-sm-none': isTypologiesCollapsed, 'd-none d-sm-flex': !isTypologiesCollapsed }">
                         <input class="form-check-input switch" type="checkbox" role="switch" :value="typology.type"
@@ -253,7 +253,7 @@ export default {
 
             <!-- sezione lista dei ristoranti -->
             <div v-if="restaurantsLoaded && restaurants.length > 0"
-                class="col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-start flex-md-row flex-wrap animate__animated animate__zoomInDown">
+                class="my-high col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-start flex-md-row flex-wrap animate__animated animate__zoomInDown">
 
                 <AppRestaurant v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant">
                 </AppRestaurant>
@@ -378,6 +378,17 @@ export default {
         &.none {
             display: none;
         }
+    }
+}
+@media screen and (min-width: 1200px){
+    .my-high{
+        height: 700px;
+    }
+    
+}
+@media screen and (min-width:800px) and (max-width: 1199px) {
+    .my-high{
+        height: 1300px;
     }
 }
 </style>
