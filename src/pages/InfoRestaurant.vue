@@ -356,7 +356,7 @@ export default {
             <h2>Carrello</h2>
           </div>
           <ul class="list-group list-group-flush cart">
-            <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item d-flex flex-column flex-xl-row justify-content-between align-items-center row-gap-2">
+            <li v-for="(item, index) in store.CartItems" :key="index" class="list-group-item d-flex flex-column flex-xl-row justify-content-between align-items-center row-gap-2 animate__animated animate__bounceIn">
               <div class="dish-info d-flex gap-3 align-self-start">
                 {{ item.itemName }} <br>   <span class=" fw-light ">{{ item.itemQuantity }} x €{{ item.itemPrice }}</span> 
               </div>
@@ -366,7 +366,7 @@ export default {
                   <strong class="px-2">{{ item.itemQuantity }}</strong>
                   <button type="button" @click="addActualDish(index)" class="btn btn-success btn-color add"><i class="fa-solid fa-plus"></i></button>
                 </div>
-                <button class="btn btn-danger float-end" @click="removeItem(index)">
+                <button class="btn btn-danger float-end animate__animated" @click="removeItem(index)">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
