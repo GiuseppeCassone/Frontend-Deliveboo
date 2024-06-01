@@ -1,6 +1,10 @@
 <script>
+
+
 export default {
   name: 'AppFooter',
+
+  
 
   methods: {
     scrollToTop() {
@@ -16,6 +20,8 @@ export default {
 </script>
 
 <template>
+
+
   
   <footer class="text-center text-white">
 
