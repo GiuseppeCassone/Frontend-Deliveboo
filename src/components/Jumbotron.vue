@@ -13,26 +13,24 @@ export default {
             apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
             homedishes: [],
-            // restaurantDishid: null,
         }
 
 
     },
     mounted() {
 
-        // this.restaurantDishid = this.$route.params.restaurant_id;
-
         axios.get(`${this.apiBaseUrl}/dishes?restaurant_id=${this.restaurantDishid}`).then(res => {
-            console.log('questi sono i piatti:', res.data.results)
+            // console.log('questi sono i piatti:', res.data.results)
 
             this.homedishes = res.data.results
-
 
         });
 
     },
 }
+
 </script>
+
 <template>
 
     <div class="container-fluid w-100 py-4 my-bg-img">
@@ -42,7 +40,7 @@ export default {
                 <div class="row d-flex justify-content-between between mb-3">
                     <h1 class="col-12 col-lg-8 display-4 text-white">Benvenuti su <br> <span class="display-2 fw-bolder">WOW DELIVE</span></h1>
                     <div class="col-12 col-lg-4 lead text-white d-flex align-items-center">
-                       <p class="mb-0">Tu scegli il piatto,<br> al resto ci pensiamo <strong>Noi</strong>.</p>
+                       <p class="mb-0 fs-4">Tu scegli il piatto,<br> al resto ci pensiamo <strong>Noi</strong>.</p>
                     </div>
                 </div>
 
@@ -53,10 +51,10 @@ export default {
                         :class="['carousel-item', { active: index === 0 }]">
                             <div class="container d-flex justify-content-center div-img">
                                 <img :src="homedish.img.includes('https') ? homedish.img : this.apiImageUrl"
-                                class="my-img img-fluid" :alt="homedish.name" />
-                            </div>
-                            <div class="carousel-caption d-block">
-                                <h5 class="card-title text-center ">{{ homedish.name }}</h5>
+                                class="my-img img-fluid img-thumbnail" :alt="homedish.name" />
+                                <div class="carousel-caption m-auto rounded-3">
+                                    <h5 class="card-title text-center ">{{ homedish.name }}</h5>
+                                </div>
                             </div>
                         </routerLink>
                     </div>
@@ -76,6 +74,7 @@ export default {
 
 
 </template>
+
 <style lang="scss" scoped>
 @use '../styles/variables' as *;
 
@@ -85,22 +84,22 @@ export default {
 }
 
 .my-img {
-    height: 200px;
+    height: 250px;
     object-fit: cover;
 }
 
 
-.btn-color{
+.carousel-caption{
 
-  background-color: $secondColor;
-  border-color: $primaryColor;
+    background-color: rgba(0, 0, 0, 0.393);
 
-  &:hover{
-  background-color: $primaryColor;
-  }
+    max-width: 200px;
+
 
 }
 
+
+// media query
 @media screen and (min-width: 700px) and (max-width: 1800px){
 
     #carouselExampleCaptions{
