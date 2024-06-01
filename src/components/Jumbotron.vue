@@ -39,7 +39,7 @@ export default {
             <div class="jumbotron p-5 d-flex flex-column">
                 <div class="row d-flex justify-content-between between mb-3">
                     <h1 class="col-12 col-lg-8 display-4 text-white">Benvenuti su <br> <span class="display-2 fw-bolder">WOW DELIVE</span></h1>
-                    <div class="col-12 col-lg-4 lead text-white d-flex align-items-center">
+                    <div class="col-12 col-lg-4 lead text-white d-flex align-items-center justify-content-end">
                        <p class="mb-0 fs-4">Tu scegli il piatto,<br> al resto ci pensiamo <strong>Noi</strong>.</p>
                     </div>
                 </div>
@@ -94,7 +94,6 @@ export default {
     background-color: rgba(0, 0, 0, 0.393);
 
     max-width: 200px;
-
 
 }
 
