@@ -26,7 +26,7 @@ export default {
         <div class="row justify-content-center ">
             <div class="col-10 ">
 
-                <div id="carouselIndicators" class="carousel slide d-flex flex-column align-items-center " style=" background-color: rgba(0, 0, 0, 0.4); height: 350px  ;">
+                <div id="carouselIndicators" class="carousel slide d-flex flex-column align-items-center rounded-3" style=" background-color: rgba(0, 0, 0, 0.4); height: 350px  ;">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active"
                             aria-current="true" aria-label="Slide 1" id="my-cirlce-button"></button>
@@ -46,7 +46,7 @@ export default {
                         <div class="carousel-item ">
                             <div class="d-flex flex-column align-items-center my-circle-padding">
                                 
-                                <h3 class=" text-white py-3">Siamo pronti a pertire con una nuova esperienza<br> Ti aspettiamo</h3>
+                                <h3 class=" text-white py-3">Siamo pronti a partire con una nuova esperienza<br> Ti aspettiamo</h3>
                                 <a href="http://127.0.0.1:8000/register" target="_blank" class="btn btn-light btn-lg rounded-2 px-4">Collabora con Noi</a>
 
                             </div>

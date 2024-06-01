@@ -30,6 +30,8 @@ export default {
 
       apiImageUrl: 'http://127.0.0.1:8000/storage/',
 
+      fallbackImageUrl: '/images/fallback-image-one.jpg',
+
       // Elementi per la gestione del carrello
       // CartItems: [],
       totalCartPrice: 0,
@@ -119,6 +121,10 @@ export default {
           button.style.display = 'none';
         }
       }
+    },
+
+    isAbsoluteUrl(url) {
+      return url.startsWith('http://') || url.startsWith('https://');
     },
     
 
@@ -271,6 +277,13 @@ export default {
     totalPrice() {
     return this.CartItems.reduce((total, item) => total + item.ItemTotalPrice, 0);
   },
+
+  restaurantImage() {
+      if (this.restaurant && this.restaurant.img) {
+        return this.isAbsoluteUrl(this.restaurant.img) ? this.restaurant.img : this.apiImageUrl + this.restaurant.img;
+      }
+      return this.fallbackImageUrl;
+    },
   },
 
 }
@@ -293,7 +306,7 @@ export default {
           <h1 class=" fw-bold m-0">{{ restaurant.name }}</h1>
           <h4 class="fw-normal"> {{ restaurant.description }}</h4>
         </div>
-        <img id="rest-img" :src="restaurant.img.includes('https') ? restaurant.img : this.apiImageUrl + restaurant.img"
+        <img id="rest-img" :src="restaurantImage"
         class="card-img-top" alt="...">
         <section class="z-1 p-2">
           <div id="contact" class="d-flex flex-column justify-content-between gap-2">

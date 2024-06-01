@@ -10,11 +10,15 @@ export default {
   data() {
     return {
       apiImageUrl: 'http://127.0.0.1:8000/storage/',
+      fallbackImageUrl: '/images/fallback-image-one.jpg',
     };
   },
 
   methods: {
     getImageUrl(imageUrl) {
+      if (!imageUrl) {
+        return this.fallbackImageUrl;
+      }
       return imageUrl.includes('https') ? imageUrl : this.apiImageUrl + imageUrl;
     },
   },
