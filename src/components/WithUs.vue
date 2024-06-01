@@ -26,7 +26,7 @@ export default {
         <div class="row justify-content-center ">
             <div class="col-10 ">
 
-                <div id="carouselIndicators" class="carousel slide d-flex flex-column align-items-center " style=" background-color: rgba(0, 0, 0, 0.4);">
+                <div id="carouselIndicators" class="carousel slide d-flex flex-column align-items-center " style=" background-color: rgba(0, 0, 0, 0.4); height: 350px  ;">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active"
                             aria-current="true" aria-label="Slide 1" id="my-cirlce-button"></button>
