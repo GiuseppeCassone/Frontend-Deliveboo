@@ -253,7 +253,7 @@ export default {
 
             <!-- sezione lista dei ristoranti -->
             <div v-if="restaurantsLoaded && restaurants.length > 0"
-                class="col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-start flex-md-row flex-wrap animate__animated animate__zoomInDown">
+                class="col-12 col-md-9 restaurants-list d-flex flex-column row-cols-3 align-items-start flex-lg-row flex-wrap animate__animated animate__zoomInDown">
 
                 <AppRestaurant v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant">
                 </AppRestaurant>
