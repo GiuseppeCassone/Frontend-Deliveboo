@@ -18,7 +18,7 @@ export default {
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a href="http://127.0.0.1:8000/register" target="_blank" class="btn btn-light rounded-2 px-4"><i class="fa-solid fa-lock fw-bold"></i> Area Riservata</a>
+              <a href="http://127.0.0.1:8000/" target="_blank" class="btn btn-light rounded-2 px-4"><i class="fa-solid fa-lock fw-bold"></i> Area Riservata</a>
             </li>
           </ul>
         </div>
