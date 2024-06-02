@@ -44,7 +44,7 @@ export default {
                     </div>
                 </div>
 
-                <div id="carouselExampleCaptions" class="carousel slide align-self-center" >
+                <div id="carouselExampleAutoplaying" class="carousel slide align-self-center" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <routerLink :to="{ name: 'info-restaurant', params: { id: homedish.restaurant_id } }" 
                         v-for="(homedish, index) in homedishes" :key="homedish.id"
@@ -58,11 +58,11 @@ export default {
                             </div>
                         </routerLink>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
@@ -101,7 +101,7 @@ export default {
 // media query
 @media screen and (min-width: 700px) and (max-width: 3000px){
 
-    #carouselExampleCaptions{
+    #carouselExampleAutoplaying{
 
         min-width: 600px;
 
@@ -116,7 +116,7 @@ export default {
 
 @media screen and (min-width: 420px) and (max-width: 600px){
 
-    #carouselExampleCaptions{
+    #carouselExampleAutoplaying{
 
         max-width: 350px !important;
 

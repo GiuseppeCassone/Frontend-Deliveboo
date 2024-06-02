@@ -236,7 +236,7 @@ export default {
                     <i class="fa-solid fa-arrow-down-wide-short"></i>
                 </button>
 
-                <div
+                <div id="typo"
                     class="d-flex flex-wrap flex-md-column flex-lg-row row align-items-center justify-content-evenly row-gap-2">
                     <div v-for="typology in typologies" class="Type col-6 form-check form-switch rounded-2"
                         v-bind:class="{ 'd-flex d-sm-none': isTypologiesCollapsed, 'd-none d-sm-flex': !isTypologiesCollapsed }">
@@ -380,4 +380,23 @@ export default {
         }
     }
 }
+
+
+
+@media screen and (max-width:500px){
+
+    #typo{
+
+        max-width: 396px;
+
+        margin-bottom: 30px;
+
+
+    }
+
+}
+
+
+
+
 </style>

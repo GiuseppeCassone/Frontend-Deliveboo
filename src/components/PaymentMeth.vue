@@ -315,7 +315,7 @@ export default {
           <thead>
             <tr>
               <th scope="col">Piatto</th>
-              <th scope="col">Quantità</th>
+              <th class="d-none d-lg-table-cell" scope="col">Quantità</th>
               <th scope="col">Prezzo Totale</th>
               <th scope="col">Azioni</th>
             </tr>
@@ -323,7 +323,7 @@ export default {
           <tbody>
             <tr v-for="(dish, index) in store.CartItems" :key="dish.itemId">
               <td>{{ dish.itemName }}</td>
-              <td>{{ dish.itemQuantity }}</td>
+              <td class="d-none d-lg-table-cell">{{ dish.itemQuantity }}</td>
               <td>{{ dish.itemName }} X {{ dish.itemQuantity }} = €{{ dish.ItemTotalPrice.toFixed(2) }}</td>
               <td class="d-flex gap-2">
                 <button type="button" class="btn btn-success fw-bold" @click="increaseQuantity(index)"><i class="fa-solid fa-plus"></i></button>
