@@ -105,6 +105,23 @@ export default {
 
 .my-circle-padding {
     padding: 80px 60px;
-    /* Reduce padding to avoid hiding buttons */
 }
+
+
+@media screen and (max-width:500px){
+    .my-circle-padding {
+
+        padding: 20px 60px 80px;
+
+    }   
+}
+
+@media screen and (max-width:370px){
+    .my-circle-padding {
+        
+        padding: 15px 60px 100px;
+
+    }   
+}
+
 </style>
