@@ -32,6 +32,8 @@ export default {
 
       fallbackImageUrl: '/images/fallback-image-one.jpg',
 
+      fallbackDishImageUrl: '/images/fallback-dish.png',
+
       // Elementi per la gestione del carrello
       // CartItems: [],
       totalCartPrice: 0,
@@ -124,7 +126,7 @@ export default {
     },
 
     isAbsoluteUrl(url) {
-      return url.startsWith('http://') || url.startsWith('https://');
+      return url && (url.startsWith('http://') || url.startsWith('https://'));
     },
     
 
@@ -271,6 +273,13 @@ export default {
     // }
     },
 
+    getDishImage(dish) {
+    if (dish && dish.img) {
+      return this.isAbsoluteUrl(dish.img) ? dish.img : this.apiImageUrl + dish.img;
+    }
+      return this.fallbackDishImageUrl;
+    },
+
   },
   computed: {
     // alla creazione riporto la quantità degli elementi nel carrello
@@ -331,7 +340,7 @@ export default {
           <li id="dish-menu" class="row list-group-item d-flex justify-content-between align-items-center" v-for="dish in restaurant.dishes.filter(dish => dish.is_visible)">
             <!-- Colonna per l'immagine -->
             <div id="img-col" class="col-4">
-              <img style="max-height: 124px;" class="img-fluid h-100 w-100 object-fit-cover" :src="dish.img.includes('https') ? dish.img : this.apiImageUrl + dish.img" alt="">
+              <img style="max-height: 124px;" class="img-fluid h-100 w-100 object-fit-cover" :src="getDishImage(dish)" alt="">
             </div>
             <!-- Colonna per il nome e il prezzo -->
             <div id="name-col" class="col d-flex flex-column justify-content-center">

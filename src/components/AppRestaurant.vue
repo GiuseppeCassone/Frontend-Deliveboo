@@ -43,7 +43,7 @@ export default {
                 <i class="fa-solid fa-phone"></i>
                 {{ restaurant.phone_number }}
               </div> -->
-              <div class="d-flex gap-1 mt-1" v-if="restaurant.typologies.length">
+              <div class="d-flex gap-1 mt-1 flex-wrap" v-if="restaurant.typologies.length">
                 <span 
                     v-for="(typology, index) in restaurant.typologies" 
                     :key="index" 
