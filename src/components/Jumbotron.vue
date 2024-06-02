@@ -99,7 +99,7 @@ export default {
 
 
 // media query
-@media screen and (min-width: 700px) and (max-width: 1800px){
+@media screen and (min-width: 700px) and (max-width: 3000px){
 
     #carouselExampleCaptions{
 
